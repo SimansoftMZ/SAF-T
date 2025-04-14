@@ -15,8 +15,4 @@
     <IsAotCompatible>True</IsAotCompatible>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>
