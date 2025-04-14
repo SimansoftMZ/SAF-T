@@ -26,6 +26,52 @@ namespace SAFT.Mozambique.Models
         public string? CodigoEAC { get; init; }
         public string? DocumentoContabilisticoId { get; init; } = string.Empty;
         public string ClienteId { get; init; } = "Consumidor Final";
+        public List<DocumentoFacturacaoArtigo> Artigos { get; init; } = [];
+
+        public decimal TotalBase { get => Artigos.Sum(s => s.PrecoTotalSemImpostos); }
+        public decimal TotalDesconto { get => Artigos.Sum(s => s.ValorDesconto); }
+        public decimal TotalImpostos { get => Artigos.Sum(s => s.ValorImpostos); }
+        public decimal TotalGeral { get => TotalBase - TotalDesconto + TotalImpostos; }
+    }
+
+    //public record class DocumentoTotais
+    //{
+    //    public decimal TotalBase { get; init; }
+    //    public decimal TotalDesconto { get; init; }
+    //    public decimal TotalImpostos { get; init; }
+    //    public decimal TotalGeral { get => TotalBase - TotalDesconto + TotalImpostos; }
+    //}
+
+    public record class DocumentoFacturacaoArtigo
+    {
+        public Artigo Artigo { get; init; } = new();
+        public decimal Quantidade { get; init; }
+        public List<Imposto> Impostos { get; init; } = [];
+        public decimal PrecoTotalComImpostos { get; init; }
+        public decimal ValorDesconto { get; init; }
+        public decimal PercentagemDesconto { get => ValorDesconto / PrecoTotalComImpostos * 100; }
+        public decimal ValorImpostos { get => Impostos.Sum(i => i.Valor); }
+        public decimal PrecoTotalSemImpostos { get => PrecoTotalComImpostos - ValorImpostos; }
+        public decimal PrecoUnitarioComImpostos { get => (PrecoTotalComImpostos + ValorDesconto) / Quantidade; }
+        public decimal PrecoUnitarioSemImpostos { get => PrecoUnitarioComImpostos - (ValorImpostos / Quantidade); }
+
+    }
+
+    public record class Imposto
+    {
+        public string? Codigo { get; init; }
+        public string? Descricao { get; init; }
+        public decimal Percentagem { get; init; }
+        public decimal Valor { get; init; }
+    }
+
+    public record class Artigo
+    {
+        public string UniqueId { get; init; } = string.Empty;
+        public string? ArtigoId { get; init; }
+        public string Descricao { get; init; } = string.Empty;
+        public decimal? PrecoUnitario { get; init; }
+        public bool? IVAIncluso { get; init; }
     }
 
     public enum CategoriaDocumento
