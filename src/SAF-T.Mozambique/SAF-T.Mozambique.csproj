@@ -16,7 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Generators\" />
     <Folder Include="Validators\" />
   </ItemGroup>
