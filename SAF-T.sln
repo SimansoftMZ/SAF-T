@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAF-T.Core", "src\SAF-T.Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAF-T.Mozambique", "src\SAF-T.Mozambique\SAF-T.Mozambique.csproj", "{D39CBC8E-670C-4536-9790-6E64EBA47FE6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAF-T.Examples", "samples\SAF-T.Examples\SAF-T.Examples.csproj", "{AF598B0C-2D16-48F7-9E99-0493B8F920F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D39CBC8E-670C-4536-9790-6E64EBA47FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D39CBC8E-670C-4536-9790-6E64EBA47FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D39CBC8E-670C-4536-9790-6E64EBA47FE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF598B0C-2D16-48F7-9E99-0493B8F920F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF598B0C-2D16-48F7-9E99-0493B8F920F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF598B0C-2D16-48F7-9E99-0493B8F920F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF598B0C-2D16-48F7-9E99-0493B8F920F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

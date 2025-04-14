@@ -15,6 +15,24 @@ namespace SAFT.Mozambique.Models
     {
         public string TipoDocumentoId { get; init; } = string.Empty;
         public CategoriaDocumento Categoria { get; init; } = CategoriaDocumento.Factura;
+        public string NumeroDocumento { get; init; } = string.Empty;
+        public string Id
+        {
+            get
+            {
+                string tipoDoc = Categoria switch
+                {
+                    CategoriaDocumento.Factura => "FT",
+                    CategoriaDocumento.VendaDinheiro => "VD",
+                    CategoriaDocumento.NotaCredito => "NC",
+                    CategoriaDocumento.NotaDebito => "ND",
+                    CategoriaDocumento.Cotacao => "CT",
+                    _ => string.Empty,
+                };
+
+                return $"{tipoDoc} {string.Concat("000", TipoDocumentoId)[^3..]}/{NumeroDocumento}";
+            }
+        }
         public bool? ControlaAssinatura { get; init; }
         public string? Assinatura { get; init; }
 
@@ -50,7 +68,7 @@ namespace SAFT.Mozambique.Models
         public decimal PrecoTotalComImpostos { get; init; }
         public decimal ValorDesconto { get; init; }
         public decimal PercentagemDesconto { get => ValorDesconto / PrecoTotalComImpostos * 100; }
-        public decimal ValorImpostos { get => Impostos.Sum(i => i.Valor); }
+        public decimal ValorImpostos { get => Impostos.Sum(i => i.Valor + (PrecoTotalComImpostos / (1m + i.Percentagem * 0.01m) * i.Percentagem * 0.01m)); }
         public decimal PrecoTotalSemImpostos { get => PrecoTotalComImpostos - ValorImpostos; }
         public decimal PrecoUnitarioComImpostos { get => (PrecoTotalComImpostos + ValorDesconto) / Quantidade; }
         public decimal PrecoUnitarioSemImpostos { get => PrecoUnitarioComImpostos - (ValorImpostos / Quantidade); }
