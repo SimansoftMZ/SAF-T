@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAF-T.Core", "src\SAF-T.Core\SAF-T.Core.csproj", "{03FB0EC7-8D82-482F-834A-97672A9703EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAF-T.Mozambique", "src\SAF-T.Mozambique\SAF-T.Mozambique.csproj", "{D39CBC8E-670C-4536-9790-6E64EBA47FE6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03FB0EC7-8D82-482F-834A-97672A9703EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03FB0EC7-8D82-482F-834A-97672A9703EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03FB0EC7-8D82-482F-834A-97672A9703EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03FB0EC7-8D82-482F-834A-97672A9703EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D39CBC8E-670C-4536-9790-6E64EBA47FE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D39CBC8E-670C-4536-9790-6E64EBA47FE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D39CBC8E-670C-4536-9790-6E64EBA47FE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D39CBC8E-670C-4536-9790-6E64EBA47FE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {522DD57E-B325-45C2-9568-B2D8AA38C877}
+	EndGlobalSection
+EndGlobal
