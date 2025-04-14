@@ -40,8 +40,9 @@ namespace SAFT.Examples.MozambiqueDemo
                                 Percentagem = 5
                             }
                         ],
-                        Quantidade = 1,
-                        PrecoTotalComImpostos = 105
+                        Quantidade = 3,
+                        ValorDesconto = 50m,
+                        PrecoTotalComImpostos = 315
                     },
                     new DocumentoFacturacaoArtigo
                     {
@@ -61,6 +62,7 @@ namespace SAFT.Examples.MozambiqueDemo
                             }
                         ],
                         Quantidade = 2,
+                        ValorDesconto = 0m,
                         PrecoTotalComImpostos = 400
                     }
                 ]
