@@ -1,16 +1,10 @@
 ﻿using SAFT.Core.Interfaces;
 using SAFT.Core.Models;
 using SAFT.Mozambique.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Schema;
-using System.Xml.Serialization;
 
 namespace SAFT.Mozambique.Generators
 {
@@ -155,109 +149,113 @@ namespace SAFT.Mozambique.Generators
                 Indent = true,
                 Encoding = Encoding.UTF8
             };
-            using StringWriter stringWriter = new();
-            using XmlWriter writer = XmlWriter.Create(stringWriter, settings);
+            //using StringWriter stringWriter = new();
+            //using XmlWriter writer = XmlWriter.Create(stringWriter, settings);
 
-            writer.WriteStartDocument();
-            writer.WriteStartElement(nameof(AuditFile), "SAF-T_MZ");
-
-            // Escreve os campos manualmente
-            writer.WriteStartElement(nameof(auditFile.Header)); // Abre o elemento Header
-            writer.WriteElementString(nameof(auditFile.Header.AuditFileVersion), auditFile.Header!.AuditFileVersion);
-            writer.WriteElementString(nameof(auditFile.Header.CompanyID), auditFile.Header.CompanyID);
-            writer.WriteElementString(nameof(auditFile.Header.TaxRegistrationNumber), auditFile.Header.TaxRegistrationNumber);
-            writer.WriteElementString(nameof(auditFile.Header.FileContentType), auditFile.Header.FileContentType);
-            writer.WriteElementString(nameof(auditFile.Header.CompanyName), auditFile.Header.CompanyName);
-            writer.WriteElementString(nameof(auditFile.Header.BusinessName), auditFile.Header.BusinessName);
-            writer.WriteStartElement(nameof(auditFile.Header.CompanyAddress)); // Abre o elemento CompanyAddress
-            writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.StreetName), auditFile.Header.CompanyAddress!.StreetName);
-            writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.AddressDetail), auditFile.Header.CompanyAddress.AddressDetail);
-            writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.City), auditFile.Header.CompanyAddress.City);
-            writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Province), auditFile.Header.CompanyAddress.Province);
-            writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.PostalCode), auditFile.Header.CompanyAddress.PostalCode);
-            writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Country), auditFile.Header.CompanyAddress.Country);
-            writer.WriteEndElement(); // Fecha o elemento CompanyAddress
-            writer.WriteElementString(nameof(auditFile.Header.FiscalYear), auditFile.Header.FiscalYear.ToString());
-            writer.WriteElementString(nameof(auditFile.Header.StartDate), auditFile.Header.StartDate?.ToString("yyyy-MM-dd"));
-            writer.WriteElementString(nameof(auditFile.Header.EndDate), auditFile.Header.EndDate?.ToString("yyyy-MM-dd"));
-            writer.WriteElementString(nameof(auditFile.Header.CurrencyCode), auditFile.Header.CurrencyCode);
-            writer.WriteElementString(nameof(auditFile.Header.DateCreated), auditFile.Header.DateCreated?.ToString("yyyy-MM-dd"));
-            writer.WriteElementString(nameof(auditFile.Header.TaxEntity), auditFile.Header.TaxEntity);
-            writer.WriteElementString(nameof(auditFile.Header.ProductCompanyTaxID), auditFile.Header.ProductCompanyTaxID);
-            writer.WriteElementString(nameof(auditFile.Header.SoftwareCertificateNumber), auditFile.Header.SoftwareCertificateNumber);
-            writer.WriteElementString(nameof(auditFile.Header.ProductID), auditFile.Header.ProductID);
-            writer.WriteElementString(nameof(auditFile.Header.ProductVersion), auditFile.Header.ProductVersion);
-            writer.WriteElementString(nameof(auditFile.Header.HeaderComment), auditFile.Header.HeaderComment);
-            writer.WriteElementString(nameof(auditFile.Header.Telephone), auditFile.Header.Telephone);
-            writer.WriteElementString(nameof(auditFile.Header.Fax), auditFile.Header.Fax);
-            writer.WriteElementString(nameof(auditFile.Header.Email), auditFile.Header.Email);
-            writer.WriteElementString(nameof(auditFile.Header.Website), auditFile.Header.Website);
-            writer.WriteEndElement(); // Fecha o elemento Header
-
-            //ESTÃO EM FALTA OS MATER FILES
-
-
-            writer.WriteStartElement(nameof(auditFile.SourceDocuments)); // Abre o elemento SourceDocuments
-            writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices)); // Abre o elemento SalesInvoices
-            writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.NumberOfEntries), auditFile.SourceDocuments!.SalesInvoices!.NumberOfEntries.ToString());
-            writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.TotalCredit), auditFile.SourceDocuments.SalesInvoices.TotalCredit.ToString());
-            writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.TotalDebit), auditFile.SourceDocuments.SalesInvoices.TotalDebit.ToString());
-            //writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices.Invoices)); // Abre o elemento Invoices
-
-            auditFile.SourceDocuments.SalesInvoices.Invoices!.ForEach(invoice =>
+            using MemoryStream memoryStream = new();
+            using (XmlWriter writer = XmlWriter.Create(memoryStream, settings))
             {
-                writer.WriteStartElement(nameof(Invoice)); // Abre o elemento Invoice
-                writer.WriteElementString(nameof(invoice.InvoiceNo), invoice.InvoiceNo);
-                writer.WriteElementString(nameof(invoice.InvoiceType), invoice.InvoiceType);
-                writer.WriteStartElement(nameof(invoice.DocumentStatus)); // Abre o elemento DocumentStatus
-                writer.WriteElementString(nameof(invoice.DocumentStatus.InvoiceStatus), invoice.DocumentStatus!.InvoiceStatus);
-                writer.WriteElementString(nameof(invoice.DocumentStatus.InvoiceStatusDate), invoice.DocumentStatus.InvoiceStatusDate?.ToString("yyyy-MM-dd"));
-                writer.WriteElementString(nameof(invoice.DocumentStatus.SourceID), invoice.DocumentStatus.SourceID);
-                writer.WriteElementString(nameof(invoice.DocumentStatus.SourceBilling), invoice.DocumentStatus.SourceBilling);
-                writer.WriteEndElement(); // Fecha o elemento DocumentStatus
-                writer.WriteElementString(nameof(invoice.Hash), invoice.Hash.ToString());
-                writer.WriteElementString(nameof(invoice.HashControl), invoice.HashControl);
-                writer.WriteElementString(nameof(invoice.EACCode), invoice.EACCode);
-                writer.WriteElementString(nameof(invoice.Period), invoice.Period.ToString());
-                writer.WriteElementString(nameof(invoice.InvoiceDate), invoice.InvoiceDate?.ToString("yyyy-MM-dd"));
-                writer.WriteElementString(nameof(invoice.InvoiceStatus), invoice.InvoiceStatus);
-                writer.WriteElementString(nameof(invoice.InvoiceStatusDate), invoice.InvoiceStatusDate?.ToString("yyyy-MM-dd"));
-                writer.WriteElementString(nameof(invoice.SourceBilling), invoice.SourceBilling);
-                writer.WriteStartElement(nameof(invoice.SpecialRegimes)); // Abre o elemento SpecialRegimes
-                writer.WriteElementString(nameof(invoice.SpecialRegimes.SelfBillingIndicator), invoice.SpecialRegimes!.SelfBillingIndicator.ToString());
-                writer.WriteEndElement(); // Fecha o elemento SpecialRegimes
-                writer.WriteElementString(nameof(invoice.SourceID), invoice.SourceID);
-                writer.WriteElementString(nameof(invoice.SystemEntryDate), invoice.SystemEntryDate?.ToString("yyyy-MM-dd"));
-                writer.WriteElementString(nameof(invoice.TransactionID), invoice.TransactionID);
-                writer.WriteElementString(nameof(invoice.CustomerID), invoice.CustomerID);
+                writer.WriteStartDocument();
+                writer.WriteStartElement(nameof(AuditFile), "SAF-T_MZ");
 
-                invoice.Lines!.ForEach(artigo =>
+                // Escreve os campos manualmente
+                writer.WriteStartElement(nameof(auditFile.Header)); // Abre o elemento Header
+                writer.WriteElementString(nameof(auditFile.Header.AuditFileVersion), auditFile.Header!.AuditFileVersion);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyID), auditFile.Header.CompanyID);
+                writer.WriteElementString(nameof(auditFile.Header.TaxRegistrationNumber), auditFile.Header.TaxRegistrationNumber);
+                writer.WriteElementString(nameof(auditFile.Header.FileContentType), auditFile.Header.FileContentType);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyName), auditFile.Header.CompanyName);
+                writer.WriteElementString(nameof(auditFile.Header.BusinessName), auditFile.Header.BusinessName);
+                writer.WriteStartElement(nameof(auditFile.Header.CompanyAddress)); // Abre o elemento CompanyAddress
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.StreetName), auditFile.Header.CompanyAddress!.StreetName);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.AddressDetail), auditFile.Header.CompanyAddress.AddressDetail);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.City), auditFile.Header.CompanyAddress.City);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Province), auditFile.Header.CompanyAddress.Province);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.PostalCode), auditFile.Header.CompanyAddress.PostalCode);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Country), auditFile.Header.CompanyAddress.Country);
+                writer.WriteEndElement(); // Fecha o elemento CompanyAddress
+                writer.WriteElementString(nameof(auditFile.Header.FiscalYear), auditFile.Header.FiscalYear.ToString());
+                writer.WriteElementString(nameof(auditFile.Header.StartDate), auditFile.Header.StartDate?.ToString("yyyy-MM-dd"));
+                writer.WriteElementString(nameof(auditFile.Header.EndDate), auditFile.Header.EndDate?.ToString("yyyy-MM-dd"));
+                writer.WriteElementString(nameof(auditFile.Header.CurrencyCode), auditFile.Header.CurrencyCode);
+                writer.WriteElementString(nameof(auditFile.Header.DateCreated), auditFile.Header.DateCreated?.ToString("yyyy-MM-dd"));
+                writer.WriteElementString(nameof(auditFile.Header.TaxEntity), auditFile.Header.TaxEntity);
+                writer.WriteElementString(nameof(auditFile.Header.ProductCompanyTaxID), auditFile.Header.ProductCompanyTaxID);
+                writer.WriteElementString(nameof(auditFile.Header.SoftwareCertificateNumber), auditFile.Header.SoftwareCertificateNumber);
+                writer.WriteElementString(nameof(auditFile.Header.ProductID), auditFile.Header.ProductID);
+                writer.WriteElementString(nameof(auditFile.Header.ProductVersion), auditFile.Header.ProductVersion);
+                writer.WriteElementString(nameof(auditFile.Header.HeaderComment), auditFile.Header.HeaderComment);
+                writer.WriteElementString(nameof(auditFile.Header.Telephone), auditFile.Header.Telephone);
+                writer.WriteElementString(nameof(auditFile.Header.Fax), auditFile.Header.Fax);
+                writer.WriteElementString(nameof(auditFile.Header.Email), auditFile.Header.Email);
+                writer.WriteElementString(nameof(auditFile.Header.Website), auditFile.Header.Website);
+                writer.WriteEndElement(); // Fecha o elemento Header
+
+                //ESTÃO EM FALTA OS MATER FILES
+
+
+                writer.WriteStartElement(nameof(auditFile.SourceDocuments)); // Abre o elemento SourceDocuments
+                writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices)); // Abre o elemento SalesInvoices
+                writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.NumberOfEntries), auditFile.SourceDocuments!.SalesInvoices!.NumberOfEntries.ToString());
+                writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.TotalCredit), auditFile.SourceDocuments.SalesInvoices.TotalCredit.ToString());
+                writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.TotalDebit), auditFile.SourceDocuments.SalesInvoices.TotalDebit.ToString());
+                //writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices.Invoices)); // Abre o elemento Invoices
+
+                auditFile.SourceDocuments.SalesInvoices.Invoices!.ForEach(invoice =>
                 {
-                    writer.WriteStartElement(nameof(InvoiceLine)); // Abre o elemento artigo
-                    writer.WriteElementString(nameof(artigo.LineNumber), artigo.LineNumber.ToString());
-                    writer.WriteElementString(nameof(artigo.ProductCode), artigo.ProductCode);
-                    writer.WriteElementString(nameof(artigo.ProductDescription), artigo.ProductDescription);
-                    writer.WriteElementString(nameof(artigo.Description), artigo.Description);
-                    writer.WriteElementString(nameof(artigo.Quantity), artigo.Quantity.ToString());
-                    writer.WriteElementString(nameof(artigo.UnitOfMeasure), artigo.UnitOfMeasure);
-                    writer.WriteElementString(nameof(artigo.UnitPrice), artigo.UnitPrice.ToString());
-                    writer.WriteElementString(nameof(artigo.TaxBase), artigo.TaxBase.ToString());
-                    writer.WriteElementString(nameof(artigo.TaxAmount), artigo.TaxAmount.ToString());
-                    writer.WriteElementString(nameof(artigo.CreditAmount), artigo.CreditAmount.ToString());
-                    writer.WriteElementString(nameof(artigo.DebitAmount), artigo.DebitAmount.ToString());
-                    writer.WriteElementString(nameof(artigo.TaxPointDate), artigo.TaxPointDate?.ToString("yyyy-MM-dd"));
-                    writer.WriteEndElement(); // Fecha o elemento artigo
+                    writer.WriteStartElement(nameof(Invoice)); // Abre o elemento Invoice
+                    writer.WriteElementString(nameof(invoice.InvoiceNo), invoice.InvoiceNo);
+                    writer.WriteElementString(nameof(invoice.InvoiceType), invoice.InvoiceType);
+                    writer.WriteStartElement(nameof(invoice.DocumentStatus)); // Abre o elemento DocumentStatus
+                    writer.WriteElementString(nameof(invoice.DocumentStatus.InvoiceStatus), invoice.DocumentStatus!.InvoiceStatus);
+                    writer.WriteElementString(nameof(invoice.DocumentStatus.InvoiceStatusDate), invoice.DocumentStatus.InvoiceStatusDate?.ToString("yyyy-MM-dd"));
+                    writer.WriteElementString(nameof(invoice.DocumentStatus.SourceID), invoice.DocumentStatus.SourceID);
+                    writer.WriteElementString(nameof(invoice.DocumentStatus.SourceBilling), invoice.DocumentStatus.SourceBilling);
+                    writer.WriteEndElement(); // Fecha o elemento DocumentStatus
+                    writer.WriteElementString(nameof(invoice.Hash), invoice.Hash.ToString());
+                    writer.WriteElementString(nameof(invoice.HashControl), invoice.HashControl);
+                    writer.WriteElementString(nameof(invoice.EACCode), invoice.EACCode);
+                    writer.WriteElementString(nameof(invoice.Period), invoice.Period.ToString());
+                    writer.WriteElementString(nameof(invoice.InvoiceDate), invoice.InvoiceDate?.ToString("yyyy-MM-dd"));
+                    writer.WriteElementString(nameof(invoice.InvoiceStatus), invoice.InvoiceStatus);
+                    writer.WriteElementString(nameof(invoice.InvoiceStatusDate), invoice.InvoiceStatusDate?.ToString("yyyy-MM-dd"));
+                    writer.WriteElementString(nameof(invoice.SourceBilling), invoice.SourceBilling);
+                    writer.WriteStartElement(nameof(invoice.SpecialRegimes)); // Abre o elemento SpecialRegimes
+                    writer.WriteElementString(nameof(invoice.SpecialRegimes.SelfBillingIndicator), invoice.SpecialRegimes!.SelfBillingIndicator.ToString());
+                    writer.WriteEndElement(); // Fecha o elemento SpecialRegimes
+                    writer.WriteElementString(nameof(invoice.SourceID), invoice.SourceID);
+                    writer.WriteElementString(nameof(invoice.SystemEntryDate), invoice.SystemEntryDate?.ToString("yyyy-MM-dd"));
+                    writer.WriteElementString(nameof(invoice.TransactionID), invoice.TransactionID);
+                    writer.WriteElementString(nameof(invoice.CustomerID), invoice.CustomerID);
+
+                    invoice.Lines!.ForEach(artigo =>
+                    {
+                        writer.WriteStartElement(nameof(InvoiceLine)); // Abre o elemento artigo
+                        writer.WriteElementString(nameof(artigo.LineNumber), artigo.LineNumber.ToString());
+                        writer.WriteElementString(nameof(artigo.ProductCode), artigo.ProductCode);
+                        writer.WriteElementString(nameof(artigo.ProductDescription), artigo.ProductDescription);
+                        writer.WriteElementString(nameof(artigo.Description), artigo.Description);
+                        writer.WriteElementString(nameof(artigo.Quantity), artigo.Quantity.ToString());
+                        writer.WriteElementString(nameof(artigo.UnitOfMeasure), artigo.UnitOfMeasure);
+                        writer.WriteElementString(nameof(artigo.UnitPrice), artigo.UnitPrice.ToString());
+                        writer.WriteElementString(nameof(artigo.TaxBase), artigo.TaxBase.ToString());
+                        writer.WriteElementString(nameof(artigo.TaxAmount), artigo.TaxAmount.ToString());
+                        writer.WriteElementString(nameof(artigo.CreditAmount), artigo.CreditAmount.ToString());
+                        writer.WriteElementString(nameof(artigo.DebitAmount), artigo.DebitAmount.ToString());
+                        writer.WriteElementString(nameof(artigo.TaxPointDate), artigo.TaxPointDate?.ToString("yyyy-MM-dd"));
+                        writer.WriteEndElement(); // Fecha o elemento artigo
+                    });
+                    writer.WriteEndElement(); // Fecha o elemento Invoice
                 });
-                writer.WriteEndElement(); // Fecha o elemento Invoice
-            });
-            //writer.WriteEndElement(); // Fecha o elemento Invoices
+                //writer.WriteEndElement(); // Fecha o elemento Invoices
 
-            writer.WriteEndElement(); // Fecha o elemento AuditFile
-            writer.WriteEndDocument();
-            writer.Flush();
+                writer.WriteEndElement(); // Fecha o elemento AuditFile
+                writer.WriteEndDocument();
+                writer.Flush();
+            }
 
-            return stringWriter.ToString();
-
+            //return stringWriter.ToString();
+            return Encoding.UTF8.GetString(memoryStream.ToArray());
         }
     }
 }
