@@ -66,7 +66,7 @@ namespace SAFT.Mozambique.Models
         public string NUIT { get; init; } = string.Empty;
         public string SoftwareProdutoId { get; init; } = string.Empty;
 
-        public string ProdutoIdCompleto { get => $"{Nome}/{SoftwareProdutoId}"; }
+        public string SoftwareProdutoIdCompleto { get => $"{Nome}/{SoftwareProdutoId}"; }
 
         public string SoftwareProdutoVersao { get; init; } = string.Empty;
         public string SoftwareNumeroCertificacao { get; init; } = string.Empty;

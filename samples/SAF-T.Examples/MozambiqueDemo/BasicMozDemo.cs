@@ -26,6 +26,14 @@ namespace SAFT.Examples.MozambiqueDemo
             FicheiroSAFT ficheiroSAFT = new()
             {
                 Empresa = Empresas.GetEmpresaById("123456789"),
+                AnoFiscal = DateTime.Now.Year,
+                DataInicial = DateTime.Now.AddMonths(-1),
+                DataFinal = DateTime.Now,
+                DataCriacao = DateTime.Now,
+                Moeda = "MZN",
+                TipoConteudo = ConteudoFicheiroSaft.Vendas,
+                FabricanteSoftware = FabricantesSoftware.GetFabricanteSoftwareById("132457689"),
+                ComentariosCabecario = "Submissão apenas para testes",
                 DocumentosFacturacao = documentosFacturacao
             };
 
@@ -39,7 +47,7 @@ namespace SAFT.Examples.MozambiqueDemo
             Console.WriteLine("=== SAF-T para Moçambique ===");
             //Console.WriteLine("=== JSON ===");
             //Console.WriteLine(json);
-            Console.ReadKey(false);
+            //Console.ReadKey(false);
             Console.WriteLine("=== XML ===");
 
             Console.WriteLine(xml);
