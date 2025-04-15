@@ -1,61 +1,257 @@
-﻿using SAFT.Mozambique.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SAFT.Examples.SampleData.Entities;
+using SAFT.Mozambique.Models;
 
 namespace SAFT.Examples.SampleData.Invoices
 {
-    public static class MozambiqueInvoices
+    public class MozambiqueInvoices
     {
-        // Fatura básica válida
-        public static DocumentoFacturao GetValidInvoice()
-        {
-            return new DocumentoFacturao
-            {
-                TipoDocumentoId = "1",
-                Categoria = CategoriaDocumento.Factura,
-                NumeroDocumento = "1",
-                DataHora = DateTime.Now.AddDays(-5),
-                DataEmissao = DateTime.Now.AddDays(-5),
-                OperadorEmissao = "Operador 1",
-                ClienteId = "Cliente 1",
+        private static readonly List<DocumentoFacturao> _documentosFacturacao =
+            [
+                new DocumentoFacturao
+                {
+                    TipoDocumentoId = "1",
+                    Categoria = CategoriaDocumento.Factura,
+                    NumeroDocumento = "1",
+                    DataHora = DateTime.Now.AddDays(-5),
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("1")!.Id,
+                    ClienteId = Clientes.GetCliente("1")!.Id,
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("1")!,
+                                Quantidade = 3,
+                                ValorDesconto = 50m,
+                                PrecoTotalComImpostos = 315
+                            },
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("2")!,
+                                Quantidade = 2,
+                                ValorDesconto = 0m,
+                                PrecoTotalComImpostos = 210
+                            }
+                        ]
+                },
+                new DocumentoFacturao
+                {
+                    TipoDocumentoId = "1",
+                    Categoria = CategoriaDocumento.Factura,
+                    NumeroDocumento = "2",
+                    DataHora = DateTime.Now.AddDays(-5),
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("2")!.Id,
+                    ClienteId = Clientes.GetCliente("1")!.Id,
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("3")!,
+                                Quantidade = 3,
+                                ValorDesconto = 50m,
+                                PrecoTotalComImpostos = 315
+                            },
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("4")!,
+                                Quantidade = 2,
+                                ValorDesconto = 0m,
+                                PrecoTotalComImpostos = 600
+                            },
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("5")!,
+                                Quantidade = 1,
+                                ValorDesconto = 0m,
+                                PrecoTotalComImpostos = 150
+                            }
+                        ]
+                },
+                new DocumentoFacturao
+                {
+                    TipoDocumentoId = "1",
+                    Categoria = CategoriaDocumento.Factura,
+                    NumeroDocumento = "3",
+                    DataHora = DateTime.Now.AddDays(-5),
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("1")!.Id,
+                    ClienteId = Clientes.GetCliente("1")!.Id,
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("5")!,
+                                Quantidade = 1,
+                                ValorDesconto = 0m,
+                                PrecoTotalComImpostos = 468
+                            }
+                        ]
+                },
+                new DocumentoFacturao
+                {
+                    TipoDocumentoId = "1",
+                    Categoria = CategoriaDocumento.Factura,
+                    NumeroDocumento = "4",
+                    DataHora = DateTime.Now.AddDays(-5),
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("3")!.Id,
+                    ClienteId = Clientes.GetCliente("2")!.Id,
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("1")!,
+                                Quantidade = 1,
+                                ValorDesconto = 0m,
+                                PrecoTotalComImpostos = 200
+                            }
+                        ]
+                },
+                new DocumentoFacturao
+                {
+                    TipoDocumentoId = "24",
+                    Categoria = CategoriaDocumento.VendaDinheiro,
+                    NumeroDocumento = "1",
+                    DataHora = DateTime.Now.AddDays(-5),
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("3")!.Id,
+                    ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("2")!,
+                                Quantidade = 4,
+                                ValorDesconto = 0m,
+                                PrecoTotalComImpostos = 420
+                            }
+                        ]
+                },
+                new DocumentoFacturao
+                {
+                    TipoDocumentoId = "24",
+                    Categoria = CategoriaDocumento.VendaDinheiro,
+                    NumeroDocumento = "2",
+                    DataHora = DateTime.Now.AddDays(-5),
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("1")!.Id,
+                    ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("3")!,
+                                Quantidade = 5,
+                                ValorDesconto = 0m,
+                                PrecoTotalComImpostos = 360
+                            }
+                        ]
+                }
+            ];
 
-                Id = "INV-MZ-2024-001",
-                Date = DateTime.Now.AddDays(-5),
-                TotalAmount = 15000.50m,
-                TaxAmount = 3000.10m,
-                NUIT = "123456789", // NUIT válido (9 dígitos)
-                Customer = Companies.GetMozCustomer("Acme Ltd")
-            };
+        private static readonly List<DocumentoFacturao> _documentosFacturacaoInvalidos =
+            [
+            new DocumentoFacturao
+                {
+                    TipoDocumentoId = "1",
+                    Categoria = CategoriaDocumento.Factura,
+                    NumeroDocumento = "", //Não possui o número do documento de facturação
+                    DataHora = DateTime.Now.AddDays(-5),
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("1")!.Id,
+                    ClienteId = Clientes.GetCliente("1")!.Id,
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("1")!,
+                                Quantidade = 3,
+                                ValorDesconto = 50m,
+                                PrecoTotalComImpostos = 315
+                            }
+                        ]
+                },
+            new DocumentoFacturao
+                {
+                    TipoDocumentoId = "24",
+                    Categoria = CategoriaDocumento.VendaDinheiro,
+                    NumeroDocumento = "1", //Não possui o número do documento de facturação
+                    //Não possui dataHora
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("1")!.Id,
+                    ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("1")!,
+                                Quantidade = 3,
+                                ValorDesconto = 50m,
+                                PrecoTotalComImpostos = 315
+                            }
+                        ]
+                },
+            new DocumentoFacturao
+                {
+                    TipoDocumentoId = "24",
+                    Categoria = CategoriaDocumento.VendaDinheiro,
+                    NumeroDocumento = "2", //Não possui o número do documento de facturação
+                    //Não possui dataHora
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("1")!.Id,
+                    ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("1")!,
+                                Quantidade = 3,
+                                ValorDesconto = 50m,
+                                PrecoTotalComImpostos = 315
+                            }
+                        ]
+                },
+            new DocumentoFacturao
+                {
+                    TipoDocumentoId = "1",
+                    Categoria = CategoriaDocumento.VendaDinheiro,
+                    NumeroDocumento = "3", //Não possui o número do documento de facturação
+                    DataHora = DateTime.Now.AddDays(-5),
+                    DataEmissao = DateTime.Now.AddDays(-5),
+                    OperadorEmissao = Operadores.GetOperador("1")!.Id,
+                    ClienteId = Clientes.GetCliente("XX")?.Id ?? string.Empty, //Cliente inválido
+                    Artigos =
+                        [
+                            new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("1")!,
+                                Quantidade = 3,
+                                ValorDesconto = 50m,
+                                PrecoTotalComImpostos = 315
+                            }
+                        ]
+                }
+            ];
+
+        public static List<DocumentoFacturao> GetInvoices()
+        {
+            return _documentosFacturacao;
         }
 
-        //// Fatura inválida (para testes de validação)
-        //public static DocumentoFacturao GetInvalidInvoice()
-        //{
-        //    return new DocumentoFacturao
-        //    {
-        //        Id = "", // Campo obrigatório faltando
-        //        NUIT = "123" // NUIT inválido (apenas 3 dígitos)
-        //    };
-        //}
+        public static List<DocumentoFacturao> GetInvalidInvoices()
+        {
+            return _documentosFacturacaoInvalidos;
+        }
 
-        //// Lista de faturas (exemplo de lote)
-        //public static List<DocumentoFacturao> GetInvoiceBatch(int count = 5)
-        //{
-        //    var invoices = new List<DocumentoFacturao>();
-        //    for (int i = 1; i <= count; i++)
-        //    {
-        //        invoices.Add(new MozInvoice
-        //        {
-        //            Id = $"INV-MZ-2024-{i:000}",
-        //            Date = DateTime.Now.AddDays(-i),
-        //            TotalAmount = 1000.00m * i,
-        //            NUIT = "987654321"
-        //        });
-        //    }
-        //    return invoices;
-        //}
+        public static DocumentoFacturao GetInvoice(string id)
+        {
+            return _documentosFacturacao.FirstOrDefault(i => i.NumeroDocumento == id) ?? new DocumentoFacturao();
+        }
+
+        public static DocumentoFacturao GetValidInvoice(string id)
+        {
+            return _documentosFacturacaoInvalidos.FirstOrDefault(i => i.NumeroDocumento == id) ?? new DocumentoFacturao();
+        }
     }
 }

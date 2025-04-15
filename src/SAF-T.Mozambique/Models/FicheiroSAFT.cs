@@ -1,11 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SAFT.Core.Models;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace SAFT.Mozambique.Models
 {
+    [JsonSerializable(typeof(FicheiroSAFT))]
+    public partial class FicheiroSaftContext : JsonSerializerContext
+    {
+        public static FicheiroSaftContext Custom =>
+            new(
+                new()
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                    PropertyNameCaseInsensitive = true,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+                }
+            );
+    }
+
     public record class FicheiroSAFT
     {
 
@@ -52,23 +64,14 @@ namespace SAFT.Mozambique.Models
         public decimal TotalGeral { get => TotalBase - TotalDesconto + TotalImpostos; }
     }
 
-    //public record class DocumentoTotais
-    //{
-    //    public decimal TotalBase { get; init; }
-    //    public decimal TotalDesconto { get; init; }
-    //    public decimal TotalImpostos { get; init; }
-    //    public decimal TotalGeral { get => TotalBase - TotalDesconto + TotalImpostos; }
-    //}
-
     public record class DocumentoFacturacaoArtigo
     {
         public Artigo Artigo { get; init; } = new();
         public decimal Quantidade { get; init; }
-        public List<Imposto> Impostos { get; init; } = [];
         public decimal PrecoTotalComImpostos { get; init; }
         public decimal ValorDesconto { get; init; }
         public decimal PercentagemDesconto { get => ValorDesconto / PrecoTotalComImpostos * 100; }
-        public decimal ValorImpostos { get => Impostos.Sum(i => i.Valor + (PrecoTotalComImpostos / (1m + i.Percentagem * 0.01m) * i.Percentagem * 0.01m)); }
+        public decimal ValorImpostos { get => Artigo.Impostos.Sum(i => i.Valor + (PrecoTotalComImpostos / (1m + i.Percentagem * 0.01m) * i.Percentagem * 0.01m)); }
         public decimal PrecoTotalSemImpostos { get => PrecoTotalComImpostos - ValorImpostos; }
         public decimal PrecoUnitarioComImpostos { get => (PrecoTotalComImpostos + ValorDesconto) / Quantidade; }
         public decimal PrecoUnitarioSemImpostos { get => PrecoUnitarioComImpostos - (ValorImpostos / Quantidade); }
@@ -90,6 +93,8 @@ namespace SAFT.Mozambique.Models
         public string Descricao { get; init; } = string.Empty;
         public decimal? PrecoUnitario { get; init; }
         public bool? IVAIncluso { get; init; }
+        public bool? Servico { get; init; }
+        public List<Imposto> Impostos { get; init; } = [];
     }
 
     public enum CategoriaDocumento

@@ -9,7 +9,7 @@ namespace SAFT.Examples.SampleData.Entities
 {
     public class Clientes
     {
-        private List<Cliente> _clientes =
+        private static readonly List<Cliente> _clientes =
         [
             new Cliente
             {
@@ -34,12 +34,12 @@ namespace SAFT.Examples.SampleData.Entities
             }
         ];
 
-        public List<Cliente> GetClientes()
+        public static List<Cliente> GetClientes()
         {
             return _clientes;
         }
 
-        public Cliente? GetCliente(string id)
+        public static Cliente? GetCliente(string id)
         {
             return _clientes.FirstOrDefault(c => c.Id == id);
         }

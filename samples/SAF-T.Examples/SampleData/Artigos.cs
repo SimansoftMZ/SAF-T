@@ -1,0 +1,97 @@
+﻿using SAFT.Mozambique.Models;
+
+namespace SAFT.Examples.SampleData
+{
+    public class Artigos
+    {
+        private static readonly List<Artigo> _artigos =
+        [
+            new Artigo {
+                UniqueId = "X1",
+                ArtigoId = "1",
+                Descricao = "Artigo 1",
+                PrecoUnitario = 100.0m,
+                IVAIncluso = false,
+                Servico = false
+            },
+            new Artigo {
+                UniqueId = "X2",
+                ArtigoId = "2",
+                Descricao = "Servico 1",
+                PrecoUnitario = 200.0m,
+                IVAIncluso = false,
+                Servico = true,
+                Impostos =
+                [
+                    new Imposto
+                    {
+                        Codigo = "6",
+                        Descricao = "IVA",
+                        Percentagem = 5.0m
+                    }
+                ]
+            },
+            new Artigo {
+                UniqueId = "X3",
+                ArtigoId = "3",
+                Descricao = "Servico 2",
+                PrecoUnitario = 300.0m,
+                IVAIncluso = true,
+                Servico = true,
+                Impostos =
+                [
+                    new Imposto
+                    {
+                        Codigo = "6",
+                        Descricao = "IVA",
+                        Percentagem = 5.0m
+                    }
+                ]
+            },
+            new Artigo {
+                UniqueId = "X4",
+                ArtigoId = "4",
+                Descricao = "Artigo 2",
+                PrecoUnitario = 500.0m,
+                IVAIncluso = false,
+                Servico = false,
+                Impostos =
+                [
+                    new Imposto
+                    {
+                        Codigo = "1",
+                        Descricao = "IVA",
+                        Percentagem = 0.0m
+                    }
+                ]
+            },
+            new Artigo {
+                UniqueId = "X5",
+                ArtigoId = "5",
+                Descricao = "Artigo 3",
+                PrecoUnitario = 500.0m,
+                IVAIncluso = false,
+                Servico = false,
+                Impostos =
+                [
+                    new Imposto
+                    {
+                        Codigo = "1",
+                        Descricao = "IVA",
+                        Percentagem = 0.0m
+                    }
+                ]
+            }
+        ];
+
+        public static List<Artigo> GetArtigos()
+        {
+            return _artigos;
+        }
+
+        public static Artigo? GetArtigo(string id)
+        {
+            return _artigos.FirstOrDefault(a => a.ArtigoId == id);
+        }
+    }
+}

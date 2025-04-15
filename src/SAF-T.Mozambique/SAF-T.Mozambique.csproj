@@ -16,8 +16,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Generators\" />
     <Folder Include="Validators\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SAF-T.Core\SAF-T.Core.csproj" />
   </ItemGroup>
 
 </Project>
