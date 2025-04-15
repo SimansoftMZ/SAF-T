@@ -21,27 +21,18 @@ namespace SAFT.Mozambique.Generators
             return JsonSerializer.Serialize(saftData, FicheiroSaftContext.Custom.FicheiroSAFT);
         }
 
-        //public string GenerateXml(FicheiroSAFT saftData)
         public string GenerateXml(FicheiroSAFT saftData)
         {
             try
             {
-
-                var xml = retornaXml(saftData.DocumentosFacturacao.FirstOrDefault()!);
+                var xml = RetornaXml(saftData.DocumentosFacturacao.FirstOrDefault()!);
 
                 return xml;
-
             }
             catch (InvalidOperationException ex)
             {
-                // Log de erros de serialização
                 throw new InvalidOperationException("Falha na serialização SAF-T", ex);
             }
-        }
-
-        public byte[] GenerateXmlBytes(FicheiroSAFT saftData)
-        {
-            throw new NotImplementedException();
         }
 
         public ValidationResult Validate(FicheiroSAFT saftData)
@@ -49,11 +40,20 @@ namespace SAFT.Mozambique.Generators
             throw new NotImplementedException();
         }
 
-        private string retornaXml(DocumentoFacturacao ficheiroSAFT)
+        public AuditFile ConverterParaSaft(FicheiroSAFT ficheiroSAFT)
+        {
+            var auditFile = new AuditFile
+            {
+                
+            };
+            return auditFile;
+        }
+
+        private string RetornaXml(DocumentoFacturacao ficheiroSAFT)
         {
             var settings = new XmlWriterSettings { Indent = true };
-            using var stringWriter = new StringWriter();
-            using var writer = XmlWriter.Create(stringWriter, settings);
+            using StringWriter stringWriter = new();
+            using XmlWriter writer = XmlWriter.Create(stringWriter, settings);
 
             writer.WriteStartDocument();
             writer.WriteStartElement("FicheiroSAFT");
