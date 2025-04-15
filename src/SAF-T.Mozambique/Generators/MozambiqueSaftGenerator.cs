@@ -257,6 +257,7 @@ namespace SAFT.Mozambique.Generators
             writer.Flush();
 
             return stringWriter.ToString();
+
         }
     }
 }
