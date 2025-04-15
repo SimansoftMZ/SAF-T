@@ -1,4 +1,5 @@
 ﻿using SAFT.Core.Interfaces;
+using SAFT.Core.Models;
 using SAFT.Mozambique.Models;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 
@@ -22,24 +24,18 @@ namespace SAFT.Mozambique.Generators
         //public string GenerateXml(FicheiroSAFT saftData)
         public string GenerateXml(FicheiroSAFT saftData)
         {
-            //XmlSerializer xmlSerializer = new XmlSerializer(typeof(FicheiroSAFT));
-            //using StringWriter stringWriter = new();
-            //xmlSerializer.Serialize(stringWriter, saftData);
-            //return stringWriter.ToString();
-
             try
             {
-                var serializer = new XmlSerializer(typeof(FicheiroSAFT),
-                    new Type[] { typeof(FicheiroSaftContext) });
-                using var stringWriter = new StringWriter();
-                serializer.Serialize(stringWriter, saftData);
-                return stringWriter.ToString();
+
+                var xml = retornaXml(saftData.DocumentosFacturacao.FirstOrDefault()!);
+
+                return xml;
 
             }
             catch (InvalidOperationException ex)
             {
                 // Log de erros de serialização
-                throw new NotImplementedException("Falha na serialização SAF-T", ex);
+                throw new InvalidOperationException("Falha na serialização SAF-T", ex);
             }
         }
 
@@ -51,6 +47,27 @@ namespace SAFT.Mozambique.Generators
         public ValidationResult Validate(FicheiroSAFT saftData)
         {
             throw new NotImplementedException();
+        }
+
+        private string retornaXml(DocumentoFacturacao ficheiroSAFT)
+        {
+            var settings = new XmlWriterSettings { Indent = true };
+            using var stringWriter = new StringWriter();
+            using var writer = XmlWriter.Create(stringWriter, settings);
+
+            writer.WriteStartDocument();
+            writer.WriteStartElement("FicheiroSAFT");
+
+            // Escreve os campos manualmente
+            writer.WriteElementString(nameof(ficheiroSAFT.NumeroDocumento), ficheiroSAFT.NumeroDocumento);
+            writer.WriteElementString(nameof(ficheiroSAFT.Id), ficheiroSAFT.Id);
+            // ...
+
+            writer.WriteEndElement();
+            writer.WriteEndDocument();
+            writer.Flush();
+
+            return stringWriter.ToString();
         }
     }
 }

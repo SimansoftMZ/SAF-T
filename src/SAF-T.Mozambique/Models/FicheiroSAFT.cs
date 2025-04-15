@@ -21,12 +21,9 @@ namespace SAFT.Mozambique.Models
             );
     }
 
-
-
-    
     public record class FicheiroSAFT
     {
-        //public List<DocumentoFacturao> DocumentosFacturacao { get; init; } = [];
+        public List<DocumentoFacturacao> DocumentosFacturacao { get; init; } = [];
     }
 
     public record class DocumentoFacturacao

@@ -2,6 +2,7 @@
 using SAFT.Mozambique.Generators;
 using SAFT.Mozambique.Models;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -23,26 +24,21 @@ namespace SAFT.Examples.MozambiqueDemo
 
             FicheiroSAFT ficheiroSAFT = new()
             {
-                //DocumentosFacturacao = documentosFacturacao
+                DocumentosFacturacao = documentosFacturacao
             };
-
-            var options = new JsonSerializerOptions
-            {
-                WriteIndented = true,
-                TypeInfoResolver = FicheiroSaftContext.Default
-            };
-
-            using var stream = new MemoryStream();
-            using var writer = new Utf8JsonWriter(stream);
 
             // Serialize para JSON (mas com estrutura XML)
-            JsonSerializer.Serialize(writer, ficheiroSAFT, options);
-
-
-            var resultXML = Encoding.UTF8.GetString(stream.ToArray());
+            var json = gerador.GenerateJson(ficheiroSAFT);
+            var xml = gerador.GenerateXml(ficheiroSAFT);
 
             Console.WriteLine("Demo Mozambique.");
-            Console.WriteLine(resultXML);
+            Console.WriteLine("=== SAF-T para Moçambique ===");
+            Console.WriteLine("=== JSON ===");
+            Console.WriteLine(json);
+            Console.ReadKey(false);
+            Console.WriteLine("=== XML ===");
+
+            Console.WriteLine(xml);
             Console.ReadKey(false);
 
             // 2. Gerar XML
