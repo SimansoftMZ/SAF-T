@@ -1,9 +1,11 @@
 ﻿using SAFT.Core.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace SAFT.Mozambique.Models
 {
+    [XmlRoot("FicheiroSAFT")]
     [JsonSerializable(typeof(FicheiroSAFT))]
     public partial class FicheiroSaftContext : JsonSerializerContext
     {
@@ -20,7 +22,7 @@ namespace SAFT.Mozambique.Models
 
     public record class FicheiroSAFT
     {
-
+        public List<DocumentoFacturao> DocumentosFacturacao { get; init; } = [];
     }
 
     public record class DocumentoFacturao
