@@ -34,6 +34,7 @@ namespace SAFT.Mozambique.Models
         public string? Comentarios { get; init; }
 
         public Empresa Empresa { get; init; } = new();
+        public FabricanteSoftware FabricanteSoftware { get; init; } = new();
 
         public List<DocumentoFacturacao> DocumentosFacturacao { get; init; } = [];
     }
