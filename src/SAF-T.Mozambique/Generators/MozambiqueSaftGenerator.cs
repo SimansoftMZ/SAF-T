@@ -42,9 +42,36 @@ namespace SAFT.Mozambique.Generators
 
         public AuditFile ConverterParaSaft(FicheiroSAFT ficheiroSAFT)
         {
-            var auditFile = new AuditFile
+            AuditFile auditFile = new()
             {
-                
+                Header = new Header
+                {
+                    AuditFileVersion = "1.0",
+                    CompanyID = ficheiroSAFT.CompanyID,
+                    TaxRegistrationNumber = ficheiroSAFT.TaxRegistrationNumber,
+                    FileContentType = ficheiroSAFT.FileContentType,
+                    CompanyName = ficheiroSAFT.CompanyName,
+                    BusinessName = ficheiroSAFT.BusinessName,
+                    CompanyAddress = new CompanyAddress
+                    {
+                        BuildingNumber = ficheiroSAFT.BuildingNumber,
+                        City = ficheiroSAFT.City,
+                        Country = ficheiroSAFT.Country,
+                        District = ficheiroSAFT.District,
+                        PostalCode = ficheiroSAFT.PostalCode,
+                        StreetName = ficheiroSAFT.StreetName
+                    },
+                    FiscalYear = ficheiroSAFT.FiscalYear,
+                    StartDate = ficheiroSAFT.StartDate,
+                    EndDate = ficheiroSAFT.EndDate,
+                    CurrencyCode = ficheiroSAFT.CurrencyCode,
+                    DateCreated = DateTime.UtcNow, // Data de criação do arquivo
+                    TaxEntity = "Mozambique",
+                    ProductCompanyTaxID = "123456789", // Exemplo fictício
+                    SoftwareCertificateNumber = "987654321", // Exemplo fictício
+                    ProductID = "MySoftware",
+                    ProductVersion = "1.0",
+                }
             };
             return auditFile;
         }

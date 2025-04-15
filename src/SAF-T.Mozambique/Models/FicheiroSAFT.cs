@@ -1,12 +1,11 @@
 ﻿using SAFT.Core.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-//using System.Xml.Serialization;
 
 namespace SAFT.Mozambique.Models
 {
-    //[XmlRoot("FicheiroSAFT")]
     [JsonSerializable(typeof(FicheiroSAFT))]
     public partial class FicheiroSaftContext : JsonSerializerContext
     {
@@ -23,7 +22,51 @@ namespace SAFT.Mozambique.Models
 
     public record class FicheiroSAFT
     {
+        public string VersaoFicheiro { get; init; } = "1.0";
+        public ConteudoFicheiroSaft TipoConteudo { get; init; } = ConteudoFicheiroSaft.Vendas;
+
+        public int AnoFiscal { get; init; } = DateTime.Now.Year;
+        public DateTime DataInicial { get; init; }
+        public DateTime DataFinal { get; init; }
+        public string Moeda { get; init; } = "MZN";
+        public DateTime DataCriacao { get; init; }
+
+        public string? Comentarios { get; init; }
+
+        public Empresa Empresa { get; init; } = new();
+
         public List<DocumentoFacturacao> DocumentosFacturacao { get; init; } = [];
+    }
+
+    public record class Empresa
+    {
+        public string Nome { get; init; } = string.Empty;
+        public string NomeComercial { get; init; } = string.Empty;
+        public string EstabelecimentoId { get; init; } = "Global";
+        public string NUIT { get; init; } = string.Empty;
+        public string Endereco1 { get; init; } = string.Empty;
+        public string Endereco2 { get; init; } = string.Empty;
+        public string EdificioNumero { get; init; } = string.Empty;
+        public string Cidade { get; init; } = string.Empty;
+        public string Distrito { get; init; } = string.Empty;
+        public string Provincia { get; init; } = string.Empty;
+        public string Pais { get; init; } = "MZ";
+        public string Telefone { get; init; } = string.Empty;
+        public string Fax { get; init; } = string.Empty;
+        public string Email { get; init; } = string.Empty;
+        public string Website { get; init; } = string.Empty;
+    }
+
+    public record class FabricanteSoftware
+    {
+        public string Nome { get; init; } = string.Empty;
+        public string NUIT { get; init; } = string.Empty;
+        public string SoftwareProdutoId { get; init; } = string.Empty;
+
+        public string ProdutoIdCompleto { get => $"{Nome}/{SoftwareProdutoId}"; }
+
+        public string SoftwareProdutoVersao { get; init; } = string.Empty;
+        public string SoftwareNumeroCertificacao { get; init; } = string.Empty;
     }
 
     public record class DocumentoFacturacao
@@ -115,5 +158,15 @@ namespace SAFT.Mozambique.Models
         ProduzidoNoSoftware = 1,
         IntegradoEProduzidoNoutroSoftware = 2,
         RecuperacaoOuEmissaoManual = 3
+    }
+
+    public enum ConteudoFicheiroSaft
+    {
+        Compras = 1,
+        Vendas = 2,
+        Transporte = 3,
+        Contabilidade = 4,
+        Inventario = 5,
+        Autofacturacao = 6
     }
 }
