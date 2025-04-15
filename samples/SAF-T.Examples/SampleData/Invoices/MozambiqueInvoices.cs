@@ -5,9 +5,9 @@ namespace SAFT.Examples.SampleData.Invoices
 {
     public class MozambiqueInvoices
     {
-        private static readonly List<DocumentoFacturao> _documentosFacturacao =
+        private static readonly List<DocumentoFacturacao> _documentosFacturacao =
             [
-                new DocumentoFacturao
+                new DocumentoFacturacao
                 {
                     TipoDocumentoId = "1",
                     Categoria = CategoriaDocumento.Factura,
@@ -34,7 +34,7 @@ namespace SAFT.Examples.SampleData.Invoices
                             }
                         ]
                 },
-                new DocumentoFacturao
+                new DocumentoFacturacao
                 {
                     TipoDocumentoId = "1",
                     Categoria = CategoriaDocumento.Factura,
@@ -68,7 +68,7 @@ namespace SAFT.Examples.SampleData.Invoices
                             }
                         ]
                 },
-                new DocumentoFacturao
+                new DocumentoFacturacao
                 {
                     TipoDocumentoId = "1",
                     Categoria = CategoriaDocumento.Factura,
@@ -88,7 +88,7 @@ namespace SAFT.Examples.SampleData.Invoices
                             }
                         ]
                 },
-                new DocumentoFacturao
+                new DocumentoFacturacao
                 {
                     TipoDocumentoId = "1",
                     Categoria = CategoriaDocumento.Factura,
@@ -108,7 +108,7 @@ namespace SAFT.Examples.SampleData.Invoices
                             }
                         ]
                 },
-                new DocumentoFacturao
+                new DocumentoFacturacao
                 {
                     TipoDocumentoId = "24",
                     Categoria = CategoriaDocumento.VendaDinheiro,
@@ -128,7 +128,7 @@ namespace SAFT.Examples.SampleData.Invoices
                             }
                         ]
                 },
-                new DocumentoFacturao
+                new DocumentoFacturacao
                 {
                     TipoDocumentoId = "24",
                     Categoria = CategoriaDocumento.VendaDinheiro,
@@ -150,9 +150,9 @@ namespace SAFT.Examples.SampleData.Invoices
                 }
             ];
 
-        private static readonly List<DocumentoFacturao> _documentosFacturacaoInvalidos =
+        private static readonly List<DocumentoFacturacao> _documentosFacturacaoInvalidos =
             [
-            new DocumentoFacturao
+            new DocumentoFacturacao
                 {
                     TipoDocumentoId = "1",
                     Categoria = CategoriaDocumento.Factura,
@@ -172,7 +172,7 @@ namespace SAFT.Examples.SampleData.Invoices
                             }
                         ]
                 },
-            new DocumentoFacturao
+            new DocumentoFacturacao
                 {
                     TipoDocumentoId = "24",
                     Categoria = CategoriaDocumento.VendaDinheiro,
@@ -192,7 +192,7 @@ namespace SAFT.Examples.SampleData.Invoices
                             }
                         ]
                 },
-            new DocumentoFacturao
+            new DocumentoFacturacao
                 {
                     TipoDocumentoId = "24",
                     Categoria = CategoriaDocumento.VendaDinheiro,
@@ -212,7 +212,7 @@ namespace SAFT.Examples.SampleData.Invoices
                             }
                         ]
                 },
-            new DocumentoFacturao
+            new DocumentoFacturacao
                 {
                     TipoDocumentoId = "1",
                     Categoria = CategoriaDocumento.VendaDinheiro,
@@ -234,24 +234,24 @@ namespace SAFT.Examples.SampleData.Invoices
                 }
             ];
 
-        public static List<DocumentoFacturao> GetInvoices()
+        public static List<DocumentoFacturacao> GetInvoices()
         {
             return _documentosFacturacao;
         }
 
-        public static List<DocumentoFacturao> GetInvalidInvoices()
+        public static List<DocumentoFacturacao> GetInvalidInvoices()
         {
             return _documentosFacturacaoInvalidos;
         }
 
-        public static DocumentoFacturao GetInvoice(string id)
+        public static DocumentoFacturacao GetInvoice(string id)
         {
-            return _documentosFacturacao.FirstOrDefault(i => i.NumeroDocumento == id) ?? new DocumentoFacturao();
+            return _documentosFacturacao.FirstOrDefault(i => i.NumeroDocumento == id) ?? new DocumentoFacturacao();
         }
 
-        public static DocumentoFacturao GetValidInvoice(string id)
+        public static DocumentoFacturacao GetValidInvoice(string id)
         {
-            return _documentosFacturacaoInvalidos.FirstOrDefault(i => i.NumeroDocumento == id) ?? new DocumentoFacturao();
+            return _documentosFacturacaoInvalidos.FirstOrDefault(i => i.NumeroDocumento == id) ?? new DocumentoFacturacao();
         }
     }
 }

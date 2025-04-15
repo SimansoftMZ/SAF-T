@@ -4,8 +4,11 @@ using SAFT.Mozambique.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace SAFT.Examples.MozambiqueDemo
 {
@@ -20,11 +23,23 @@ namespace SAFT.Examples.MozambiqueDemo
 
             FicheiroSAFT ficheiroSAFT = new()
             {
-                DocumentosFacturacao = documentosFacturacao
+                //DocumentosFacturacao = documentosFacturacao
             };
 
+            var options = new JsonSerializerOptions
+            {
+                WriteIndented = true,
+                TypeInfoResolver = FicheiroSaftContext.Default
+            };
 
-            string resultXML = gerador.GenerateXml(ficheiroSAFT);
+            using var stream = new MemoryStream();
+            using var writer = new Utf8JsonWriter(stream);
+
+            // Serialize para JSON (mas com estrutura XML)
+            JsonSerializer.Serialize(writer, ficheiroSAFT, options);
+
+
+            var resultXML = Encoding.UTF8.GetString(stream.ToArray());
 
             Console.WriteLine("Demo Mozambique.");
             Console.WriteLine(resultXML);
