@@ -150,12 +150,16 @@ namespace SAFT.Mozambique.Generators
 
         private string RetornaXml(AuditFile auditFile)
         {
-            var settings = new XmlWriterSettings { Indent = true };
+            XmlWriterSettings settings = new()
+            {
+                Indent = true,
+                Encoding = Encoding.UTF8
+            };
             using StringWriter stringWriter = new();
             using XmlWriter writer = XmlWriter.Create(stringWriter, settings);
 
             writer.WriteStartDocument();
-            writer.WriteStartElement(nameof(AuditFile));
+            writer.WriteStartElement(nameof(AuditFile), "SAF-T_MZ");
 
             // Escreve os campos manualmente
             writer.WriteStartElement(nameof(auditFile.Header)); // Abre o elemento Header
@@ -190,12 +194,15 @@ namespace SAFT.Mozambique.Generators
             writer.WriteElementString(nameof(auditFile.Header.Website), auditFile.Header.Website);
             writer.WriteEndElement(); // Fecha o elemento Header
 
+            //ESTÃO EM FALTA OS MATER FILES
+
+
             writer.WriteStartElement(nameof(auditFile.SourceDocuments)); // Abre o elemento SourceDocuments
             writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices)); // Abre o elemento SalesInvoices
             writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.NumberOfEntries), auditFile.SourceDocuments!.SalesInvoices!.NumberOfEntries.ToString());
             writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.TotalCredit), auditFile.SourceDocuments.SalesInvoices.TotalCredit.ToString());
             writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.TotalDebit), auditFile.SourceDocuments.SalesInvoices.TotalDebit.ToString());
-            writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices.Invoices)); // Abre o elemento Invoices
+            //writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices.Invoices)); // Abre o elemento Invoices
 
             auditFile.SourceDocuments.SalesInvoices.Invoices!.ForEach(invoice =>
             {
@@ -243,7 +250,7 @@ namespace SAFT.Mozambique.Generators
                 });
                 writer.WriteEndElement(); // Fecha o elemento Invoice
             });
-            writer.WriteEndElement(); // Fecha o elemento Invoices
+            //writer.WriteEndElement(); // Fecha o elemento Invoices
 
             writer.WriteEndElement(); // Fecha o elemento AuditFile
             writer.WriteEndDocument();

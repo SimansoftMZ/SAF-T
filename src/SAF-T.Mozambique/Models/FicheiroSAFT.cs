@@ -155,6 +155,24 @@ namespace SAFT.Mozambique.Models
         public List<Imposto> Impostos { get; init; } = [];
     }
 
+    public record class Cliente
+    {
+        public string Id { get; init; } = string.Empty;
+        public string? Nome { get; init; } = string.Empty;
+        public string? NUIT { get; init; } = string.Empty;
+        public string? Endereco { get; init; } = string.Empty;
+        public string? Telefone { get; init; } = string.Empty;
+        public string? Email { get; init; } = string.Empty;
+        public string? Pais { get; init; } = "MZ";
+        public bool IsConsumidorFinal { get => Id == "Consumidor Final"; }
+    }
+
+    public record class Operador
+    {
+        public string Id { get; init; } = string.Empty;
+        public string? Nome { get; init; } = string.Empty;
+    }
+
     public enum CategoriaDocumento
     {
         Outro = 0,
