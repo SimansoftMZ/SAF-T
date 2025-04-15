@@ -1,7 +1,4 @@
-﻿using SAFT.Core.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace SAFT.Mozambique.Models
@@ -29,9 +26,9 @@ namespace SAFT.Mozambique.Models
         public DateTime DataInicial { get; init; }
         public DateTime DataFinal { get; init; }
         public string Moeda { get; init; } = "MZN";
-        public DateTime DataCriacao { get; init; }
+        public DateTime? DataCriacao { get; init; } = DateTime.Now;
 
-        public string? Comentarios { get; init; }
+        public string? ComentariosCabecario { get; init; }
 
         public Empresa Empresa { get; init; } = new();
         public FabricanteSoftware FabricanteSoftware { get; init; } = new();
@@ -52,6 +49,7 @@ namespace SAFT.Mozambique.Models
         public string Distrito { get; init; } = string.Empty;
         public string Provincia { get; init; } = string.Empty;
         public string Pais { get; init; } = "MZ";
+        public string CodigoPostal { get; init; } = string.Empty;
         public string Telefone { get; init; } = string.Empty;
         public string Fax { get; init; } = string.Empty;
         public string Email { get; init; } = string.Empty;

@@ -46,31 +46,47 @@ namespace SAFT.Mozambique.Generators
             {
                 Header = new Header
                 {
-                    AuditFileVersion = "1.0",
-                    CompanyID = ficheiroSAFT.CompanyID,
-                    TaxRegistrationNumber = ficheiroSAFT.TaxRegistrationNumber,
-                    FileContentType = ficheiroSAFT.FileContentType,
-                    CompanyName = ficheiroSAFT.CompanyName,
-                    BusinessName = ficheiroSAFT.BusinessName,
+                    AuditFileVersion = ficheiroSAFT.VersaoFicheiro,
+                    CompanyID = ficheiroSAFT.Empresa.NUIT,
+                    TaxRegistrationNumber = ficheiroSAFT.Empresa.NUIT,
+                    FileContentType = ficheiroSAFT.TipoConteudo switch
+                    {
+                        ConteudoFicheiroSaft.Vendas => "F",
+                        ConteudoFicheiroSaft.Compras => "A",
+                        ConteudoFicheiroSaft.Contabilidade => "C",
+                        ConteudoFicheiroSaft.Inventario => "I",
+                        ConteudoFicheiroSaft.Autofacturacao => "S",                        
+                        ConteudoFicheiroSaft.Transporte => "T",
+                        
+                        _ => throw new ArgumentOutOfRangeException(nameof(ficheiroSAFT), nameof(ficheiroSAFT.TipoConteudo),
+                                                                   "Tipo de conteúdo inválido.")
+                    },
+                    CompanyName = ficheiroSAFT.Empresa.Nome,
+                    BusinessName = ficheiroSAFT.Empresa.NomeComercial,
                     CompanyAddress = new CompanyAddress
                     {
-                        BuildingNumber = ficheiroSAFT.BuildingNumber,
-                        City = ficheiroSAFT.City,
-                        Country = ficheiroSAFT.Country,
-                        District = ficheiroSAFT.District,
-                        PostalCode = ficheiroSAFT.PostalCode,
-                        StreetName = ficheiroSAFT.StreetName
+                        StreetName = ficheiroSAFT.Empresa.Endereco1,
+                        AddressDetail = ficheiroSAFT.Empresa.Endereco2,
+                        City = ficheiroSAFT.Empresa.Cidade,
+                        Province = ficheiroSAFT.Empresa.Provincia,
+                        PostalCode = ficheiroSAFT.Empresa.CodigoPostal,
+                        Country = ficheiroSAFT.Empresa.Pais
                     },
-                    FiscalYear = ficheiroSAFT.FiscalYear,
-                    StartDate = ficheiroSAFT.StartDate,
-                    EndDate = ficheiroSAFT.EndDate,
-                    CurrencyCode = ficheiroSAFT.CurrencyCode,
-                    DateCreated = DateTime.UtcNow, // Data de criação do arquivo
-                    TaxEntity = "Mozambique",
-                    ProductCompanyTaxID = "123456789", // Exemplo fictício
-                    SoftwareCertificateNumber = "987654321", // Exemplo fictício
-                    ProductID = "MySoftware",
-                    ProductVersion = "1.0",
+                    FiscalYear = ficheiroSAFT.AnoFiscal,
+                    StartDate = ficheiroSAFT.DataInicial,
+                    EndDate = ficheiroSAFT.DataFinal,
+                    CurrencyCode = ficheiroSAFT.Moeda,
+                    DateCreated = ficheiroSAFT.DataCriacao,
+                    TaxEntity = ficheiroSAFT.Empresa.EstabelecimentoId,
+                    ProductCompanyTaxID = ficheiroSAFT.Empresa.NUIT,
+                    SoftwareCertificateNumber = ficheiroSAFT.FabricanteSoftware.SoftwareNumeroCertificacao,
+                    ProductID = ficheiroSAFT.FabricanteSoftware.SoftwareProdutoId,
+                    ProductVersion = ficheiroSAFT.FabricanteSoftware.SoftwareProdutoVersao,
+                    HeaderComment = ficheiroSAFT.ComentariosCabecario,
+                    Telephone = ficheiroSAFT.Empresa.Telefone,
+                    Fax = ficheiroSAFT.Empresa.Fax,
+                    Email = ficheiroSAFT.Empresa.Email,
+                    Website = ficheiroSAFT.Empresa.Website
                 }
             };
             return auditFile;
