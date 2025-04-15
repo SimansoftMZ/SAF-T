@@ -27,9 +27,11 @@ namespace SAFT.Examples.MozambiqueDemo
                 DocumentosFacturacao = documentosFacturacao
             };
 
+            var auditFile = gerador.ConverterParaSaft(ficheiroSAFT);
+
             // Serialize para JSON (mas com estrutura XML)
-            var json = gerador.GenerateJson(ficheiroSAFT);
-            var xml = gerador.GenerateXml(ficheiroSAFT);
+            var json = gerador.GenerateJson(auditFile);
+            var xml = gerador.GenerateXml(auditFile);
 
             Console.WriteLine("Demo Mozambique.");
             Console.WriteLine("=== SAF-T para Moçambique ===");

@@ -5,8 +5,8 @@ namespace SAFT.Core.Interfaces
 {
     public interface ISaftGenerator<T>
     {
-        string GenerateXml(T saftData);
-        string GenerateJson(T saftData);
+        string GenerateXml(AuditFile auditFile);
+        string GenerateJson(AuditFile auditFile);
         AuditFile ConverterParaSaft(T ficheiroNaOrigem);
         ValidationResult Validate(T saftData); // Validação integrada
 

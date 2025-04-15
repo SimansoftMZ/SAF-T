@@ -33,6 +33,9 @@ namespace SAFT.Mozambique.Models
         public Empresa Empresa { get; init; } = new();
         public FabricanteSoftware FabricanteSoftware { get; init; } = new();
 
+        public decimal TotalDebito { get => DocumentosFacturacao.Where(w => w.TotalGeral < 0).Sum(s => -s.TotalGeral); }
+        public decimal TotalCredito { get => DocumentosFacturacao.Where(w => w.TotalGeral > 0).Sum(s => s.TotalGeral); }
+
         public List<DocumentoFacturacao> DocumentosFacturacao { get; init; } = [];
     }
 
@@ -73,23 +76,22 @@ namespace SAFT.Mozambique.Models
         public string TipoDocumentoId { get; init; } = string.Empty;
         public CategoriaDocumento Categoria { get; init; } = CategoriaDocumento.Factura;
         public string NumeroDocumento { get; init; } = string.Empty;
-        public string Id
+        
+        public string TipoDocumento
         {
-            get
+            get => Categoria switch
             {
-                string tipoDoc = Categoria switch
-                {
-                    CategoriaDocumento.Factura => "FT",
-                    CategoriaDocumento.VendaDinheiro => "VD",
-                    CategoriaDocumento.NotaCredito => "NC",
-                    CategoriaDocumento.NotaDebito => "ND",
-                    CategoriaDocumento.Cotacao => "CT",
-                    _ => string.Empty,
-                };
-
-                return $"{tipoDoc} {string.Concat("000", TipoDocumentoId)[^3..]}/{NumeroDocumento}";
-            }
+                CategoriaDocumento.Factura => "FT",
+                CategoriaDocumento.VendaDinheiro => "FR",
+                CategoriaDocumento.NotaCredito => "NC",
+                CategoriaDocumento.NotaDebito => "ND",
+                CategoriaDocumento.Cotacao => "CT",
+                _ => string.Empty,
+            };
         }
+
+        public string Id { get => $"{TipoDocumento} {string.Concat("000", TipoDocumentoId)[^3..]}/{NumeroDocumento}"; }
+
         public bool? ControlaAssinatura { get; init; }
         public string? Assinatura { get; init; }
 
@@ -97,6 +99,14 @@ namespace SAFT.Mozambique.Models
         public int PeriodoMes { get => DataEmissao.Month; }
         public DateTime DataEmissao { get; init; }
         public OrigemDocumento OrigemDocumento { get; init; } = OrigemDocumento.ProduzidoNoSoftware;
+        public string OrigemDocumentoId { get => OrigemDocumento switch
+        {
+            OrigemDocumento.ProduzidoNoSoftware => "P",
+            OrigemDocumento.IntegradoEProduzidoNoutroSoftware => "I",
+            OrigemDocumento.RecuperacaoOuEmissaoManual => "M",
+            _ => string.Empty,
+        };
+        }
         public string OperadorEmissao { get; init; } = string.Empty;
         public string? CodigoEAC { get; init; }
         public string? DocumentoContabilisticoId { get; init; } = string.Empty;
@@ -112,6 +122,7 @@ namespace SAFT.Mozambique.Models
     public record class DocumentoFacturacaoArtigo
     {
         public Artigo Artigo { get; init; } = new();
+        public string? ArtigoDescricao { get; init; }
         public decimal Quantidade { get; init; }
         public decimal PrecoTotalComImpostos { get; init; }
         public decimal ValorDesconto { get; init; }
@@ -136,6 +147,7 @@ namespace SAFT.Mozambique.Models
         public string UniqueId { get; init; } = string.Empty;
         public string? ArtigoId { get; init; }
         public string Descricao { get; init; } = string.Empty;
+        public string? UnidadeContagem { get; init; }
         public decimal? PrecoUnitario { get; init; }
         public bool? IVAIncluso { get; init; }
         public bool? Servico { get; init; }
