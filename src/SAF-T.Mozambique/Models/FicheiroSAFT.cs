@@ -45,6 +45,7 @@ namespace SAFT.Mozambique.Models
         public string NomeComercial { get; init; } = string.Empty;
         public string EstabelecimentoId { get; init; } = "Global";
         public string NUIT { get; init; } = string.Empty;
+        public string EACCode { get; init; } = string.Empty;
         public string Endereco1 { get; init; } = string.Empty;
         public string Endereco2 { get; init; } = string.Empty;
         public string EdificioNumero { get; init; } = string.Empty;

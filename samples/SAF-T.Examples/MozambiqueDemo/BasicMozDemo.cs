@@ -1,4 +1,5 @@
-﻿using SAFT.Examples.SampleData.Invoices;
+﻿using SAFT.Examples.SampleData.Entities;
+using SAFT.Examples.SampleData.Invoices;
 using SAFT.Mozambique.Generators;
 using SAFT.Mozambique.Models;
 using System;
@@ -24,19 +25,20 @@ namespace SAFT.Examples.MozambiqueDemo
 
             FicheiroSAFT ficheiroSAFT = new()
             {
+                Empresa = Empresas.GetEmpresaById("123456789"),
                 DocumentosFacturacao = documentosFacturacao
             };
 
             var auditFile = gerador.ConverterParaSaft(ficheiroSAFT);
 
             // Serialize para JSON (mas com estrutura XML)
-            var json = gerador.GenerateJson(auditFile);
+            //var json = gerador.GenerateJson(auditFile);
             var xml = gerador.GenerateXml(auditFile);
 
             Console.WriteLine("Demo Mozambique.");
             Console.WriteLine("=== SAF-T para Moçambique ===");
-            Console.WriteLine("=== JSON ===");
-            Console.WriteLine(json);
+            //Console.WriteLine("=== JSON ===");
+            //Console.WriteLine(json);
             Console.ReadKey(false);
             Console.WriteLine("=== XML ===");
 

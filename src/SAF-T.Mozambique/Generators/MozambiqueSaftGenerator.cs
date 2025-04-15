@@ -78,6 +78,7 @@ namespace SAFT.Mozambique.Generators
                     CurrencyCode = ficheiroSAFT.Moeda,
                     DateCreated = ficheiroSAFT.DataCriacao,
                     TaxEntity = ficheiroSAFT.Empresa.EstabelecimentoId,
+
                     ProductCompanyTaxID = ficheiroSAFT.Empresa.NUIT,
                     SoftwareCertificateNumber = ficheiroSAFT.FabricanteSoftware.SoftwareNumeroCertificacao,
                     ProductID = ficheiroSAFT.FabricanteSoftware.SoftwareProdutoId,
@@ -108,6 +109,7 @@ namespace SAFT.Mozambique.Generators
                             },
                             Hash = (doc.ControlaAssinatura ?? false) ? 1 : 0,
                             HashControl = doc.Assinatura,
+                            EACCode = doc.CodigoEAC,
                             Period = doc.PeriodoMes,
                             InvoiceDate = DateOnly.FromDateTime(doc.DataHora),
                             InvoiceStatus = "N",

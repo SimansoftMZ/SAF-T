@@ -16,6 +16,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
                     ClienteId = Clientes.GetCliente("1")!.Id,
+                    CodigoEAC = "8310",
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo
@@ -23,7 +24,7 @@ namespace SAFT.Examples.SampleData.Invoices
                                 Artigo = Artigos.GetArtigo("1")!,
                                 Quantidade = 3,
                                 ValorDesconto = 50m,
-                                PrecoTotalComImpostos = 315
+                                PrecoTotalComImpostos = 315,
                             },
                             new DocumentoFacturacaoArtigo
                             {
@@ -43,6 +44,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("2")!.Id,
                     ClienteId = Clientes.GetCliente("1")!.Id,
+                    CodigoEAC = "8311",
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo
@@ -77,6 +79,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
                     ClienteId = Clientes.GetCliente("1")!.Id,
+                    CodigoEAC = "8311",
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo
@@ -117,6 +120,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("3")!.Id,
                     ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    CodigoEAC = "8310",
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo
@@ -137,6 +141,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
                     ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    CodigoEAC = "8311",
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo
