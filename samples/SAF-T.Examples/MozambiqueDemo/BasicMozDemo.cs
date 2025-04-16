@@ -43,6 +43,9 @@ namespace SAFT.Examples.MozambiqueDemo
             //var json = gerador.GenerateJson(auditFile);
             var xml = gerador.GenerateXml(auditFile);
 
+            // Gravar o XML num ficheiro
+            //File.WriteAllText("saft_mozambique.xml", xml);
+
             Console.WriteLine("Demo Mozambique.");
             Console.WriteLine("=== SAF-T para Moçambique ===");
             //Console.WriteLine("=== JSON ===");
@@ -52,18 +55,6 @@ namespace SAFT.Examples.MozambiqueDemo
 
             Console.WriteLine(xml);
             Console.ReadKey(false);
-
-            // 2. Gerar XML
-            //var generator = new MozambiqueSaftGenerator();
-            //string xml = generator.GenerateXml(invoice);
-
-            //// 3. Gerar hash
-            //string hash = HashUtility.GenerateSha256Hash(xml);
-
-            //Console.WriteLine("=== SAF-T para Moçambique ===");
-            //Console.WriteLine(xml);
-            //Console.WriteLine($"\nHash: {hash}");
-
         }
     }
 }

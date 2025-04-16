@@ -208,7 +208,7 @@ namespace SAFT.Mozambique.Generators
                     writer.WriteElementString(nameof(invoice.InvoiceType), invoice.InvoiceType);
                     writer.WriteStartElement(nameof(invoice.DocumentStatus)); // Abre o elemento DocumentStatus
                     writer.WriteElementString(nameof(invoice.DocumentStatus.InvoiceStatus), invoice.DocumentStatus!.InvoiceStatus);
-                    writer.WriteElementString(nameof(invoice.DocumentStatus.InvoiceStatusDate), invoice.DocumentStatus.InvoiceStatusDate?.ToString("yyyy-MM-dd"));
+                    writer.WriteElementString(nameof(invoice.DocumentStatus.InvoiceStatusDate), invoice.DocumentStatus.InvoiceStatusDate?.ToString("yyyy-MM-ddTHH:mm:ss"));
                     writer.WriteElementString(nameof(invoice.DocumentStatus.SourceID), invoice.DocumentStatus.SourceID);
                     writer.WriteElementString(nameof(invoice.DocumentStatus.SourceBilling), invoice.DocumentStatus.SourceBilling);
                     writer.WriteEndElement(); // Fecha o elemento DocumentStatus
@@ -224,7 +224,7 @@ namespace SAFT.Mozambique.Generators
                     writer.WriteElementString(nameof(invoice.SpecialRegimes.SelfBillingIndicator), invoice.SpecialRegimes!.SelfBillingIndicator.ToString());
                     writer.WriteEndElement(); // Fecha o elemento SpecialRegimes
                     writer.WriteElementString(nameof(invoice.SourceID), invoice.SourceID);
-                    writer.WriteElementString(nameof(invoice.SystemEntryDate), invoice.SystemEntryDate?.ToString("yyyy-MM-dd"));
+                    writer.WriteElementString(nameof(invoice.SystemEntryDate), invoice.SystemEntryDate?.ToString("yyyy-MM-ddTHH:mm:ss"));
                     writer.WriteElementString(nameof(invoice.TransactionID), invoice.TransactionID);
                     writer.WriteElementString(nameof(invoice.CustomerID), invoice.CustomerID);
 
@@ -255,6 +255,7 @@ namespace SAFT.Mozambique.Generators
             }
 
             //return stringWriter.ToString();
+            //return Encoding.UTF8.GetString(memoryStream.ToArray());
             return Encoding.UTF8.GetString(memoryStream.ToArray());
         }
     }
