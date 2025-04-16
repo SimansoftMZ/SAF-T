@@ -36,6 +36,33 @@ namespace SAFT.Mozambique.Generators
 
         public AuditFile ConverterParaSaft(FicheiroSAFT ficheiroSAFT)
         {
+            //  Preenchimento distinto dos clientes
+            List<Customer> clientesDistintos = [];
+
+            ficheiroSAFT.DocumentosFacturacao.Select(s => s.Cliente.Id).Distinct().Order().ToList().ForEach(clienteId =>
+            {
+                clientesDistintos.Add(
+                    ficheiroSAFT.DocumentosFacturacao
+                        .Where(w => w.Cliente.Id == clienteId)
+                        .OrderByDescending(o => o.DataHora)
+                        .Select(s => new Customer
+                        {
+                            CustomerID = s.Cliente.Id,
+                            CustomerTaxID = s.Cliente.NUIT,
+                            AccountID = s.Cliente.PlanoContaCorrente,
+                            CompanyName = s.Cliente.Nome,
+                            
+                            BillingAddress = new CustomerAddress
+                            {
+                                AddressDetail = s.Cliente.Endereco,
+                                City = s.Cliente.Cidade,
+                                PostalCode = s.Cliente.CodigoPostal,
+                                Country = s.Cliente.Pais
+                            }
+                        }).FirstOrDefault()!);
+
+            });
+
             AuditFile auditFile = new()
             {
                 Header = new Header
@@ -82,6 +109,10 @@ namespace SAFT.Mozambique.Generators
                     Fax = ficheiroSAFT.Empresa.Fax,
                     Email = ficheiroSAFT.Empresa.Email,
                     Website = ficheiroSAFT.Empresa.Website
+                },
+                MasterFiles = new MasterFiles()
+                {
+                    Customers = clientesDistintos
                 },
                 SourceDocuments = new SourceDocuments
                 {
@@ -192,7 +223,7 @@ namespace SAFT.Mozambique.Generators
                 writer.WriteEndElement(); // Fecha o elemento Header
 
                 //ESTÃO EM FALTA OS MATER FILES
-                writer.WriteStartElement(nameof(auditFile.)); // Abre o elemento MasterFiles
+                //writer.WriteStartElement(nameof(auditFile.)); // Abre o elemento MasterFiles
 
                 writer.WriteStartElement(nameof(auditFile.SourceDocuments)); // Abre o elemento SourceDocuments
                 writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices)); // Abre o elemento SalesInvoices

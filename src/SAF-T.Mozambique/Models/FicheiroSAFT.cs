@@ -166,9 +166,12 @@ namespace SAFT.Mozambique.Models
         public string? Nome { get; init; } = string.Empty;
         public string? NUIT { get; init; } = string.Empty;
         public string? Endereco { get; init; } = string.Empty;
+        public string? Cidade { get; init; } = string.Empty;
         public string? Telefone { get; init; } = string.Empty;
         public string? Email { get; init; } = string.Empty;
-        public string? Pais { get; init; } = "MZ";
+        public string Pais { get; init; } = "MZ";
+        public string? CodigoPostal { get; init; } = string.Empty;
+        public string? PlanoContaCorrente { get; init; } = string.Empty;
         public bool EConsumidorFinal { get; init; } = false;
     }
 

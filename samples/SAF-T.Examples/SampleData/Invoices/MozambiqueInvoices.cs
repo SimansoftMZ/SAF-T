@@ -15,7 +15,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataHora = DateTime.Now.AddDays(-5),
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
-                    ClienteId = Clientes.GetCliente("1")!.Id,
+                    Cliente = Clientes.GetCliente("1")!,
                     CodigoEAC = "8310",
                     Artigos =
                         [
@@ -43,7 +43,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataHora = DateTime.Now.AddDays(-5),
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("2")!.Id,
-                    ClienteId = Clientes.GetCliente("1")!.Id,
+                    Cliente = Clientes.GetCliente("1")!,
                     CodigoEAC = "8311",
                     Artigos =
                         [
@@ -78,7 +78,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataHora = DateTime.Now.AddDays(-5),
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
-                    ClienteId = Clientes.GetCliente("1")!.Id,
+                    Cliente = Clientes.GetCliente("1")!,
                     CodigoEAC = "8311",
                     Artigos =
                         [
@@ -99,7 +99,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataHora = DateTime.Now.AddDays(-5),
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("3")!.Id,
-                    ClienteId = Clientes.GetCliente("2")!.Id,
+                    Cliente = Clientes.GetCliente("2")!,
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo
@@ -119,7 +119,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataHora = DateTime.Now.AddDays(-5),
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("3")!.Id,
-                    ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    Cliente = Clientes.GetCliente("Consumidor Final")!,
                     CodigoEAC = "8310",
                     Artigos =
                         [
@@ -140,7 +140,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataHora = DateTime.Now.AddDays(-5),
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
-                    ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    Cliente = Clientes.GetCliente("Consumidor Final")!,
                     CodigoEAC = "8311",
                     Artigos =
                         [
@@ -165,7 +165,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataHora = DateTime.Now.AddDays(-5),
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
-                    ClienteId = Clientes.GetCliente("1")!.Id,
+                    Cliente = Clientes.GetCliente("1")!,
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo
@@ -185,7 +185,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     //Não possui dataHora
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
-                    ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    Cliente = Clientes.GetCliente("Consumidor Final")!,
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo
@@ -205,7 +205,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     //Não possui dataHora
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
-                    ClienteId = Clientes.GetCliente("Consumidor Final")!.Id,
+                    Cliente = Clientes.GetCliente("Consumidor Final")!,
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo
@@ -225,7 +225,7 @@ namespace SAFT.Examples.SampleData.Invoices
                     DataHora = DateTime.Now.AddDays(-5),
                     DataEmissao = DateTime.Now.AddDays(-5),
                     OperadorEmissao = Operadores.GetOperador("1")!.Id,
-                    ClienteId = Clientes.GetCliente("XX")?.Id ?? string.Empty, //Cliente inválido
+                    Cliente = Clientes.GetCliente("XX") ?? new Cliente(), //Cliente inválido
                     Artigos =
                         [
                             new DocumentoFacturacaoArtigo

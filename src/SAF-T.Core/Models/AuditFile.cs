@@ -24,6 +24,7 @@ namespace SAFT.Core.Models
     public record AuditFile
     {
         public Header? Header { get; init; }
+        public MasterFiles? MasterFiles { get; init; }
         public SourceDocuments? SourceDocuments { get; init; }
     }
 
