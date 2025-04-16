@@ -152,6 +152,7 @@ namespace SAFT.Mozambique.Models
     {
         public string UniqueId { get; init; } = string.Empty;
         public string? ArtigoId { get; init; }
+        public string? FamiliaId { get; init; }
         public string Descricao { get; init; } = string.Empty;
         public string? UnidadeContagem { get; init; }
         public decimal? PrecoUnitario { get; init; }

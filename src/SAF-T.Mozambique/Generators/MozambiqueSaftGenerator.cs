@@ -35,10 +35,8 @@ namespace SAFT.Mozambique.Generators
         }
 
         public AuditFile ConverterParaSaft(FicheiroSAFT ficheiroSAFT)
-        {
-            //  Preenchimento distinto dos clientes
+        {            
             List<Customer> clientesDistintos = [];
-
             ficheiroSAFT.DocumentosFacturacao.Select(s => s.Cliente.Id).Distinct().Order().ToList().ForEach(clienteId =>
             {
                 clientesDistintos.Add(
@@ -61,6 +59,23 @@ namespace SAFT.Mozambique.Generators
                             }
                         }).FirstOrDefault()!);
 
+            });
+
+            List<Product> produtosDistintos = [];
+            ficheiroSAFT.DocumentosFacturacao.SelectMany(s => s.Artigos).Select(s => s.Artigo.ArtigoId).Distinct().Order().ToList().ForEach(produtoId =>
+            {
+                produtosDistintos.Add(
+                    ficheiroSAFT.DocumentosFacturacao
+                        .OrderByDescending(o => o.DataHora)
+                        .SelectMany(s => s.Artigos)                        
+                        .Where(w => w.Artigo.ArtigoId == produtoId)                        
+                        .Select(s => new Product
+                        {
+                            ProductCode = s.Artigo.ArtigoId,
+                            ProductDescription = s.Artigo.Descricao,
+                            ProductNumberCode = s.Artigo.ArtigoId,
+                            ProductGroup = s.Artigo.FamiliaId
+                        }).FirstOrDefault()!);
             });
 
             AuditFile auditFile = new()
@@ -112,7 +127,8 @@ namespace SAFT.Mozambique.Generators
                 },
                 MasterFiles = new MasterFiles()
                 {
-                    Customers = clientesDistintos
+                    Customers = clientesDistintos,
+                    Products = produtosDistintos
                 },
                 SourceDocuments = new SourceDocuments
                 {
