@@ -19,7 +19,7 @@ namespace SAFT.Mozambique.Generators
         {
             try
             {
-                var xml = RetornaXml(auditFile);
+                string xml = RetornaXml(auditFile);
 
                 return xml;
             }
