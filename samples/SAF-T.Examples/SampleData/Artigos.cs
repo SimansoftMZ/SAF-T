@@ -58,18 +58,7 @@ namespace SAFT.Examples.SampleData
                 Descricao = "Artigo 2",
                 PrecoUnitario = 500.0m,
                 IVAIncluso = false,
-                Servico = false,
-                Impostos =
-                [
-                    new Imposto
-                    {
-                        Tabela = 1,
-                        CodigoTaxa = CodigoTaxa.Isenta,
-                        TipoTaxa = TipoTaxa.IVA,
-                        Descricao = "IVA",
-                        Percentagem = 0.0m
-                    }
-                ]
+                Servico = false
             },
             new Artigo {
                 UniqueId = "X5",
@@ -77,18 +66,7 @@ namespace SAFT.Examples.SampleData
                 Descricao = "Artigo 3",
                 PrecoUnitario = 500.0m,
                 IVAIncluso = false,
-                Servico = false,
-                Impostos =
-                [
-                    new Imposto
-                    {
-                        Tabela = 1,
-                        CodigoTaxa = CodigoTaxa.Isenta,
-                        TipoTaxa = TipoTaxa.IVA,
-                        Descricao = "IVA",
-                        Percentagem = 0.0m
-                    }
-                ]
+                Servico = false
             }
         ];
 
