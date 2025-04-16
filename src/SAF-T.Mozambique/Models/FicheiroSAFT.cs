@@ -111,7 +111,12 @@ namespace SAFT.Mozambique.Models
         public string OperadorEmissao { get; init; } = string.Empty;
         public string? CodigoEAC { get; init; }
         public string? DocumentoContabilisticoId { get; init; } = string.Empty;
-        public string ClienteId { get; init; } = "Consumidor Final";
+        //public string ClienteId { get; init; } = "Consumidor Final";
+        public Cliente Cliente { get; init; } = new()
+        {
+            Nome = "Consumidor Final",
+            EConsumidorFinal = true
+        };
         public List<DocumentoFacturacaoArtigo> Artigos { get; init; } = [];
 
         public decimal TotalBase { get => Artigos.Sum(s => s.PrecoTotalSemImpostos); }
@@ -164,7 +169,7 @@ namespace SAFT.Mozambique.Models
         public string? Telefone { get; init; } = string.Empty;
         public string? Email { get; init; } = string.Empty;
         public string? Pais { get; init; } = "MZ";
-        public bool IsConsumidorFinal { get => Id == "Consumidor Final"; }
+        public bool EConsumidorFinal { get; init; } = false;
     }
 
     public record class Operador

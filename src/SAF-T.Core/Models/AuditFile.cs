@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
+using static SAFT.Core.Models.Products;
 
 namespace SAFT.Core.Models
 {
@@ -52,6 +53,54 @@ namespace SAFT.Core.Models
         public string? Fax { get; init; }
         public string? Email { get; init; }
         public string? Website { get; init; }
+    }
+
+    // MasterFiles
+    public record MasterFiles
+    {
+        public List<Customer> Customers { get; init; } = [];
+        public List<Product> Products { get; init; } = [];
+        public List<TaxTableEntry> TaxTable { get; init; } = [];
+    }
+
+    public record Customer
+    {
+        public string? CustomerID { get; init; }
+        public string? AccountID { get; init; }
+        public string? CustomerTaxID { get; init; }
+        public string? CompanyName { get; init; }
+        public CustomerAddress? BillingAddress { get; init; }
+        public CustomerAddress? ShipToAddress { get; init; }
+        public string? Telephone { get; init; }
+        public string? Fax { get; init; }
+        public string? Email { get; init; }
+        public string? SelfBillingIndicator { get; init; }
+    }
+
+    public record class Product
+    {
+        public string? ProductType { get; init; }
+        public string? ProductCode { get; init; }
+        public string? ProductGroup { get; init; }
+        public string? ProductDescription { get; init; }
+        public string? ProductNumberCode { get; init; }
+    }
+
+    public record class CustomerAddress
+    {
+        public string? AddressDetail { get; init; }
+        public string? City { get; init; }
+        public string? PostalCode { get; init; }
+        public string Country { get; init; } = "MZ";
+    }
+
+    public record class TaxTableEntry
+    {
+        public string TaxType { get; init; } = string.Empty;
+        public string TaxCountryRegion { get; init; } = "MZ";
+        public string? TaxCode { get; init; } = string.Empty;
+        public string? Description { get; init; } = string.Empty;
+        public string? TaxPercentage { get; init; }
     }
 
     // Endereço da empresa

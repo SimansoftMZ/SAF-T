@@ -118,7 +118,7 @@ namespace SAFT.Mozambique.Generators
 
                             SystemEntryDate = doc.DataEmissao,
                             TransactionID = doc.DocumentoContabilisticoId,
-                            CustomerID = doc.ClienteId,
+                            CustomerID =  doc.Cliente.EConsumidorFinal ? "Consumidor Final" : doc.Cliente.Id,
 
                             Lines = [.. doc.Artigos.Select((artigo, linhaArtigo) => new InvoiceLine
                             {
@@ -192,7 +192,7 @@ namespace SAFT.Mozambique.Generators
                 writer.WriteEndElement(); // Fecha o elemento Header
 
                 //ESTÃO EM FALTA OS MATER FILES
-
+                writer.WriteStartElement(nameof(auditFile.)); // Abre o elemento MasterFiles
 
                 writer.WriteStartElement(nameof(auditFile.SourceDocuments)); // Abre o elemento SourceDocuments
                 writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices)); // Abre o elemento SalesInvoices
