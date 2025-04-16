@@ -25,7 +25,9 @@ namespace SAFT.Examples.SampleData
                 [
                     new Imposto
                     {
-                        Codigo = "6",
+                        Tabela = 6,
+                        CodigoTaxa = CodigoTaxa.TaxaReduzida,
+                        TipoTaxa = TipoTaxa.IVA,
                         Descricao = "IVA",
                         Percentagem = 5.0m
                     }
@@ -42,7 +44,9 @@ namespace SAFT.Examples.SampleData
                 [
                     new Imposto
                     {
-                        Codigo = "6",
+                        Tabela = 6,
+                        CodigoTaxa = CodigoTaxa.TaxaReduzida,
+                        TipoTaxa = TipoTaxa.IVA,
                         Descricao = "IVA",
                         Percentagem = 5.0m
                     }
@@ -59,7 +63,9 @@ namespace SAFT.Examples.SampleData
                 [
                     new Imposto
                     {
-                        Codigo = "1",
+                        Tabela = 1,
+                        CodigoTaxa = CodigoTaxa.Isenta,
+                        TipoTaxa = TipoTaxa.IVA,
                         Descricao = "IVA",
                         Percentagem = 0.0m
                     }
@@ -76,7 +82,9 @@ namespace SAFT.Examples.SampleData
                 [
                     new Imposto
                     {
-                        Codigo = "1",
+                        Tabela = 1,
+                        CodigoTaxa = CodigoTaxa.Isenta,
+                        TipoTaxa = TipoTaxa.IVA,
                         Descricao = "IVA",
                         Percentagem = 0.0m
                     }

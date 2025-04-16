@@ -100,7 +100,8 @@ namespace SAFT.Core.Models
         public string TaxCountryRegion { get; init; } = "MZ";
         public string? TaxCode { get; init; } = string.Empty;
         public string? Description { get; init; } = string.Empty;
-        public string? TaxPercentage { get; init; }
+        public decimal? TaxPercentage { get; init; }
+        public decimal? TaxAmount { get; init; }
     }
 
     // Endereço da empresa

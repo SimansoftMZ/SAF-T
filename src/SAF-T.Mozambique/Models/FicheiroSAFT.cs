@@ -142,10 +142,56 @@ namespace SAFT.Mozambique.Models
 
     public record class Imposto
     {
-        public string? Codigo { get; init; }
+        public TipoTaxa TipoTaxa { get; init; } = TipoTaxa.IVA;
+
+        public string Pais { get; init; } = "MZ";
+
+        public string Tipo
+        {
+            get => TipoTaxa switch
+            {
+                TipoTaxa.IVA => "IVA",
+                TipoTaxa.ImpostoSelo => "IS",
+                TipoTaxa.NaoSujeitoIVAouImpostoSelo => "NS",
+                _ => string.Empty,
+            };
+        }
+
+        public int Tabela { get; init; } = 2;
+        
+        public CodigoTaxa CodigoTaxa { get; init; } = CodigoTaxa.TaxaNormal;
+
+        public string Codigo {
+            get => CodigoTaxa switch
+            {
+                CodigoTaxa.TaxaReduzida => "RED",
+                CodigoTaxa.TaxaNormal => "NOR",
+                CodigoTaxa.Isenta => "ISE",
+                CodigoTaxa.Outros => "OUT",
+                CodigoTaxa.NaoAplicavel => "NA",
+                _ => string.Empty,
+            };
+        }
+
         public string? Descricao { get; init; }
         public decimal Percentagem { get; init; }
         public decimal Valor { get; init; }
+    }
+
+    public enum TipoTaxa
+    {
+        IVA,
+        ImpostoSelo,
+        NaoSujeitoIVAouImpostoSelo,
+    }
+
+    public enum CodigoTaxa
+    {
+        TaxaReduzida,
+        TaxaNormal,
+        Isenta,
+        Outros,
+        NaoAplicavel
     }
 
     public record class Artigo
@@ -158,7 +204,17 @@ namespace SAFT.Mozambique.Models
         public decimal? PrecoUnitario { get; init; }
         public bool? IVAIncluso { get; init; }
         public bool? Servico { get; init; }
-        public List<Imposto> Impostos { get; init; } = [];
+        public List<Imposto> Impostos { get; init; } =
+            [
+                new Imposto
+                {
+                    Tabela = 1,
+                    CodigoTaxa = CodigoTaxa.Isenta,
+                    TipoTaxa = TipoTaxa.IVA,
+                    Descricao = "IVA",
+                    Percentagem = 0.0m
+                }
+            ];
     }
 
     public record class Cliente

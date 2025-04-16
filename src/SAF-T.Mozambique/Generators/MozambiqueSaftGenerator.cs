@@ -35,7 +35,8 @@ namespace SAFT.Mozambique.Generators
         }
 
         public AuditFile ConverterParaSaft(FicheiroSAFT ficheiroSAFT)
-        {            
+        {
+            // Preenchimento distinto dos clientes
             List<Customer> clientesDistintos = [];
             ficheiroSAFT.DocumentosFacturacao.Select(s => s.Cliente.Id).Distinct().Order().ToList().ForEach(clienteId =>
             {
@@ -61,6 +62,7 @@ namespace SAFT.Mozambique.Generators
 
             });
 
+            // Preenchimento distinto dos produtos
             List<Product> produtosDistintos = [];
             ficheiroSAFT.DocumentosFacturacao.SelectMany(s => s.Artigos).Select(s => s.Artigo.ArtigoId).Distinct().Order().ToList().ForEach(produtoId =>
             {
@@ -75,6 +77,27 @@ namespace SAFT.Mozambique.Generators
                             ProductDescription = s.Artigo.Descricao,
                             ProductNumberCode = s.Artigo.ArtigoId,
                             ProductGroup = s.Artigo.FamiliaId
+                        }).FirstOrDefault()!);
+            });
+
+            // Preenchimento distinto dos impostos
+            List<TaxTableEntry> impostosDistintos = [];
+            ficheiroSAFT.DocumentosFacturacao.SelectMany(s => s.Artigos).SelectMany(s => s.Artigo.Impostos).Select(s => s.Codigo).Distinct().Order().ToList().ForEach(impostoId =>
+            {
+                impostosDistintos.Add(
+                    ficheiroSAFT.DocumentosFacturacao
+                        .OrderByDescending(o => o.DataHora)
+                        .SelectMany(s => s.Artigos)
+                        .SelectMany(s => s.Artigo.Impostos)
+                        .Where(w => w.Codigo == impostoId)
+                        .Select(s => new TaxTableEntry
+                        {
+                            TaxType = s.Tipo,
+                            TaxCountryRegion = s.Pais,
+                            TaxCode = s.Codigo,
+                            Description = s.Descricao,
+                            TaxPercentage = s.Percentagem,
+                            TaxAmount = s.Valor
                         }).FirstOrDefault()!);
             });
 
@@ -128,7 +151,8 @@ namespace SAFT.Mozambique.Generators
                 MasterFiles = new MasterFiles()
                 {
                     Customers = clientesDistintos,
-                    Products = produtosDistintos
+                    Products = produtosDistintos,
+                    TaxTable = impostosDistintos
                 },
                 SourceDocuments = new SourceDocuments
                 {
