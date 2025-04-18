@@ -310,11 +310,11 @@ namespace SAFT.Mozambique.Generators
                     writer.WriteEndElement(); // Fecha o elemento BillingAddress
 
                     writer.WriteStartElement(nameof(customer.ShipToAddress)); // Abre o elemento ShipToAddress
-                    writer.WriteElementString(nameof(customer.ShipToAddress.AddressDetail), customer.ShipToAddress!.AddressDetail);
-                    writer.WriteElementString(nameof(customer.ShipToAddress.City), customer.ShipToAddress.City);
-                    writer.WriteElementString(nameof(customer.ShipToAddress.PostalCode), customer.ShipToAddress.PostalCode);
+                    writer.WriteElementString(nameof(customer.ShipToAddress.AddressDetail), customer.ShipToAddress?.AddressDetail);
+                    writer.WriteElementString(nameof(customer.ShipToAddress.City), customer.ShipToAddress?.City);
+                    writer.WriteElementString(nameof(customer.ShipToAddress.PostalCode), customer.ShipToAddress?.PostalCode);
                     // Faltando Province
-                    writer.WriteElementString(nameof(customer.ShipToAddress.Country), customer.ShipToAddress.Country);
+                    writer.WriteElementString(nameof(customer.ShipToAddress.Country), customer.ShipToAddress?.Country);
                     writer.WriteEndElement(); // Fecha o elemento ShipToAddress
 
                     // Faltando Telephone
