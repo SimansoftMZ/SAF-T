@@ -216,7 +216,7 @@ namespace SAFT.Mozambique.Generators
                                 Description = artigo.ArtigoDescricao,
                                 Quantity = artigo.Quantidade,
                                 UnitOfMeasure = artigo.Artigo.UnidadeContagem,
-                                UnitPrice = artigo.PrecoTotalSemImpostos,
+                                UnitPrice = artigo.PrecoUnitarioSemImpostos,
                                 TaxBase = artigo.PrecoTotalSemImpostos,
                                 Tax = [.. artigo.Artigo.Impostos.Select(imp => new TaxTableLine
                                 {
@@ -224,7 +224,7 @@ namespace SAFT.Mozambique.Generators
                                     TaxCountryRegion = imp.Pais,
                                     TaxCode = imp.Codigo,
                                     TaxPercentage = imp.Percentagem,
-                                    TaxAmount = imp.Valor,
+                                    TaxAmount = imp.Valor + (artigo.PrecoTotalComImpostos / (1m + imp.Percentagem * 0.01m) * imp.Percentagem * 0.01m),
                                     TaxExemptionReason = imp.Motivo,
                                     TaxExemptionCode = imp.MotivoCodigo
                                 })],
@@ -425,7 +425,7 @@ namespace SAFT.Mozambique.Generators
                         writer.WriteElementString(nameof(TaxTableLine.TaxType), artigo.Tax.FirstOrDefault()?.TaxType);
                         writer.WriteElementString(nameof(TaxTableLine.TaxCountryRegion), artigo.Tax.FirstOrDefault()?.TaxCountryRegion);
                         writer.WriteElementString(nameof(TaxTableLine.TaxCode), artigo.Tax.FirstOrDefault()?.TaxCode);
-                        writer.WriteElementString(nameof(TaxTableLine.TaxPercentage), artigo.Tax.FirstOrDefault()?.ToString());
+                        writer.WriteElementString(nameof(TaxTableLine.TaxPercentage), artigo.Tax.FirstOrDefault()?.TaxPercentage.ToString());
                         writer.WriteElementString(nameof(TaxTableLine.TaxAmount), artigo.Tax.FirstOrDefault()?.TaxAmount.ToString());
                         writer.WriteElementString(nameof(TaxTableLine.TaxExemptionReason), artigo.Tax.FirstOrDefault()?.TaxExemptionReason);
                         writer.WriteElementString(nameof(TaxTableLine.TaxExemptionCode), artigo.Tax.FirstOrDefault()?.TaxExemptionCode);
