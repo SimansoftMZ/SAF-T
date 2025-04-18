@@ -107,13 +107,6 @@ namespace SAFT.Core.Models
         public decimal TaxAmount { get; init; } = 0.0m;
     }
 
-    public record class TaxTableLine : TaxTableEntry
-    {
-        public string? TaxExemptionReason { get; init; }
-        public string? TaxExemptionCode { get; init; }
-        public decimal? SettlementAmount { get; init; }
-    }
-
     // Endereço da empresa
     public record CompanyAddress
     {
@@ -199,7 +192,10 @@ namespace SAFT.Core.Models
         public decimal? CreditAmount { get; init; }
         public DateTime? TaxPointDate { get; init; }
         public string? Description { get; init; }
-        public List<TaxTableLine> Tax { get; init; } = [];
+        public List<TaxTableEntry> Tax { get; init; } = [];
+        public string? TaxExemptionReason { get; init; }
+        public string? TaxExemptionCode { get; init; }
+        public decimal? SettlementAmount { get; init; }
     }
 
     // Totais do documento de venda

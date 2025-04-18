@@ -174,8 +174,6 @@ namespace SAFT.Mozambique.Models
         }
 
         public string? Descricao { get; init; }
-        public string? MotivoCodigo { get; init; }
-        public string? Motivo { get; init; }        
         public decimal Percentagem { get; init; }
         public decimal Valor { get; init; }
     }
@@ -217,6 +215,9 @@ namespace SAFT.Mozambique.Models
                     Percentagem = 0.0m
                 }
             ];
+
+        public string? MotivoCodigo { get; init; }
+        public string? Motivo { get; init; }
     }
 
     public record class Cliente

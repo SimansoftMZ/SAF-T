@@ -218,16 +218,19 @@ namespace SAFT.Mozambique.Generators
                                 UnitOfMeasure = artigo.Artigo.UnidadeContagem,
                                 UnitPrice = artigo.PrecoUnitarioSemImpostos,
                                 TaxBase = artigo.PrecoTotalSemImpostos,
-                                Tax = [.. artigo.Artigo.Impostos.Select(imp => new TaxTableLine
+                                Tax = [.. artigo.Artigo.Impostos.Select(imp => new TaxTableEntry
                                 {
                                     TaxType = imp.Tipo,
                                     TaxCountryRegion = imp.Pais,
                                     TaxCode = imp.Codigo,
                                     TaxPercentage = imp.Percentagem,
                                     TaxAmount = imp.Valor + (artigo.PrecoTotalComImpostos / (1m + imp.Percentagem * 0.01m) * imp.Percentagem * 0.01m),
-                                    TaxExemptionReason = imp.Motivo,
-                                    TaxExemptionCode = imp.MotivoCodigo
+                                    
                                 })],
+
+                                TaxExemptionReason = artigo.Artigo.Motivo,
+                                TaxExemptionCode = artigo.Artigo.MotivoCodigo,
+
                                 CreditAmount = artigo.PrecoTotalComImpostos > 0 ? artigo.PrecoTotalComImpostos : 0m,
                                 DebitAmount = artigo.PrecoTotalComImpostos < 0 ? -artigo.PrecoTotalComImpostos : 0m,
                                 TaxPointDate = doc.DataHora
@@ -422,15 +425,16 @@ namespace SAFT.Mozambique.Generators
                         writer.WriteElementString(nameof(artigo.DebitAmount), artigo.DebitAmount.ToString());
                         writer.WriteElementString(nameof(artigo.CreditAmount), artigo.CreditAmount.ToString());
                         writer.WriteStartElement(nameof(artigo.Tax));
-                        writer.WriteElementString(nameof(TaxTableLine.TaxType), artigo.Tax.FirstOrDefault()?.TaxType);
-                        writer.WriteElementString(nameof(TaxTableLine.TaxCountryRegion), artigo.Tax.FirstOrDefault()?.TaxCountryRegion);
-                        writer.WriteElementString(nameof(TaxTableLine.TaxCode), artigo.Tax.FirstOrDefault()?.TaxCode);
-                        writer.WriteElementString(nameof(TaxTableLine.TaxPercentage), artigo.Tax.FirstOrDefault()?.TaxPercentage.ToString());
-                        writer.WriteElementString(nameof(TaxTableLine.TaxAmount), artigo.Tax.FirstOrDefault()?.TaxAmount.ToString());
-                        writer.WriteElementString(nameof(TaxTableLine.TaxExemptionReason), artigo.Tax.FirstOrDefault()?.TaxExemptionReason);
-                        writer.WriteElementString(nameof(TaxTableLine.TaxExemptionCode), artigo.Tax.FirstOrDefault()?.TaxExemptionCode);
-                        writer.WriteElementString(nameof(TaxTableLine.SettlementAmount), artigo.Tax.FirstOrDefault()?.SettlementAmount.ToString());
+                        writer.WriteElementString(nameof(TaxTableEntry.TaxType), artigo.Tax.FirstOrDefault()?.TaxType);
+                        writer.WriteElementString(nameof(TaxTableEntry.TaxCountryRegion), artigo.Tax.FirstOrDefault()?.TaxCountryRegion);
+                        writer.WriteElementString(nameof(TaxTableEntry.TaxCode), artigo.Tax.FirstOrDefault()?.TaxCode);
+                        writer.WriteElementString(nameof(TaxTableEntry.TaxPercentage), artigo.Tax.FirstOrDefault()?.TaxPercentage.ToString());
+                        writer.WriteElementString(nameof(TaxTableEntry.TaxAmount), artigo.Tax.FirstOrDefault()?.TaxAmount.ToString());
                         writer.WriteEndElement(); // Fecha o elemento Tax
+                        writer.WriteElementString(nameof(artigo.TaxExemptionReason), artigo.TaxExemptionReason);
+                        writer.WriteElementString(nameof(artigo.TaxExemptionCode), artigo.TaxExemptionCode);
+                        writer.WriteElementString(nameof(artigo.SettlementAmount), artigo.SettlementAmount.ToString());
+                        
 
                         
                         writer.WriteEndElement(); // Fecha o elemento artigo
