@@ -218,7 +218,7 @@ namespace SAFT.Mozambique.Generators
                                 UnitOfMeasure = artigo.Artigo.UnidadeContagem,
                                 UnitPrice = artigo.PrecoTotalSemImpostos,
                                 TaxBase = artigo.PrecoTotalSemImpostos,
-                                Tax = artigo.Artigo.Impostos.Select(imp => new TaxTableLine
+                                Tax = [.. artigo.Artigo.Impostos.Select(imp => new TaxTableLine
                                 {
                                     TaxType = imp.Tipo,
                                     TaxCountryRegion = imp.Pais,
@@ -227,7 +227,7 @@ namespace SAFT.Mozambique.Generators
                                     TaxAmount = imp.Valor,
                                     TaxExemptionReason = imp.Motivo,
                                     TaxExemptionCode = imp.MotivoCodigo
-                                }).ToList(),
+                                })],
                                 CreditAmount = artigo.PrecoTotalComImpostos > 0 ? artigo.PrecoTotalComImpostos : 0m,
                                 DebitAmount = artigo.PrecoTotalComImpostos < 0 ? -artigo.PrecoTotalComImpostos : 0m,
                                 TaxPointDate = doc.DataHora
