@@ -174,6 +174,8 @@ namespace SAFT.Mozambique.Models
         }
 
         public string? Descricao { get; init; }
+        public string? MotivoCodigo { get; init; }
+        public string? Motivo { get; init; }        
         public decimal Percentagem { get; init; }
         public decimal Valor { get; init; }
     }

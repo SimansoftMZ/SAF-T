@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Runtime.CompilerServices;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
@@ -94,14 +95,26 @@ namespace SAFT.Core.Models
         public string Country { get; init; } = "MZ";
     }
 
+    public record class ShipFrom
+    {
+        public CustomerAddress? Address { get; init; } = new();
+    }
+
     public record class TaxTableEntry
     {
         public string TaxType { get; init; } = string.Empty;
         public string TaxCountryRegion { get; init; } = "MZ";
         public string? TaxCode { get; init; } = string.Empty;
         public string? Description { get; init; } = string.Empty;
-        public decimal? TaxPercentage { get; init; }
-        public decimal? TaxAmount { get; init; }
+        public decimal TaxPercentage { get; init; } = 0.0m;
+        public decimal TaxAmount { get; init; } = 0.0m;
+    }
+
+    public record class TaxTableLine : TaxTableEntry
+    {
+        public string? TaxExemptionReason { get; init; }
+        public string? TaxExemptionCode { get; init; }
+        public decimal? SettlementAmount { get; init; }
     }
 
     // Endereço da empresa
@@ -125,10 +138,12 @@ namespace SAFT.Core.Models
     // Agrupamento dos documentos de venda (faturas)
     public record SalesInvoices
     {
-        public int? NumberOfEntries { get; init; }
+        private readonly string[] _documentosValidos = ["A", "F"];
+
+        public int NumberOfEntries { get => Invoices.Where(w => _documentosValidos.Contains(w.InvoiceStatus)).Count(); }
         public decimal? TotalDebit { get; init; }
         public decimal? TotalCredit { get; init; }
-        public List<Invoice>? Invoices { get; init; } = [];
+        public List<Invoice> Invoices { get; init; } = [];
     }
 
     // Representa um documento de venda (fatura)
@@ -150,6 +165,8 @@ namespace SAFT.Core.Models
         public DateTime? SystemEntryDate { get; init; }
         public string? TransactionID { get; init; }
         public string? CustomerID { get; init; }
+        public CustomerAddress? Address { get; init; } = new();
+        public ShipFrom? ShipFrom { get; init; } = new();
         public List<InvoiceLine>? Lines { get; init; } = [];
         public DocumentTotals? DocumentTotals { get; init; }
     }
@@ -181,11 +198,11 @@ namespace SAFT.Core.Models
         public string? UnitOfMeasure { get; init; }
         public decimal? UnitPrice { get; init; }
         public decimal? TaxBase { get; init; }
-        public decimal? TaxAmount { get; init; }
         public decimal? DebitAmount { get; init; }
         public decimal? CreditAmount { get; init; }
         public DateTime? TaxPointDate { get; init; }
         public string? Description { get; init; }
+        public List<TaxTableLine> Tax { get; init; } = new();
     }
 
     // Totais do documento de venda

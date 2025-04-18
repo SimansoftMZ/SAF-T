@@ -71,7 +71,7 @@ namespace SAFT.Mozambique.Generators
                         .OrderByDescending(o => o.DataHora)
                         .SelectMany(s => s.Artigos)                        
                         .Where(w => w.Artigo.ArtigoId == produtoId)                        
-                        .Select(s => new Product
+                        .Select((s) => new Product
                         {
                             ProductCode = s.Artigo.ArtigoId,
                             ProductDescription = s.Artigo.Descricao,
@@ -158,7 +158,6 @@ namespace SAFT.Mozambique.Generators
                 {
                     SalesInvoices = new SalesInvoices()
                     {
-                        NumberOfEntries = ficheiroSAFT.DocumentosFacturacao.Count,
                         TotalCredit = ficheiroSAFT.TotalCredito,
                         TotalDebit = ficheiroSAFT.TotalDebito,
                         Invoices = [.. ficheiroSAFT.DocumentosFacturacao.Select(doc => new Invoice
@@ -191,9 +190,27 @@ namespace SAFT.Mozambique.Generators
                             TransactionID = doc.DocumentoContabilisticoId,
                             CustomerID =  doc.Cliente.EConsumidorFinal ? "Consumidor Final" : doc.Cliente.Id,
 
+                            Address = new CustomerAddress
+                            {
+                                AddressDetail = doc.Cliente.Endereco,
+                                City = doc.Cliente.Cidade,
+                                PostalCode = doc.Cliente.CodigoPostal,
+                                Country = doc.Cliente.Pais
+                            },
+                            ShipFrom = new ShipFrom
+                            {
+                                Address = new CustomerAddress
+                                {
+                                    AddressDetail = ficheiroSAFT.Empresa.Endereco1,
+                                    City = ficheiroSAFT.Empresa.Cidade,
+                                    PostalCode = ficheiroSAFT.Empresa.CodigoPostal,
+                                    Country = ficheiroSAFT.Empresa.Pais
+                                }
+                            },
+
                             Lines = [.. doc.Artigos.Select((artigo, linhaArtigo) => new InvoiceLine
                             {
-                                LineNumber = linhaArtigo + 1,
+                                LineNumber = linhaArtigo++,
                                 ProductCode = artigo.Artigo.ArtigoId,
                                 ProductDescription = artigo.Artigo.Descricao,
                                 Description = artigo.ArtigoDescricao,
@@ -201,7 +218,16 @@ namespace SAFT.Mozambique.Generators
                                 UnitOfMeasure = artigo.Artigo.UnidadeContagem,
                                 UnitPrice = artigo.PrecoTotalSemImpostos,
                                 TaxBase = artigo.PrecoTotalSemImpostos,
-                                TaxAmount = artigo.ValorImpostos,
+                                Tax = artigo.Artigo.Impostos.Select(imp => new TaxTableLine
+                                {
+                                    TaxType = imp.Tipo,
+                                    TaxCountryRegion = imp.Pais,
+                                    TaxCode = imp.Codigo,
+                                    TaxPercentage = imp.Percentagem,
+                                    TaxAmount = imp.Valor,
+                                    TaxExemptionReason = imp.Motivo,
+                                    TaxExemptionCode = imp.MotivoCodigo
+                                }).ToList(),
                                 CreditAmount = artigo.PrecoTotalComImpostos > 0 ? artigo.PrecoTotalComImpostos : 0m,
                                 DebitAmount = artigo.PrecoTotalComImpostos < 0 ? -artigo.PrecoTotalComImpostos : 0m,
                                 TaxPointDate = doc.DataHora
@@ -238,11 +264,11 @@ namespace SAFT.Mozambique.Generators
                 writer.WriteElementString(nameof(auditFile.Header.CompanyName), auditFile.Header.CompanyName);
                 writer.WriteElementString(nameof(auditFile.Header.BusinessName), auditFile.Header.BusinessName);
                 writer.WriteStartElement(nameof(auditFile.Header.CompanyAddress)); // Abre o elemento CompanyAddress
-                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.StreetName), auditFile.Header.CompanyAddress!.StreetName);
-                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.AddressDetail), auditFile.Header.CompanyAddress.AddressDetail);
+                //writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.StreetName), auditFile.Header.CompanyAddress!.StreetName);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.AddressDetail), auditFile.Header.CompanyAddress!.AddressDetail);
                 writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.City), auditFile.Header.CompanyAddress.City);
-                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Province), auditFile.Header.CompanyAddress.Province);
                 writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.PostalCode), auditFile.Header.CompanyAddress.PostalCode);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Province), auditFile.Header.CompanyAddress.Province);                
                 writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Country), auditFile.Header.CompanyAddress.Country);
                 writer.WriteEndElement(); // Fecha o elemento CompanyAddress
                 writer.WriteElementString(nameof(auditFile.Header.FiscalYear), auditFile.Header.FiscalYear.ToString());
@@ -260,23 +286,88 @@ namespace SAFT.Mozambique.Generators
                 writer.WriteElementString(nameof(auditFile.Header.Fax), auditFile.Header.Fax);
                 writer.WriteElementString(nameof(auditFile.Header.Email), auditFile.Header.Email);
                 writer.WriteElementString(nameof(auditFile.Header.Website), auditFile.Header.Website);
+
                 writer.WriteEndElement(); // Fecha o elemento Header
 
+
+                writer.WriteStartElement(nameof(auditFile.MasterFiles)); // Abre o elemento MasterFiles
+
+                //writer.WriteStartElement(nameof(auditFile.MasterFiles.Customers)); // Abre o elemento Customers
+                auditFile.MasterFiles!.Customers!.ForEach(customer =>
+                {
+                    writer.WriteStartElement(nameof(Customer)); // Abre o elemento Customer
+                    writer.WriteElementString(nameof(customer.CustomerID), customer.CustomerID);
+                    writer.WriteElementString(nameof(customer.AccountID), customer.AccountID);
+                    writer.WriteElementString(nameof(customer.CustomerTaxID), customer.CustomerTaxID);                    
+                    writer.WriteElementString(nameof(customer.CompanyName), customer.CompanyName);
+                    // Faltando Contacto
+                    writer.WriteStartElement(nameof(customer.BillingAddress)); // Abre o elemento BillingAddress
+                    writer.WriteElementString(nameof(customer.BillingAddress.AddressDetail), customer.BillingAddress!.AddressDetail);
+                    writer.WriteElementString(nameof(customer.BillingAddress.City), customer.BillingAddress.City);
+                    writer.WriteElementString(nameof(customer.BillingAddress.PostalCode), customer.BillingAddress.PostalCode);
+                    // Faltando Province
+                    writer.WriteElementString(nameof(customer.BillingAddress.Country), customer.BillingAddress.Country);
+                    writer.WriteEndElement(); // Fecha o elemento BillingAddress
+
+                    writer.WriteStartElement(nameof(customer.ShipToAddress)); // Abre o elemento ShipToAddress
+                    writer.WriteElementString(nameof(customer.ShipToAddress.AddressDetail), customer.ShipToAddress!.AddressDetail);
+                    writer.WriteElementString(nameof(customer.ShipToAddress.City), customer.ShipToAddress.City);
+                    writer.WriteElementString(nameof(customer.ShipToAddress.PostalCode), customer.ShipToAddress.PostalCode);
+                    // Faltando Province
+                    writer.WriteElementString(nameof(customer.ShipToAddress.Country), customer.ShipToAddress.Country);
+                    writer.WriteEndElement(); // Fecha o elemento ShipToAddress
+
+                    // Faltando Telephone
+                    // Faltando Fax
+                    // Faltando Email
+                    // Faltando Website
+                    writer.WriteElementString(nameof(customer.SelfBillingIndicator), customer.SelfBillingIndicator?.ToString());
+
+                    writer.WriteEndElement(); // Fecha o elemento Customer
+                });
+                //writer.WriteEndElement(); // Fecha o elemento Customers
+
+                //writer.WriteStartElement(nameof(auditFile.MasterFiles.Products)); // Abre o elemento Products
+                auditFile.MasterFiles.Products!.ForEach(product =>
+                {
+                    writer.WriteStartElement(nameof(Product)); // Abre o elemento Product
+                    writer.WriteElementString(nameof(product.ProductType), product.ProductType);
+                    writer.WriteElementString(nameof(product.ProductCode), product.ProductCode);
+                    writer.WriteElementString(nameof(product.ProductGroup), product.ProductGroup);
+                    writer.WriteElementString(nameof(product.ProductDescription), product.ProductDescription);
+                    writer.WriteElementString(nameof(product.ProductNumberCode), product.ProductNumberCode);                    
+                    writer.WriteEndElement(); // Fecha o elemento Product
+                });
+                //writer.WriteEndElement(); // Fecha o elemento Products
+
+                writer.WriteStartElement(nameof(auditFile.MasterFiles.TaxTable)); // Abre o elemento TaxTable
+                auditFile.MasterFiles.TaxTable!.ForEach(taxTableEntry =>
+                {
+                    writer.WriteStartElement(nameof(TaxTableEntry)); // Abre o elemento TaxTableEntry
+                    writer.WriteElementString(nameof(taxTableEntry.TaxType), taxTableEntry.TaxType);
+                    writer.WriteElementString(nameof(taxTableEntry.TaxCountryRegion), taxTableEntry.TaxCountryRegion);
+                    writer.WriteElementString(nameof(taxTableEntry.TaxCode), taxTableEntry.TaxCode);
+                    writer.WriteElementString(nameof(taxTableEntry.Description), taxTableEntry.Description);
+                    writer.WriteElementString(nameof(taxTableEntry.TaxPercentage), taxTableEntry.TaxPercentage.ToString());
+                    writer.WriteEndElement(); // Fecha o elemento TaxTableEntry
+                });
+                writer.WriteEndElement(); // Fecha o elemento TaxTable
+
+                writer.WriteEndElement(); // Fecha o elemento MasterFiles
+
                 //ESTÃO EM FALTA OS MATER FILES
-                //writer.WriteStartElement(nameof(auditFile.)); // Abre o elemento MasterFiles
 
                 writer.WriteStartElement(nameof(auditFile.SourceDocuments)); // Abre o elemento SourceDocuments
                 writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices)); // Abre o elemento SalesInvoices
                 writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.NumberOfEntries), auditFile.SourceDocuments!.SalesInvoices!.NumberOfEntries.ToString());
-                writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.TotalCredit), auditFile.SourceDocuments.SalesInvoices.TotalCredit.ToString());
                 writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.TotalDebit), auditFile.SourceDocuments.SalesInvoices.TotalDebit.ToString());
+                writer.WriteElementString(nameof(auditFile.SourceDocuments.SalesInvoices.TotalCredit), auditFile.SourceDocuments.SalesInvoices.TotalCredit.ToString());
                 //writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices.Invoices)); // Abre o elemento Invoices
 
                 auditFile.SourceDocuments.SalesInvoices.Invoices!.ForEach(invoice =>
                 {
                     writer.WriteStartElement(nameof(Invoice)); // Abre o elemento Invoice
                     writer.WriteElementString(nameof(invoice.InvoiceNo), invoice.InvoiceNo);
-                    writer.WriteElementString(nameof(invoice.InvoiceType), invoice.InvoiceType);
                     writer.WriteStartElement(nameof(invoice.DocumentStatus)); // Abre o elemento DocumentStatus
                     writer.WriteElementString(nameof(invoice.DocumentStatus.InvoiceStatus), invoice.DocumentStatus!.InvoiceStatus);
                     writer.WriteElementString(nameof(invoice.DocumentStatus.InvoiceStatusDate), invoice.DocumentStatus.InvoiceStatusDate?.ToString("yyyy-MM-ddTHH:mm:ss"));
@@ -285,19 +376,36 @@ namespace SAFT.Mozambique.Generators
                     writer.WriteEndElement(); // Fecha o elemento DocumentStatus
                     writer.WriteElementString(nameof(invoice.Hash), invoice.Hash.ToString());
                     writer.WriteElementString(nameof(invoice.HashControl), invoice.HashControl);
-                    writer.WriteElementString(nameof(invoice.EACCode), invoice.EACCode);
                     writer.WriteElementString(nameof(invoice.Period), invoice.Period.ToString());
                     writer.WriteElementString(nameof(invoice.InvoiceDate), invoice.InvoiceDate?.ToString("yyyy-MM-dd"));
-                    writer.WriteElementString(nameof(invoice.InvoiceStatus), invoice.InvoiceStatus);
-                    writer.WriteElementString(nameof(invoice.InvoiceStatusDate), invoice.InvoiceStatusDate?.ToString("yyyy-MM-dd"));
-                    writer.WriteElementString(nameof(invoice.SourceBilling), invoice.SourceBilling);
+                    writer.WriteElementString(nameof(invoice.InvoiceType), invoice.InvoiceType);
+
+                    // ATENÇÃO: Elementos "CashVATSchemeIndicator" e "ThirdPartiesBillingIndicator" em falta
                     writer.WriteStartElement(nameof(invoice.SpecialRegimes)); // Abre o elemento SpecialRegimes
                     writer.WriteElementString(nameof(invoice.SpecialRegimes.SelfBillingIndicator), invoice.SpecialRegimes!.SelfBillingIndicator.ToString());
                     writer.WriteEndElement(); // Fecha o elemento SpecialRegimes
+
                     writer.WriteElementString(nameof(invoice.SourceID), invoice.SourceID);
+                    writer.WriteElementString(nameof(invoice.EACCode), invoice.EACCode);
                     writer.WriteElementString(nameof(invoice.SystemEntryDate), invoice.SystemEntryDate?.ToString("yyyy-MM-ddTHH:mm:ss"));
                     writer.WriteElementString(nameof(invoice.TransactionID), invoice.TransactionID);
                     writer.WriteElementString(nameof(invoice.CustomerID), invoice.CustomerID);
+
+                    writer.WriteStartElement(nameof(invoice.Address));
+                    writer.WriteElementString(nameof(invoice.Address.AddressDetail), invoice.Address!.AddressDetail);
+                    writer.WriteElementString(nameof(invoice.Address.City), invoice.Address.City);
+                    writer.WriteElementString(nameof(invoice.Address.PostalCode), invoice.Address.PostalCode);
+                    writer.WriteElementString(nameof(invoice.Address.Country), invoice.Address.Country);
+                    writer.WriteEndElement(); // Fecha o elemento Address
+
+                    writer.WriteStartElement(nameof(invoice.ShipFrom)); // Abre o elemento ShipFrom
+                    writer.WriteStartElement(nameof(invoice.ShipFrom.Address)); // Abre o elemento Address
+                    writer.WriteElementString(nameof(invoice.ShipFrom.Address.AddressDetail), invoice.ShipFrom!.Address!.AddressDetail);
+                    writer.WriteElementString(nameof(invoice.ShipFrom.Address.City), invoice.ShipFrom.Address.City);
+                    writer.WriteElementString(nameof(invoice.ShipFrom.Address.PostalCode), invoice.ShipFrom.Address.PostalCode);
+                    writer.WriteElementString(nameof(invoice.ShipFrom.Address.Country), invoice.ShipFrom.Address.Country);
+                    writer.WriteEndElement(); // Fecha o elemento Address
+                    writer.WriteEndElement(); // Fecha o elemento ShipFrom
 
                     invoice.Lines!.ForEach(artigo =>
                     {
@@ -305,15 +413,26 @@ namespace SAFT.Mozambique.Generators
                         writer.WriteElementString(nameof(artigo.LineNumber), artigo.LineNumber.ToString());
                         writer.WriteElementString(nameof(artigo.ProductCode), artigo.ProductCode);
                         writer.WriteElementString(nameof(artigo.ProductDescription), artigo.ProductDescription);
-                        writer.WriteElementString(nameof(artigo.Description), artigo.Description);
                         writer.WriteElementString(nameof(artigo.Quantity), artigo.Quantity.ToString());
                         writer.WriteElementString(nameof(artigo.UnitOfMeasure), artigo.UnitOfMeasure);
                         writer.WriteElementString(nameof(artigo.UnitPrice), artigo.UnitPrice.ToString());
                         writer.WriteElementString(nameof(artigo.TaxBase), artigo.TaxBase.ToString());
-                        writer.WriteElementString(nameof(artigo.TaxAmount), artigo.TaxAmount.ToString());
-                        writer.WriteElementString(nameof(artigo.CreditAmount), artigo.CreditAmount.ToString());
-                        writer.WriteElementString(nameof(artigo.DebitAmount), artigo.DebitAmount.ToString());
                         writer.WriteElementString(nameof(artigo.TaxPointDate), artigo.TaxPointDate?.ToString("yyyy-MM-dd"));
+                        writer.WriteElementString(nameof(artigo.Description), artigo.Description);
+                        writer.WriteElementString(nameof(artigo.DebitAmount), artigo.DebitAmount.ToString());
+                        writer.WriteElementString(nameof(artigo.CreditAmount), artigo.CreditAmount.ToString());
+                        writer.WriteStartElement(nameof(artigo.Tax));
+                        writer.WriteElementString(nameof(TaxTableLine.TaxType), artigo.Tax.FirstOrDefault()?.TaxType);
+                        writer.WriteElementString(nameof(TaxTableLine.TaxCountryRegion), artigo.Tax.FirstOrDefault()?.TaxCountryRegion);
+                        writer.WriteElementString(nameof(TaxTableLine.TaxCode), artigo.Tax.FirstOrDefault()?.TaxCode);
+                        writer.WriteElementString(nameof(TaxTableLine.TaxPercentage), artigo.Tax.FirstOrDefault()?.ToString());
+                        writer.WriteElementString(nameof(TaxTableLine.TaxAmount), artigo.Tax.FirstOrDefault()?.TaxAmount.ToString());
+                        writer.WriteElementString(nameof(TaxTableLine.TaxExemptionReason), artigo.Tax.FirstOrDefault()?.TaxExemptionReason);
+                        writer.WriteElementString(nameof(TaxTableLine.TaxExemptionCode), artigo.Tax.FirstOrDefault()?.TaxExemptionCode);
+                        writer.WriteElementString(nameof(TaxTableLine.SettlementAmount), artigo.Tax.FirstOrDefault()?.SettlementAmount.ToString());
+                        writer.WriteEndElement(); // Fecha o elemento Tax
+
+                        
                         writer.WriteEndElement(); // Fecha o elemento artigo
                     });
                     writer.WriteEndElement(); // Fecha o elemento Invoice
@@ -326,7 +445,6 @@ namespace SAFT.Mozambique.Generators
             }
 
             //return stringWriter.ToString();
-            //return Encoding.UTF8.GetString(memoryStream.ToArray());
             return Encoding.UTF8.GetString(memoryStream.ToArray());
         }
     }
