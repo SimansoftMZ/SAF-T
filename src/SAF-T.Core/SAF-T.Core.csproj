@@ -2,9 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>SAFT.Core</RootNamespace>
+    <RootNamespace>Simansoft.SAFT.Core</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Authors>Simansoft</Authors>
+    <Title>Simansoft.SAFT.Core</Title>
+    <PackageId>simansoft.saft.core</PackageId>
+    <PackageProjectUrl>https://github.com/SimansoftMZ/SAF-T</PackageProjectUrl>
+    <AssemblyName>Simansoft.SAFT.Core</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

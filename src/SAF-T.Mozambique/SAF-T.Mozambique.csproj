@@ -2,9 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>SAFT.Mozambique</RootNamespace>
+    <RootNamespace>Simansoft.SAFT.Mozambique</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageId>simansoft.saft.mozambique</PackageId>
+    <Title>Simansoft.SAFT.Mozambique</Title>
+    <Authors>Simansoft</Authors>
+    <PackageProjectUrl>https://github.com/SimansoftMZ/SAF-T</PackageProjectUrl>
+    <AssemblyName>Simansoft.SAFT.Mozambique</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
