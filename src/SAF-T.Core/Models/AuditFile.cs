@@ -1,7 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Xml.Serialization;
 
 namespace SAFT.Core.Models
 {
@@ -21,7 +19,6 @@ namespace SAFT.Core.Models
     }
 
     // Representa o ficheiro SAF-T
-    [XmlRoot(Namespace = "http://www.mz.gov.tax/saft")] //Endereço fictício
     public record AuditFile
     {
         public Header? Header { get; init; }
@@ -202,7 +199,7 @@ namespace SAFT.Core.Models
         public decimal? CreditAmount { get; init; }
         public DateTime? TaxPointDate { get; init; }
         public string? Description { get; init; }
-        public List<TaxTableLine> Tax { get; init; } = new();
+        public List<TaxTableLine> Tax { get; init; } = [];
     }
 
     // Totais do documento de venda
