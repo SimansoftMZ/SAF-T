@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace SAFT.Mozambique.Models
+namespace Simansoft.SAFT.Mozambique.Models
 {
     [JsonSerializable(typeof(FicheiroSAFT))]
     public partial class FicheiroSaftContext : JsonSerializerContext
@@ -21,6 +21,22 @@ namespace SAFT.Mozambique.Models
     {
         public string VersaoFicheiro { get; init; } = "1.0";
         public ConteudoFicheiroSaft TipoConteudo { get; init; } = ConteudoFicheiroSaft.Vendas;
+
+        public string Tipo
+        {
+            get => TipoConteudo switch
+            {
+                ConteudoFicheiroSaft.Vendas => "F",
+                ConteudoFicheiroSaft.Compras => "A",
+                ConteudoFicheiroSaft.Contabilidade => "C",
+                ConteudoFicheiroSaft.Inventario => "I",
+                ConteudoFicheiroSaft.Autofacturacao => "S",
+                ConteudoFicheiroSaft.Transporte => "T",
+
+                _ => throw new ArgumentOutOfRangeException(nameof(TipoConteudo),
+                                                           "Tipo de conteúdo inválido.")
+            };
+        }
 
         public int AnoFiscal { get; init; } = DateTime.Now.Year;
         public DateTime DataInicial { get; init; }
@@ -123,6 +139,8 @@ namespace SAFT.Mozambique.Models
         public decimal TotalDesconto { get => Artigos.Sum(s => s.ValorDesconto); }
         public decimal TotalImpostos { get => Artigos.Sum(s => s.ValorImpostos); }
         public decimal TotalGeral { get => TotalBase - TotalDesconto + TotalImpostos; }
+
+        public List<MeioPagamento> MeiosPagamento { get; init; } = [];
     }
 
     public record class DocumentoFacturacaoArtigo
@@ -138,6 +156,26 @@ namespace SAFT.Mozambique.Models
         public decimal PrecoUnitarioComImpostos { get => (PrecoTotalComImpostos + ValorDesconto) / Quantidade; }
         public decimal PrecoUnitarioSemImpostos { get => PrecoUnitarioComImpostos - (ValorImpostos / Quantidade); }
 
+    }
+
+    public record class MeioPagamento
+    {
+        public TipoMeioPagamento Tipo { get; init; } = TipoMeioPagamento.Numerario;
+        public string TipoId => Tipo switch
+        {
+            TipoMeioPagamento.Numerario => "NU",
+            TipoMeioPagamento.Cheque => "CH",
+            TipoMeioPagamento.TransferenciaBancaria => "TB",
+            TipoMeioPagamento.CartaoCredito => "CC",
+            TipoMeioPagamento.CartaoDebito => "CD",
+            TipoMeioPagamento.Outros => "OU",
+            _ => string.Empty,
+        };
+
+        public string? Descricao { get; init; } = string.Empty;
+        public decimal Valor { get; init; }
+        public string? Referencia { get; init; } = string.Empty;
+        public DateTime? Data { get; init; }        
     }
 
     public record class Imposto
@@ -204,6 +242,7 @@ namespace SAFT.Mozambique.Models
         public decimal? PrecoUnitario { get; init; }
         public bool? IVAIncluso { get; init; }
         public bool? Servico { get; init; }
+        public string ServicoId { get => (Servico ?? false) ? "S" : "P"; }
         public List<Imposto> Impostos { get; init; } =
             [
                 new Imposto
@@ -249,6 +288,16 @@ namespace SAFT.Mozambique.Models
         NotaCredito = 3,
         NotaDebito = 4,
         Cotacao = 5,
+    }
+
+    public enum TipoMeioPagamento
+    {
+        Numerario = 1,
+        Cheque = 2,
+        TransferenciaBancaria = 3,
+        CartaoCredito = 4,
+        CartaoDebito = 5,
+        Outros = 6
     }
 
     public enum OrigemDocumento

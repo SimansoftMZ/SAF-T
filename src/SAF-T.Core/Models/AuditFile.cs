@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace SAFT.Core.Models
+namespace Simansoft.SAFT.Core.Models
 {
     [JsonSerializable(typeof(AuditFile))]
     [JsonSerializable(typeof(List<AuditFile>))]
@@ -92,7 +92,7 @@ namespace SAFT.Core.Models
         public string Country { get; init; } = "MZ";
     }
 
-    public record class ShipFrom
+    public record class ShipFromTo
     {
         public CustomerAddress? Address { get; init; } = new();
     }
@@ -128,11 +128,22 @@ namespace SAFT.Core.Models
     // Agrupamento dos documentos de venda (faturas)
     public record SalesInvoices
     {
-        private readonly string[] _documentosValidos = ["A", "F"];
+        public static readonly string[] TiposDocumentosValidos = ["A", "F"];
 
-        public int NumberOfEntries { get => Invoices.Where(w => _documentosValidos.Contains(w.InvoiceStatus)).Count(); }
-        public decimal? TotalDebit { get; init; }
-        public decimal? TotalCredit { get; init; }
+        public int NumberOfEntries { get => Invoices.Where(w => TiposDocumentosValidos.Contains(w.InvoiceType)).Count(); }
+        public decimal? TotalDebit
+        {
+            get => Invoices
+                .Where(w => TiposDocumentosValidos.Contains(w.InvoiceType))
+                .Sum(s => s.Lines?.Sum(s2 => s2.DebitAmount));
+        }
+
+        public decimal? TotalCredit
+        {
+            get => Invoices
+                .Where(w => TiposDocumentosValidos.Contains(w.InvoiceType))
+                .Sum(s => s.Lines?.Sum(s2 => s2.CreditAmount));
+                }
         public List<Invoice> Invoices { get; init; } = [];
     }
 
@@ -146,17 +157,14 @@ namespace SAFT.Core.Models
         public string? HashControl { get; init; }
         public int? Period { get; init; }  // Ex.: 1 (primeiro mês)
         public DateOnly? InvoiceDate { get; init; }
-        public string? InvoiceStatus { get; init; }
-        public DateTime? InvoiceStatusDate { get; init; }
-        public string? SourceBilling { get; init; }
         public SpecialRegimes? SpecialRegimes { get; init; } // Regimes especiais, se houver
         public string? SourceID { get; init; }
         public string? EACCode { get; init; }  // Código CAE (se aplicável)
         public DateTime? SystemEntryDate { get; init; }
         public string? TransactionID { get; init; }
         public string? CustomerID { get; init; }
-        public CustomerAddress? Address { get; init; } = new();
-        public ShipFrom? ShipFrom { get; init; } = new();
+        public ShipFromTo? ShipTo { get; init; } = new();
+        public ShipFromTo? ShipFrom { get; init; } = new();
         public List<InvoiceLine>? Lines { get; init; } = [];
         public DocumentTotals? DocumentTotals { get; init; }
     }
@@ -204,5 +212,22 @@ namespace SAFT.Core.Models
         public decimal? TaxPayable { get; init; }
         public decimal? NetTotal { get; init; }
         public decimal? GrossTotal { get; init; }
+
+        public List<Payment> Payments { get; init; } = [];
+        public List<WithholdingTax> WithholdingTaxes { get; init; } = [];
+    }
+
+    public record class Payment
+    {
+        public string PaymentMechanism { get; init; } = "NU";
+        public decimal PaymentAmount { get; init; } = 0.0m;
+        public DateTime? PaymentDate { get; init; }
+    }
+
+    public record class WithholdingTax
+    {
+        public string? WithholdingTaxType { get; init; }
+        public string? WithholdingTaxDescription { get; init; }
+        public decimal? WithholdingTaxAmount { get; init; } = 0.0m;
     }
 }

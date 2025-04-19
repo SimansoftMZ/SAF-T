@@ -1,12 +1,12 @@
-﻿using SAFT.Core.Interfaces;
-using SAFT.Core.Models;
-using SAFT.Mozambique.Models;
+﻿using Simansoft.SAFT.Core.Models;
+using Simansoft.SAFT.Mozambique.Models;
+using Simansoft.SAFT.Core.Interfaces;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
 using System.Xml;
 
-namespace SAFT.Mozambique.Generators
+namespace Simansoft.SAFT.Mozambique.Generators
 {
     public class MozambiqueSaftGenerator : ISaftGenerator<FicheiroSAFT>
     {
@@ -47,8 +47,8 @@ namespace SAFT.Mozambique.Generators
                         .Select(s => new Customer
                         {
                             CustomerID = s.Cliente.Id,
-                            CustomerTaxID = s.Cliente.NUIT,
                             AccountID = s.Cliente.PlanoContaCorrente,
+                            CustomerTaxID = s.Cliente.NUIT,                            
                             CompanyName = s.Cliente.Nome,
                             
                             BillingAddress = new CustomerAddress
@@ -57,7 +57,15 @@ namespace SAFT.Mozambique.Generators
                                 City = s.Cliente.Cidade,
                                 PostalCode = s.Cliente.CodigoPostal,
                                 Country = s.Cliente.Pais
-                            }
+                            },
+                            ShipToAddress = new CustomerAddress
+                            {
+                                AddressDetail = s.Cliente.Endereco,
+                                City = s.Cliente.Cidade,
+                                PostalCode = s.Cliente.CodigoPostal,
+                                Country = s.Cliente.Pais
+                            },
+                            SelfBillingIndicator = "0"
                         }).FirstOrDefault()!);
 
             });
@@ -73,10 +81,11 @@ namespace SAFT.Mozambique.Generators
                         .Where(w => w.Artigo.ArtigoId == produtoId)                        
                         .Select((s) => new Product
                         {
+                            ProductType = s.Artigo.ServicoId,
                             ProductCode = s.Artigo.ArtigoId,
+                            ProductGroup = s.Artigo.FamiliaId,
                             ProductDescription = s.Artigo.Descricao,
-                            ProductNumberCode = s.Artigo.ArtigoId,
-                            ProductGroup = s.Artigo.FamiliaId
+                            ProductNumberCode = s.Artigo.ArtigoId
                         }).FirstOrDefault()!);
             });
 
@@ -108,18 +117,7 @@ namespace SAFT.Mozambique.Generators
                     AuditFileVersion = ficheiroSAFT.VersaoFicheiro,
                     CompanyID = ficheiroSAFT.Empresa.NUIT,
                     TaxRegistrationNumber = ficheiroSAFT.Empresa.NUIT,
-                    FileContentType = ficheiroSAFT.TipoConteudo switch
-                    {
-                        ConteudoFicheiroSaft.Vendas => "F",
-                        ConteudoFicheiroSaft.Compras => "A",
-                        ConteudoFicheiroSaft.Contabilidade => "C",
-                        ConteudoFicheiroSaft.Inventario => "I",
-                        ConteudoFicheiroSaft.Autofacturacao => "S",                        
-                        ConteudoFicheiroSaft.Transporte => "T",
-                        
-                        _ => throw new ArgumentOutOfRangeException(nameof(ficheiroSAFT), nameof(ficheiroSAFT.TipoConteudo),
-                                                                   "Tipo de conteúdo inválido.")
-                    },
+                    FileContentType = ficheiroSAFT.Tipo,
                     CompanyName = ficheiroSAFT.Empresa.Nome,
                     BusinessName = ficheiroSAFT.Empresa.NomeComercial,
                     CompanyAddress = new CompanyAddress
@@ -127,8 +125,8 @@ namespace SAFT.Mozambique.Generators
                         StreetName = ficheiroSAFT.Empresa.Endereco1,
                         AddressDetail = ficheiroSAFT.Empresa.Endereco2,
                         City = ficheiroSAFT.Empresa.Cidade,
-                        Province = ficheiroSAFT.Empresa.Provincia,
                         PostalCode = ficheiroSAFT.Empresa.CodigoPostal,
+                        Province = ficheiroSAFT.Empresa.Provincia,                        
                         Country = ficheiroSAFT.Empresa.Pais
                     },
                     FiscalYear = ficheiroSAFT.AnoFiscal,
@@ -158,12 +156,11 @@ namespace SAFT.Mozambique.Generators
                 {
                     SalesInvoices = new SalesInvoices()
                     {
-                        TotalCredit = ficheiroSAFT.TotalCredito,
-                        TotalDebit = ficheiroSAFT.TotalDebito,
+                        //TotalDebit = ficheiroSAFT.TotalDebito,
+                        //TotalCredit = ficheiroSAFT.TotalCredito,                        
                         Invoices = [.. ficheiroSAFT.DocumentosFacturacao.Select(doc => new Invoice
                         {
                             InvoiceNo = doc.Id,
-                            InvoiceType = doc.TipoDocumento,
                             DocumentStatus = new DocumentStatus
                             {
                                 InvoiceStatus = "N",
@@ -173,31 +170,32 @@ namespace SAFT.Mozambique.Generators
                             },
                             Hash = (doc.ControlaAssinatura ?? false) ? 1 : 0,
                             HashControl = doc.Assinatura,
-                            EACCode = doc.CodigoEAC,
                             Period = doc.PeriodoMes,
                             InvoiceDate = DateOnly.FromDateTime(doc.DataHora),
-                            InvoiceStatus = "N",
-                            InvoiceStatusDate = doc.DataHora,
-                            SourceBilling = doc.OrigemDocumentoId,
                             SpecialRegimes = new SpecialRegimes
                             {
                                 SelfBillingIndicator =
-                                    ficheiroSAFT.TipoConteudo == ConteudoFicheiroSaft.Autofacturacao ? 1 : 0
+                                    ficheiroSAFT.TipoConteudo == ConteudoFicheiroSaft.Autofacturacao ? 1 : 0,
+                                CashVATSchemeIndicator = 0,
+                                ThirdPartiesBillingIndicator = 0
                             },
                             SourceID = doc.OperadorEmissao,
-
+                            EACCode = doc.CodigoEAC,
                             SystemEntryDate = doc.DataEmissao,
                             TransactionID = doc.DocumentoContabilisticoId,
                             CustomerID =  doc.Cliente.EConsumidorFinal ? "Consumidor Final" : doc.Cliente.Id,
+                            InvoiceType = doc.TipoDocumento,
 
-                            Address = new CustomerAddress
-                            {
-                                AddressDetail = doc.Cliente.Endereco,
-                                City = doc.Cliente.Cidade,
-                                PostalCode = doc.Cliente.CodigoPostal,
-                                Country = doc.Cliente.Pais
+                            ShipTo = new ShipFromTo{
+                                Address = new CustomerAddress
+                                {
+                                    AddressDetail = doc.Cliente.Endereco,
+                                    City = doc.Cliente.Cidade,
+                                    PostalCode = doc.Cliente.CodigoPostal,
+                                    Country = doc.Cliente.Pais
+                                }
                             },
-                            ShipFrom = new ShipFrom
+                            ShipFrom = new ShipFromTo
                             {
                                 Address = new CustomerAddress
                                 {
@@ -213,28 +211,32 @@ namespace SAFT.Mozambique.Generators
                                 LineNumber = linhaArtigo++,
                                 ProductCode = artigo.Artigo.ArtigoId,
                                 ProductDescription = artigo.Artigo.Descricao,
-                                Description = artigo.ArtigoDescricao,
                                 Quantity = artigo.Quantidade,
                                 UnitOfMeasure = artigo.Artigo.UnidadeContagem,
                                 UnitPrice = artigo.PrecoUnitarioSemImpostos,
                                 TaxBase = artigo.PrecoTotalSemImpostos,
+                                TaxPointDate = doc.DataHora,
+                                Description = artigo.ArtigoDescricao,
+                                DebitAmount = artigo.PrecoTotalComImpostos < 0 ? -artigo.PrecoTotalComImpostos : 0m,
+                                CreditAmount = artigo.PrecoTotalComImpostos > 0 ? artigo.PrecoTotalComImpostos : 0m,
                                 Tax = [.. artigo.Artigo.Impostos.Select(imp => new TaxTableEntry
                                 {
                                     TaxType = imp.Tipo,
                                     TaxCountryRegion = imp.Pais,
                                     TaxCode = imp.Codigo,
                                     TaxPercentage = imp.Percentagem,
-                                    TaxAmount = imp.Valor + (artigo.PrecoTotalComImpostos / (1m + imp.Percentagem * 0.01m) * imp.Percentagem * 0.01m),
-                                    
+                                    TaxAmount = imp.Valor + (artigo.PrecoTotalComImpostos / (1m + imp.Percentagem * 0.01m) * imp.Percentagem * 0.01m)                                    
                                 })],
 
                                 TaxExemptionReason = artigo.Artigo.Motivo,
-                                TaxExemptionCode = artigo.Artigo.MotivoCodigo,
-
-                                CreditAmount = artigo.PrecoTotalComImpostos > 0 ? artigo.PrecoTotalComImpostos : 0m,
-                                DebitAmount = artigo.PrecoTotalComImpostos < 0 ? -artigo.PrecoTotalComImpostos : 0m,
-                                TaxPointDate = doc.DataHora
-                            })]
+                                TaxExemptionCode = artigo.Artigo.MotivoCodigo
+                            })],
+                            DocumentTotals = new DocumentTotals
+                            {
+                                TaxPayable = doc.Artigos.Sum(s => s.PrecoTotalSemImpostos),
+                                NetTotal = doc.Artigos.Sum(s => s.ValorImpostos),
+                                GrossTotal = doc.Artigos.Sum(s => s.PrecoTotalComImpostos)
+                            }
                         })]
                     }
                 }
@@ -394,12 +396,14 @@ namespace SAFT.Mozambique.Generators
                     writer.WriteElementString(nameof(invoice.TransactionID), invoice.TransactionID);
                     writer.WriteElementString(nameof(invoice.CustomerID), invoice.CustomerID);
 
-                    writer.WriteStartElement(nameof(invoice.Address));
-                    writer.WriteElementString(nameof(invoice.Address.AddressDetail), invoice.Address!.AddressDetail);
-                    writer.WriteElementString(nameof(invoice.Address.City), invoice.Address.City);
-                    writer.WriteElementString(nameof(invoice.Address.PostalCode), invoice.Address.PostalCode);
-                    writer.WriteElementString(nameof(invoice.Address.Country), invoice.Address.Country);
+                    writer.WriteStartElement(nameof(invoice.ShipTo)); // Abre o elemento ShipTo
+                    writer.WriteStartElement(nameof(invoice.ShipTo.Address)); // Abre o elemento Address
+                    writer.WriteElementString(nameof(invoice.ShipTo.Address.AddressDetail), invoice.ShipTo?.Address?.AddressDetail);
+                    writer.WriteElementString(nameof(invoice.ShipTo.Address.City), invoice.ShipTo?.Address?.City);
+                    writer.WriteElementString(nameof(invoice.ShipTo.Address.PostalCode), invoice.ShipTo?.Address?.PostalCode);
+                    writer.WriteElementString(nameof(invoice.ShipTo.Address.Country), invoice.ShipTo?.Address?.Country);
                     writer.WriteEndElement(); // Fecha o elemento Address
+                    writer.WriteEndElement(); // Fecha o elemento ShipTo
 
                     writer.WriteStartElement(nameof(invoice.ShipFrom)); // Abre o elemento ShipFrom
                     writer.WriteStartElement(nameof(invoice.ShipFrom.Address)); // Abre o elemento Address
@@ -434,11 +438,16 @@ namespace SAFT.Mozambique.Generators
                         writer.WriteElementString(nameof(artigo.TaxExemptionReason), artigo.TaxExemptionReason);
                         writer.WriteElementString(nameof(artigo.TaxExemptionCode), artigo.TaxExemptionCode);
                         writer.WriteElementString(nameof(artigo.SettlementAmount), artigo.SettlementAmount.ToString());
-                        
-
-                        
+                                                
                         writer.WriteEndElement(); // Fecha o elemento artigo
                     });
+
+                    writer.WriteStartElement(nameof(invoice.DocumentTotals)); // Abre o elemento DocumentTotals
+                    writer.WriteElementString(nameof(invoice.DocumentTotals.TaxPayable), invoice.DocumentTotals?.TaxPayable.ToString());
+                    writer.WriteElementString(nameof(invoice.DocumentTotals.NetTotal), invoice.DocumentTotals?.NetTotal.ToString());
+                    writer.WriteElementString(nameof(invoice.DocumentTotals.GrossTotal), invoice.DocumentTotals?.GrossTotal.ToString());                    
+                    writer.WriteEndElement();
+
                     writer.WriteEndElement(); // Fecha o elemento Invoice
                 });
                 //writer.WriteEndElement(); // Fecha o elemento Invoices

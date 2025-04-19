@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace SAFT.Core.Utils
+namespace Simansoft.SAFT.Core.Utils
 {
     public static class HashUtility
     {

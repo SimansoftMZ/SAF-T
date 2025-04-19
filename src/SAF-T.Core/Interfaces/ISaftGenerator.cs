@@ -1,7 +1,7 @@
-﻿using SAFT.Core.Models;
+﻿using Simansoft.SAFT.Core.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace SAFT.Core.Interfaces
+namespace Simansoft.SAFT.Core.Interfaces
 {
     public interface ISaftGenerator<T>
     {
