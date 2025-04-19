@@ -452,7 +452,31 @@ namespace Simansoft.SAFT.Mozambique.Generators
                     writer.WriteElementString(nameof(invoice.DocumentTotals.TaxPayable), invoice.DocumentTotals?.TaxPayable.ToString());
                     writer.WriteElementString(nameof(invoice.DocumentTotals.NetTotal), invoice.DocumentTotals?.NetTotal.ToString());
                     writer.WriteElementString(nameof(invoice.DocumentTotals.GrossTotal), invoice.DocumentTotals?.GrossTotal.ToString());                    
-                    writer.WriteEndElement();
+                    if (invoice.DocumentTotals?.Payments != null)
+                    {
+                        invoice.DocumentTotals.Payments.ForEach(p =>
+                        {
+                            writer.WriteStartElement(nameof(Payment)); // Abre o elemento Payment
+                            writer.WriteElementString(nameof(p.PaymentMechanism), p.PaymentMechanism);
+                            writer.WriteElementString(nameof(p.PaymentAmount), p.PaymentAmount.ToString());
+                            writer.WriteElementString(nameof(p.PaymentDate), p.PaymentDate?.ToString("yyyy-MM-dd"));
+                            writer.WriteEndElement(); // Fecha o elemento Payment
+                            
+                        });
+                    }
+
+                    if (invoice.DocumentTotals?.WithholdingTaxes != null)
+                    {
+                        invoice.DocumentTotals.WithholdingTaxes.ForEach(wt =>
+                        {
+                            writer.WriteStartElement(nameof(WithholdingTax)); // Abre o elemento WithholdingTax
+                            writer.WriteElementString(nameof(wt.WithholdingTaxType), wt.WithholdingTaxType);
+                            writer.WriteElementString(nameof(wt.WithholdingTaxAmount), wt.WithholdingTaxAmount.ToString());
+                            writer.WriteEndElement(); // Fecha o elemento WithholdingTax
+                        });
+                    }
+
+                    writer.WriteEndElement(); // Fecha o elemento DocumentTotals
 
                     writer.WriteEndElement(); // Fecha o elemento Invoice
                 });
