@@ -1,6 +1,6 @@
-﻿using SAFT.Mozambique.Models;
+﻿using Simansoft.SAFT.Mozambique.Models;
 
-namespace SAFT.Examples.SampleData
+namespace Simansoft.SAFT.Examples.SampleData
 {
     public class Artigos
     {

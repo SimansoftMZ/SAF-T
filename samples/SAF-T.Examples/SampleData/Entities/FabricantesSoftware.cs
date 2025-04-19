@@ -1,4 +1,4 @@
-﻿using SAFT.Mozambique.Models;
+﻿using Simansoft.SAFT.Mozambique.Models;
 
 namespace SAFT.Examples.SampleData.Entities
 {

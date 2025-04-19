@@ -1,7 +1,7 @@
 ﻿using SAFT.Examples.SampleData.Entities;
-using SAFT.Mozambique.Models;
+using Simansoft.SAFT.Mozambique.Models;
 
-namespace SAFT.Examples.SampleData.Invoices
+namespace Simansoft.SAFT.Examples.SampleData.Invoices
 {
     public class MozambiqueInvoices
     {

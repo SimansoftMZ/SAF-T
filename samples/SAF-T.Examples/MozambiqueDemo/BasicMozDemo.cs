@@ -1,7 +1,7 @@
 ﻿using SAFT.Examples.SampleData.Entities;
-using SAFT.Examples.SampleData.Invoices;
-using SAFT.Mozambique.Generators;
-using SAFT.Mozambique.Models;
+using Simansoft.SAFT.Examples.SampleData.Invoices;
+using Simansoft.SAFT.Mozambique.Generators;
+using Simansoft.SAFT.Mozambique.Models;
 using System;
 using System.Buffers;
 using System.Collections.Generic;

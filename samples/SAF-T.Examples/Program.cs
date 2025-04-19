@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using SAFT.Examples.MozambiqueDemo;
-using SAFT.Mozambique.Models;
+using Simansoft.SAFT.Mozambique.Models;
 
 
 BasicMozDemo.Run();

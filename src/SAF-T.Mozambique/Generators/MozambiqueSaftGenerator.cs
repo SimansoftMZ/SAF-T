@@ -235,7 +235,13 @@ namespace Simansoft.SAFT.Mozambique.Generators
                             {
                                 TaxPayable = doc.Artigos.Sum(s => s.PrecoTotalSemImpostos),
                                 NetTotal = doc.Artigos.Sum(s => s.ValorImpostos),
-                                GrossTotal = doc.Artigos.Sum(s => s.PrecoTotalComImpostos)
+                                GrossTotal = doc.Artigos.Sum(s => s.PrecoTotalComImpostos),
+                                Payments = [.. doc.MeiosPagamento.Select(p => new Payment
+                                {
+                                    PaymentMechanism = p.TipoId,
+                                    PaymentAmount = p.Valor,
+                                    PaymentDate = p.Data                                    
+                                })],
                             }
                         })]
                     }
