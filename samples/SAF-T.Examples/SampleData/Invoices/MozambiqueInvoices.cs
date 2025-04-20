@@ -151,7 +151,20 @@ namespace Simansoft.SAFT.Examples.SampleData.Invoices
                                 ValorDesconto = 0m,
                                 PrecoTotalComImpostos = 360
                             }
-                        ]
+                        ],
+                    MeiosPagamento =
+                    [
+                        new MeioPagamento()
+                        {
+                            Tipo = TipoMeioPagamento.Numerario,
+                            Valor = 60
+                        },
+                        new MeioPagamento()
+                        {
+                            Tipo = TipoMeioPagamento.CartaoDebito,
+                            Valor = 300
+                        }
+                    ]
                 }
             ];
 
