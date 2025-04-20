@@ -31,5 +31,12 @@
 
         public decimal DocumentoFacturacaoTotal { get; init; }
         public string? HashDocumentoAnterior { get; init; }
+
+        public string DadosCompostosParaHash
+        {
+            get =>
+                $"{DocumentoFacturacaoData:yyyy-MM-dd};{DocumentoFacturacaoDataRegisto:yyyy-MM-ddTHH:mm:ss};{DocumentoFacturacaoId};" +
+                $"{DocumentoFacturacaoTotal:F2};{HashDocumentoAnterior}";
+        }
     }
 }

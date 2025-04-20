@@ -5,7 +5,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
 {
     public record class HashUtility : IHashUtility<DocumentoParaHash>
     {
-        public string GerarHashSha256(string chave, string dados)
+        public string GerarHashSha256(string chave, string dadosCompostosParaHash)
         {
             throw new NotImplementedException();
         }

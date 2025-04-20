@@ -11,9 +11,9 @@ namespace Simansoft.SAFT.Core.Interfaces
         /// <summary>
         /// Gera um hash SHA256 a partir de uma string.
         /// </summary>
-        /// <param name="dados">A string a ser convertida em hash.</param>
+        /// <param name="DadosCompostosParaHash">A string a ser convertida em hash.</param>
         /// <returns>O hash SHA256 da string.</returns>
-        string GerarHashSha256(string chave, string dados);
+        string GerarHashSha256(string chave, string DadosCompostosParaHash);
         /// <summary>
         /// Gera um hash SHA256 a partir de um objeto.
         /// </summary>
