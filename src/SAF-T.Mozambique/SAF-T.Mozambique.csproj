@@ -10,6 +10,7 @@
     <Authors>Simansoft</Authors>
     <PackageProjectUrl>https://github.com/SimansoftMZ/SAF-T</PackageProjectUrl>
     <AssemblyName>Simansoft.SAFT.Mozambique</AssemblyName>
+    <RepositoryUrl>https://github.com/SimansoftMZ/SAF-T</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
