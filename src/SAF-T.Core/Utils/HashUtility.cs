@@ -1,9 +1,10 @@
-﻿using System.Security.Cryptography;
+﻿using Simansoft.SAFT.Core.Interfaces;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Simansoft.SAFT.Core.Utils
 {
-    public static class HashUtility
+    public static class HashUtility : IHashUtility
     {
         public static string GenerateSha256Hash(string data)
         {
