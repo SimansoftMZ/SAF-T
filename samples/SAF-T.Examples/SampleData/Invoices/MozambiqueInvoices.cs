@@ -22,16 +22,16 @@ namespace Simansoft.SAFT.Examples.SampleData.Invoices
                             new DocumentoFacturacaoArtigo
                             {
                                 Artigo = Artigos.GetArtigo("1")!,
-                                Quantidade = 3,
-                                ValorDesconto = 50m,
-                                PrecoTotalComImpostos = 315,
+                                Quantidade = 3.0m,
+                                ValorDesconto = 50.0m,
+                                PrecoTotalComImpostos = 315.0m,
                             },
                             new DocumentoFacturacaoArtigo
                             {
                                 Artigo = Artigos.GetArtigo("2")!,
-                                Quantidade = 2,
-                                ValorDesconto = 0m,
-                                PrecoTotalComImpostos = 210
+                                Quantidade = 2.0m,
+                                ValorDesconto = 0.0m,
+                                PrecoTotalComImpostos = 210.0m
                             }
                         ]
                 },
@@ -50,23 +50,23 @@ namespace Simansoft.SAFT.Examples.SampleData.Invoices
                             new DocumentoFacturacaoArtigo
                             {
                                 Artigo = Artigos.GetArtigo("3")!,
-                                Quantidade = 3,
-                                ValorDesconto = 50m,
-                                PrecoTotalComImpostos = 315
+                                Quantidade = 3.0m,
+                                ValorDesconto = 50.0m,
+                                PrecoTotalComImpostos = 315.0m
                             },
                             new DocumentoFacturacaoArtigo
                             {
                                 Artigo = Artigos.GetArtigo("4")!,
-                                Quantidade = 2,
-                                ValorDesconto = 0m,
-                                PrecoTotalComImpostos = 600
+                                Quantidade = 2.0m,
+                                ValorDesconto = 0.0m,
+                                PrecoTotalComImpostos = 600.0m
                             },
                             new DocumentoFacturacaoArtigo
                             {
                                 Artigo = Artigos.GetArtigo("5")!,
-                                Quantidade = 1,
-                                ValorDesconto = 0m,
-                                PrecoTotalComImpostos = 150
+                                Quantidade = 1.0m,
+                                ValorDesconto = 0.0m,
+                                PrecoTotalComImpostos = 150.0m
                             }
                         ]
                 },
@@ -85,9 +85,9 @@ namespace Simansoft.SAFT.Examples.SampleData.Invoices
                             new DocumentoFacturacaoArtigo
                             {
                                 Artigo = Artigos.GetArtigo("5")!,
-                                Quantidade = 1,
-                                ValorDesconto = 0m,
-                                PrecoTotalComImpostos = 468
+                                Quantidade = 1.0m,
+                                ValorDesconto = 0.0m,
+                                PrecoTotalComImpostos = 468.0m
                             }
                         ]
                 },
@@ -105,9 +105,9 @@ namespace Simansoft.SAFT.Examples.SampleData.Invoices
                             new DocumentoFacturacaoArtigo
                             {
                                 Artigo = Artigos.GetArtigo("1")!,
-                                Quantidade = 1,
-                                ValorDesconto = 0m,
-                                PrecoTotalComImpostos = 200
+                                Quantidade = 1.0m,
+                                ValorDesconto = 0.0m,
+                                PrecoTotalComImpostos = 200.0m
                             }
                         ]
                 },
@@ -126,9 +126,9 @@ namespace Simansoft.SAFT.Examples.SampleData.Invoices
                             new DocumentoFacturacaoArtigo
                             {
                                 Artigo = Artigos.GetArtigo("2")!,
-                                Quantidade = 4,
-                                ValorDesconto = 0m,
-                                PrecoTotalComImpostos = 420
+                                Quantidade = 4.0m,
+                                ValorDesconto = 0.0m,
+                                PrecoTotalComImpostos = 420.0m
                             }
                         ]
                 },
@@ -147,9 +147,9 @@ namespace Simansoft.SAFT.Examples.SampleData.Invoices
                             new DocumentoFacturacaoArtigo
                             {
                                 Artigo = Artigos.GetArtigo("3")!,
-                                Quantidade = 5,
-                                ValorDesconto = 0m,
-                                PrecoTotalComImpostos = 360
+                                Quantidade = 5.0m,
+                                ValorDesconto = 0.0m,
+                                PrecoTotalComImpostos = 360.0m
                             }
                         ],
                     MeiosPagamento =
