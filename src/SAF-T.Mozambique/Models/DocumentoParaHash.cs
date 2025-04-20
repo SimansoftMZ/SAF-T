@@ -2,6 +2,10 @@
 {
     public record class DocumentoParaHash
     {
+        public string NumeroCertificadoAplicacaoEmissora { get; init; } = string.Empty;
+        public string VersaoChave { get; init; } = string.Empty;
+
+
         public DateTime DocumentoFacturacaoData { get; init; }
         public DateTime DocumentoFacturacaoDataRegisto { get; init; }
 

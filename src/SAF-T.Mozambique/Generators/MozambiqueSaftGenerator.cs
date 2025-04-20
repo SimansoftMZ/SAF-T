@@ -170,7 +170,9 @@ namespace Simansoft.SAFT.Mozambique.Generators
                                 SourceBilling = doc.OrigemDocumentoId
                             },
                             Hash = (doc.ControlaAssinatura ?? false) ? 1 : 0,
-                            HashControl = doc.Assinatura,
+                            HashControl = (string.Empty(doc.Assinatura) && doc.ControlaAssinatura
+                                ? "Não certificado"
+                                : doc.Assinatura,
                             Period = doc.PeriodoMes,
                             InvoiceDate = DateOnly.FromDateTime(doc.DataHora),
                             SpecialRegimes = new SpecialRegimes
