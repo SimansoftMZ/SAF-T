@@ -156,14 +156,15 @@ namespace Simansoft.SAFT.Mozambique.Generators
                 {
                     SalesInvoices = new SalesInvoices()
                     {
-                        //TotalDebit = ficheiroSAFT.TotalDebito,
-                        //TotalCredit = ficheiroSAFT.TotalCredito,                        
+                        NumberOfEntries = ficheiroSAFT.DocumentosFacturacao.Count,
+                        TotalDebit = ficheiroSAFT.TotalDebito,
+                        TotalCredit = ficheiroSAFT.TotalCredito,
                         Invoices = [.. ficheiroSAFT.DocumentosFacturacao.Select(doc => new Invoice
                         {
                             InvoiceNo = doc.Id,
                             DocumentStatus = new DocumentStatus
                             {
-                                InvoiceStatus = "N",
+                                InvoiceStatus = doc.EstadoId,
                                 InvoiceStatusDate = doc.DataHora,
                                 SourceID = doc.OperadorEmissao,
                                 SourceBilling = doc.OrigemDocumentoId
@@ -184,7 +185,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                             SystemEntryDate = doc.DataEmissao,
                             TransactionID = doc.DocumentoContabilisticoId,
                             CustomerID =  doc.Cliente.EConsumidorFinal ? "Consumidor Final" : doc.Cliente.Id,
-                            InvoiceType = doc.TipoDocumento,
+                            InvoiceType = doc.CategoriaId,
 
                             ShipTo = new ShipFromTo{
                                 Address = new CustomerAddress

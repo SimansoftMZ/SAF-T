@@ -19,7 +19,13 @@ namespace Simansoft.SAFT.Mozambique.Models
 
     public record class FicheiroSAFT
     {
-        public string VersaoFicheiro { get; init; } = "1.0";
+        public static readonly List<EstadoDocumento> EstadosDocumentosExcluirDebitoCredito =
+        [
+            EstadoDocumento.Anulado,
+            EstadoDocumento.Facturado
+        ];
+
+        public string VersaoFicheiro { get; init; } = "0.5";
         public ConteudoFicheiroSaft TipoConteudo { get; init; } = ConteudoFicheiroSaft.Vendas;
 
         public string Tipo
@@ -49,8 +55,19 @@ namespace Simansoft.SAFT.Mozambique.Models
         public Empresa Empresa { get; init; } = new();
         public FabricanteSoftware FabricanteSoftware { get; init; } = new();
 
-        public decimal TotalDebito { get => DocumentosFacturacao.Where(w => w.TotalGeral < 0).Sum(s => -s.TotalGeral); }
-        public decimal TotalCredito { get => DocumentosFacturacao.Where(w => w.TotalGeral > 0).Sum(s => s.TotalGeral); }
+        public decimal TotalDebito
+        {
+            get => DocumentosFacturacao
+                .Where(w => !EstadosDocumentosExcluirDebitoCredito.Contains(w.Estado) && w.TotalGeral < 0)
+                .Sum(s => -s.TotalGeral);
+        }
+
+        public decimal TotalCredito
+        {
+            get => DocumentosFacturacao
+                .Where(w => !EstadosDocumentosExcluirDebitoCredito.Contains(w.Estado) && w.TotalGeral > 0)
+                .Sum(s => s.TotalGeral);
+        }
 
         public List<DocumentoFacturacao> DocumentosFacturacao { get; init; } = [];
     }
@@ -94,7 +111,7 @@ namespace Simansoft.SAFT.Mozambique.Models
         public CategoriaDocumento Categoria { get; init; } = CategoriaDocumento.Factura;
         public string NumeroDocumento { get; init; } = string.Empty;
         
-        public string TipoDocumento
+        public string CategoriaId
         {
             get => Categoria switch
             {
@@ -107,7 +124,21 @@ namespace Simansoft.SAFT.Mozambique.Models
             };
         }
 
-        public string Id { get => $"{TipoDocumento} {string.Concat("000", TipoDocumentoId)[^3..]}/{NumeroDocumento}"; }
+        public EstadoDocumento Estado { get; init; } = EstadoDocumento.Normal;
+        public string EstadoId
+        {
+            get => Estado switch
+            {
+                EstadoDocumento.Normal => "N",
+                EstadoDocumento.Autofacturacao => "S",
+                EstadoDocumento.Anulado => "A",
+                EstadoDocumento.ResumoOutrasAplicacoes => "R",
+                EstadoDocumento.Facturado => "F",
+                _ => string.Empty,
+            };
+        }
+
+        public string Id { get => $"{CategoriaId} {string.Concat("000", TipoDocumentoId)[^3..]}/{NumeroDocumento}"; }
 
         public bool? ControlaAssinatura { get; init; }
         public string? Assinatura { get; init; }
@@ -141,6 +172,15 @@ namespace Simansoft.SAFT.Mozambique.Models
         public decimal TotalGeral { get => TotalBase - TotalDesconto + TotalImpostos; }
 
         public List<MeioPagamento> MeiosPagamento { get; init; } = [];
+    }
+
+    public enum EstadoDocumento
+    {
+        Normal = 1,
+        Autofacturacao = 2,
+        Anulado = 3,
+        ResumoOutrasAplicacoes = 4,
+        Facturado = 5
     }
 
     public record class DocumentoFacturacaoArtigo

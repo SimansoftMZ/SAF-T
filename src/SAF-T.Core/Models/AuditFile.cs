@@ -128,22 +128,12 @@ namespace Simansoft.SAFT.Core.Models
     // Agrupamento dos documentos de venda (faturas)
     public record SalesInvoices
     {
-        public static readonly string[] TiposDocumentosValidos = ["A", "F"];
+        //public static readonly string[] TiposDocumentosValidos = ["A", "F"];
 
-        public int NumberOfEntries { get => Invoices.Where(w => TiposDocumentosValidos.Contains(w.InvoiceType)).Count(); }
-        public decimal? TotalDebit
-        {
-            get => Invoices
-                .Where(w => TiposDocumentosValidos.Contains(w.InvoiceType))
-                .Sum(s => s.Lines?.Sum(s2 => s2.DebitAmount));
-        }
+        public int NumberOfEntries { get; init; }
+        public decimal? TotalDebit { get; init; }
 
-        public decimal? TotalCredit
-        {
-            get => Invoices
-                .Where(w => TiposDocumentosValidos.Contains(w.InvoiceType))
-                .Sum(s => s.Lines?.Sum(s2 => s2.CreditAmount));
-                }
+        public decimal? TotalCredit { get; init; }
         public List<Invoice> Invoices { get; init; } = [];
     }
 
