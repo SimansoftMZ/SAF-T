@@ -3,11 +3,15 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>SAFT.Examples</RootNamespace>
+    <RootNamespace>Simansoft.SAFT.Examples</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PublishAot>true</PublishAot>
     <InvariantGlobalization>true</InvariantGlobalization>
+    <Title>SAF-T Samples</Title>
+    <Authors>Simansoft</Authors>
+    <PackageProjectUrl>https://github.com/SimansoftMZ/SAF-T</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SimansoftMZ/SAF-T</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>

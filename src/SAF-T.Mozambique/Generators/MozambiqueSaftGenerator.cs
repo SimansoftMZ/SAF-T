@@ -248,6 +248,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                     }
                 }
             };
+
             return auditFile;
         }
 
