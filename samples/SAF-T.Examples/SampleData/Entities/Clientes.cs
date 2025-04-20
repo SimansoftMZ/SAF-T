@@ -1,11 +1,6 @@
 ﻿using Simansoft.SAFT.Mozambique.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SAFT.Examples.SampleData.Entities
+namespace Simansoft.SAFT.Examples.SampleData.Entities
 {
     public class Clientes
     {

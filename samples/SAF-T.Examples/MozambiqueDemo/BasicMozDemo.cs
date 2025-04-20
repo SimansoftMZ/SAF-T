@@ -1,25 +1,17 @@
-﻿using SAFT.Examples.SampleData.Entities;
+﻿using Simansoft.SAFT.Core.Models;
+using Simansoft.SAFT.Examples.SampleData.Entities;
 using Simansoft.SAFT.Examples.SampleData.Invoices;
 using Simansoft.SAFT.Mozambique.Generators;
 using Simansoft.SAFT.Mozambique.Models;
-using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Xml;
 
-namespace SAFT.Examples.MozambiqueDemo
+namespace Simansoft.SAFT.Examples.MozambiqueDemo
 {
     public class BasicMozDemo
     {
         public static void Run()
         {
             // 1. Criar uma fatura de Moçambique
-            var documentosFacturacao = MozambiqueInvoices.GetInvoices();
+            List<DocumentoFacturacao> documentosFacturacao = MozambiqueInvoices.GetInvoices();
 
             MozambiqueSaftGenerator gerador = new();
 
@@ -37,11 +29,11 @@ namespace SAFT.Examples.MozambiqueDemo
                 DocumentosFacturacao = documentosFacturacao
             };
 
-            var auditFile = gerador.ConverterParaSaft(ficheiroSAFT);
+            AuditFile auditFile = gerador.ConverterParaSaft(ficheiroSAFT);
 
             // Serialize para JSON (mas com estrutura XML)
             //var json = gerador.GenerateJson(auditFile);
-            var xml = gerador.GenerateXml(auditFile);
+            string xml = gerador.GenerateXml(auditFile);
 
             // Gravar o XML num ficheiro
             //File.WriteAllText("saft_mozambique.xml", xml);

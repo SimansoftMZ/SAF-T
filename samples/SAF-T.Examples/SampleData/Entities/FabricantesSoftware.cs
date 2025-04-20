@@ -1,6 +1,6 @@
 ﻿using Simansoft.SAFT.Mozambique.Models;
 
-namespace SAFT.Examples.SampleData.Entities
+namespace Simansoft.SAFT.Examples.SampleData.Entities
 {
     public class FabricantesSoftware
     {

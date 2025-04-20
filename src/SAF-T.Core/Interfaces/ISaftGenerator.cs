@@ -9,6 +9,5 @@ namespace Simansoft.SAFT.Core.Interfaces
         string GenerateJson(AuditFile auditFile);
         AuditFile ConverterParaSaft(T ficheiroNaOrigem);
         ValidationResult Validate(T saftData); // Validação integrada
-
     }
 }

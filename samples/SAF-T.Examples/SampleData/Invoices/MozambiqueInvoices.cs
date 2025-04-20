@@ -1,4 +1,4 @@
-﻿using SAFT.Examples.SampleData.Entities;
+﻿using Simansoft.SAFT.Examples.SampleData.Entities;
 using Simansoft.SAFT.Mozambique.Models;
 
 namespace Simansoft.SAFT.Examples.SampleData.Invoices
