@@ -1,4 +1,4 @@
-name: Previnir Merges inválidos para o Release
+name: Prevenir Merges inválidos para o Release
 
 on:
   pull_request:
