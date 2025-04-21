@@ -2,11 +2,9 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-### SAF-T.Core
-![Build Status](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml/badge.svg)
-
-### SAF-T.Mozambique
-![Build Status](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml/badge.svg)
+### Builds
+[![SAF-T.Core CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml)
+[![SAF-T.Mozambique CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml)
 
 ## Descrição do Projeto 📄
 
