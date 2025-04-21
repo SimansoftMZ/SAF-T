@@ -1,7 +1,12 @@
 # SAF-T 🌍
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![.NET](https://github.com/SimansoftMZ/SAF-T/blob/main/.github/workflows/saft-core-ci-cd.yml/badge.svg)](https://github.com/simansoftmoz/saf-t/actions)
+
+### SAF-T.Core
+![Build Status](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml/badge.svg)
+
+### SAF-T.Mozambique
+![Build Status](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml/badge.svg)
 
 ## Descrição do Projeto 📄
 
