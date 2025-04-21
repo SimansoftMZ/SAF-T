@@ -38,6 +38,15 @@ jobs:
       
     ## - name: Test
     ##  run: dotnet test --no-build --verbosity normal
+
+    - name: Definir versão
+      run: |
+        if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/v}
+        else
+          VERSION="0.7.0-preview-${GITHUB_RUN_NUMBER}"
+        fi
+        echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
     
     - name: Empacotar o projeto
       run: |
