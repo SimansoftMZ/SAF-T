@@ -1,23 +1,23 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: SAF-T.Core CI/CD
+name: SAF-T.Mozambique CI/CD
 
 on:
   push:
     tags:
       - 'v*'
     branches: [ "main" ]
-    paths: ["src/SAF-T.Core/**"]
+    paths: [ "src/SAF-T.Core/**", "src/SAF-T.Mozambique/**"]
   pull_request:
     branches: [ "main" ]
-    paths: [ "src/SAF-T.Core/**" ]
+    paths: [ "src/SAF-T.Core/**", "src/SAF-T.Mozambique/**" ]
 
 jobs:
   build:
     defaults:
       run:
-        working-directory: "src/SAF-T.Core"
+        working-directory: "src/SAF-T.Mozambique"
     
     runs-on: ubuntu-latest
     
@@ -47,7 +47,7 @@ jobs:
         if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
           VERSION=${GITHUB_REF#refs/tags/v}
         else
-          VERSION="${{ env.SAFT_CORE_VERSION_PREFIX }}-preview-${GITHUB_RUN_NUMBER}"
+          VERSION="${{ env.SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX }}-preview-${GITHUB_RUN_NUMBER}"
         fi
         echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
 
