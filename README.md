@@ -1,7 +1,7 @@
 # SAF-T 🌍
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![.NET](https://github.com/simansoftmz/saft-t/actions/workflows/dotnet.yml/badge.svg)](https://github.com/simansoftmoz/saf-t/actions)
+[![.NET](https://github.com/SimansoftMZ/SAF-T/blob/main/.github/workflows/saft-core-ci-cd.yml/badge.svg)](https://github.com/simansoftmoz/saf-t/actions)
 
 ## Descrição do Projeto 📄
 
