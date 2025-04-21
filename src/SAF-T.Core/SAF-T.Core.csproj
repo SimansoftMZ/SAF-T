@@ -13,6 +13,7 @@
     <RepositoryUrl>https://github.com/SimansoftMZ/SAF-T</RepositoryUrl>
 	<Version>$(PackageVersion)</Version>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	<IsPackable>true</IsPackable>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
