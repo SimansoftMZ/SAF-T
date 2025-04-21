@@ -47,11 +47,10 @@ jobs:
           VERSION="0.7.0-preview-${GITHUB_RUN_NUMBER}"
         fi
         echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
-    
+
     - name: Empacotar o projeto
       run: |
-        VERSION=${GITHUB_REF#refs/tags/v}
-        dotnet pack --configuration Release -p:PackageVersion=$VERSION --no-build -o ./nupkg
+        dotnet pack --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
       
     - name: Publicar no NuGet
       run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
