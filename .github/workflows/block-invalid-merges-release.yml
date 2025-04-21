@@ -3,7 +3,7 @@ name: Prevenir Merges inválidos para o Release
 on:
   pull_request:
     branches:
-      - 'release**'
+      - 'release/**'
 
 jobs:
   check_source_branch:
