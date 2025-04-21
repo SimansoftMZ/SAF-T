@@ -13,14 +13,12 @@
     <RepositoryUrl>https://github.com/SimansoftMZ/SAF-T</RepositoryUrl>
 	<Version Condition="'$(PackageVersion)' != ''">$(PackageVersion)</Version>
 	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+
 	<IsPackable>true</IsPackable>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="README.md" Pack="true" PackagePath="" />
-  </ItemGroup>
 	
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <IsAotCompatible>True</IsAotCompatible>
