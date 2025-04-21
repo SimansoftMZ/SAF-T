@@ -34,7 +34,7 @@ jobs:
       run: dotnet restore
 
     - name: Copiar README para a pasta do projeto
-      run: cp README.md src/SAF-T.Core/README.md
+      run: cp ../../README.md src/SAF-T.Core/README.md
       
     - name: Compilar o projecto
       run: dotnet build --configuration Release --no-restore
