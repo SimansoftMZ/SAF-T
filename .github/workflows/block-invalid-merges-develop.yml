@@ -12,7 +12,7 @@ jobs:
       - name: Validate source branch
         run: |
           echo "Branch origem: ${{ github.head_ref }}"
-          if [[ ! "${{ github.head_ref }}" =~ ^feature/ ]] && [[ ! "${{ github.head_ref }}" =~ ^bugfix/ ]] && [[ ! "${{ github.head_ref }}" =~ ^release/ ]]; then
-            echo "❌ Só são permitidos merges de 'feature/*', 'bugfix/*' ou para 'release/'."
+          if [[ ! "${{ github.head_ref }}" =~ ^feature- ]] && [[ ! "${{ github.head_ref }}" =~ ^bugfix- ]] && [[ ! "${{ github.head_ref }}" =~ ^release- ]]; then
+            echo "❌ Só são permitidos merges de 'feature-*', 'bugfix-*' ou para 'release-*'."
             exit 1
           fi
