@@ -47,7 +47,7 @@ jobs:
         if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
           VERSION=${GITHUB_REF#refs/tags/v}
         else
-          VERSION="${{ env.SAFT_CORE_VERSION_PREFIX }}-preview-${GITHUB_RUN_NUMBER}"
+          VERSION="${{ env.SAFT_VERSION_PREFIX }}-preview-${GITHUB_RUN_NUMBER}"
         fi
         echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
 
