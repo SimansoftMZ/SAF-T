@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://github.com/SimansoftMZ/SAF-T</PackageProjectUrl>
     <AssemblyName>Simansoft.SAFT.Mozambique</AssemblyName>
     <RepositoryUrl>https://github.com/SimansoftMZ/SAF-T</RepositoryUrl>
-	<VersionPrefix>0.6.3</VersionPrefix>
+	 <VersionPrefix>0.6.3</VersionPrefix>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
