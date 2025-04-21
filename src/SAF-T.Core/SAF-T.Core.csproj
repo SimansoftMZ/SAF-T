@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://github.com/SimansoftMZ/SAF-T</PackageProjectUrl>
     <AssemblyName>Simansoft.SAFT.Core</AssemblyName>
     <RepositoryUrl>https://github.com/SimansoftMZ/SAF-T</RepositoryUrl>
-	<Version>$(PackageVersion)</Version>
+	 <Version>$(PackageVersion)</Version>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<IsPackable>true</IsPackable>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
