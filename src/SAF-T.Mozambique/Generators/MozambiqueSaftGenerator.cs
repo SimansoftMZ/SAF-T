@@ -170,7 +170,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                                 SourceBilling = doc.OrigemDocumentoId
                             },
                             Hash = (doc.ControlaAssinatura ?? false) ? 1 : 0,
-                            HashControl = (string.Empty(doc.Assinatura) && doc.ControlaAssinatura
+                            HashControl = (string.IsNullOrWhiteSpace(doc.Assinatura) && (doc.ControlaAssinatura ?? false))
                                 ? "Não certificado"
                                 : doc.Assinatura,
                             Period = doc.PeriodoMes,
@@ -243,8 +243,8 @@ namespace Simansoft.SAFT.Mozambique.Generators
                                 {
                                     PaymentMechanism = p.TipoId,
                                     PaymentAmount = p.Valor,
-                                    PaymentDate = p.Data                                    
-                                })],
+                                    PaymentDate = p.Data
+                                })]
                             }
                         })]
                     }

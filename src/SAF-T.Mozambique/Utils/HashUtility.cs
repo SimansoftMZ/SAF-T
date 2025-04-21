@@ -1,7 +1,7 @@
 ﻿using Simansoft.SAFT.Core.Interfaces;
 using Simansoft.SAFT.Mozambique.Models;
 
-namespace Simansoft.SAFT.Mozambique.Generators
+namespace Simansoft.SAFT.Mozambique.Utils
 {
     public record class HashUtility : IHashUtility<DocumentoParaHash>
     {

@@ -37,7 +37,7 @@
 
 ```bash
 # Instale o pacote principal
-dotnet add package SAFT.Core
+dotnet add package Simansoft.SAFT.Core
 
 # Instale a implementação para Moçambique
-dotnet add package SAFT.Mozambique
+dotnet add package Simansoft.SAFT.Mozambique
