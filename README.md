@@ -10,7 +10,7 @@
 ### Tecnologias:
 - **.NET 9**: Performance e modernidade.
 - **XML/JSON**: Suporte aos formatos exigidos por autoridades fiscais.
-- **SHA-256**: Segurança na geração de hashes.
+- **SHA-?**: Segurança ao gerar de hashes.
 
 ### Objetivos:
 - Facilitar a adesão às normas fiscais de cada país.
@@ -25,11 +25,11 @@
 ---
 
 ## Funcionalidades Principais ✨
-- ✅ **Suporte Multi-País**: Implemente SAF-T para Moçambique, Portugal, ou qualquer outro país.
-- ✅ **Formatos de Saída**: Gere ficheiros em **XML** e **JSON** conforme as especificações locais.
-- ✅ **Hash SHA-256**: Gere hashes seguros para documentos de faturação.
-- ✅ **Extensível**: Adicione novos países com estrutura modular.
-- ✅ **Validação Integrada**: Valide dados contra esquemas XSD/JSON Schema.
+- [X] **Suporte Multi-País**: Implemente SAF-T para Moçambique, Portugal, ou qualquer outro país.
+- [X] **Formatos de Saída**: Gere ficheiros em **XML** e **JSON** conforme as especificações locais.
+- [X] **Extensível**: Adicione novos países com estrutura modular.
+- [ ] **Hash**: Gera hashes seguros para assinar documentos de faturação. 
+- [ ] **Validação Integrada**: Valide dados contra esquemas XSD/JSON Schema.
 
 ---
 
