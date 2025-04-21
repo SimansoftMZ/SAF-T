@@ -5,13 +5,13 @@
     <RootNamespace>Simansoft.SAFT.Mozambique</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageId>simansoft.saft.mozambique</PackageId>
+    <PackageId>Simansoft.SAFT.Mozambique</PackageId>
     <Title>Simansoft.SAFT.Mozambique</Title>
     <Authors>Simansoft</Authors>
     <PackageProjectUrl>https://github.com/SimansoftMZ/SAF-T</PackageProjectUrl>
     <AssemblyName>Simansoft.SAFT.Mozambique</AssemblyName>
     <RepositoryUrl>https://github.com/SimansoftMZ/SAF-T</RepositoryUrl>
-	<VersionPrefix>0.6.2</VersionPrefix>
+	<VersionPrefix>0.6.3</VersionPrefix>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>

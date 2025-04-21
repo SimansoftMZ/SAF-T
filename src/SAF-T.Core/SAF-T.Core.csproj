@@ -7,11 +7,10 @@
     <Nullable>enable</Nullable>
     <Authors>Simansoft</Authors>
     <Title>Simansoft.SAFT.Core</Title>
-    <PackageId>simansoft.saft.core</PackageId>
+    <PackageId>Simansoft.SAFT.Core</PackageId>
     <PackageProjectUrl>https://github.com/SimansoftMZ/SAF-T</PackageProjectUrl>
     <AssemblyName>Simansoft.SAFT.Core</AssemblyName>
     <RepositoryUrl>https://github.com/SimansoftMZ/SAF-T</RepositoryUrl>
-	<VersionPrefix>0.6.2</VersionPrefix>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
