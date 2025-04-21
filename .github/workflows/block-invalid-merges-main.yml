@@ -13,6 +13,6 @@ jobs:
         run: |
           echo "Branch origem: ${{ github.head_ref }}"
           if [[ ! "$BRANCH_NAME" =~ ^release- ]] && [[ ! "$BRANCH_NAME" =~ ^hotfix- ]]; then
-            echo "❌ Só são permitidos merges de 'release-*', 'hotfix-*' ou 'release' para 'main'."
+            echo "❌ Só são permitidos merges de 'release-*' ou 'hotfix-*' para 'main'."
             exit 1
           fi
