@@ -1,4 +1,6 @@
-﻿using Simansoft.SAFT.Core.Models;
+﻿using System.Data;
+using System.Security.Cryptography;
+using Simansoft.SAFT.Core.Models;
 using Simansoft.SAFT.Examples.SampleData.Entities;
 using Simansoft.SAFT.Examples.SampleData.Invoices;
 using Simansoft.SAFT.Mozambique.Generators;
@@ -45,8 +47,108 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             //Console.ReadKey(false);
             Console.WriteLine("=== XML ===");
 
-            Console.WriteLine(xml);
-            Console.ReadKey(false);
+            // Console.WriteLine(xml);
+            // Console.ReadKey(true);
+            // Console.Clear();
+
+
+            // var documento = documentosFacturacao.Select(s => new DocumentoParaHash
+            // {
+            //     // NumeroCertificadoAplicacaoEmissora = s.NumeroCertificadoAplicacaoEmissora,
+            //     // VersaoChave = s.VersaoChave,
+            //     DocumentoFacturacaoData = s.DataHora,
+            //     DocumentoFacturacaoDataRegisto = s.DataEmissao,
+            //     Categoria = s.Categoria,
+            //     TipoDocumentoId = s.TipoDocumentoId,
+            //     NumeroDocumento = s.NumeroDocumento,
+            //     DocumentoFacturacaoTotal = s.TotalGeral,
+            //     HashDocumentoAnterior = string.Empty
+            // }).FirstOrDefault();
+
+            using RSA rsa = RSA.Create(1024); // Gera um novo par de chaves RSA de 1024 bits
+                                              // string signature = SignData(dataToSign, rsa);
+
+            // string publicKey = rsa.ToXmlString(false); // Exporta a chave pública em formato XML
+
+
+            string chavePrivadaPEM = rsa.ExportRSAPrivateKeyPem();
+            string chavePublicaPEM = rsa.ExportSubjectPublicKeyInfoPem();
+
+            // using RSA rsa = RSA.Create();
+            // rsa.ImportFromPem(chavePrivadaPEM.ToCharArray());
+
+            // Documento 1
+            var documento1 = new DocumentoParaHash
+            {
+                DocumentoFacturacaoData = new DateTime(2024, 12, 9),
+                DocumentoFacturacaoDataRegisto = new DateTime(2024, 12, 9, 11, 22, 19),
+                TipoDocumentoId = "2024",
+                NumeroDocumento = "20",
+                DocumentoFacturacaoTotal = 100.02m,
+                Categoria = CategoriaDocumento.Factura,
+                HashDocumentoAnterior = string.Empty
+            };
+
+            string hash1 = documento1.Assinar(rsa);
+
+            // Documento 2
+            var documento2 = new DocumentoParaHash
+            {
+                DocumentoFacturacaoData = new DateTime(2024, 12, 9),
+                DocumentoFacturacaoDataRegisto = new DateTime(2024, 12, 9, 15, 43, 25),
+                TipoDocumentoId = "2024",
+                NumeroDocumento = "21",
+                DocumentoFacturacaoTotal = 200.34m,
+                Categoria = CategoriaDocumento.Factura,
+                HashDocumentoAnterior = hash1
+            };
+
+            string hash2 = documento2.Assinar(rsa);
+            // Cria um documento semelhante ao que está presente no regulamento publicado pelo governo de Moçambique
+
+
+
+            // var documento2 = new DocumentoParaHash
+            // {
+            //     DocumentoFacturacaoData = new DateTime(2013, 7, 1),
+            //     DocumentoFacturacaoDataRegisto = new DateTime(2023, 01, 01, 11, 7, 28),
+            //     TipoDocumentoId = "001",
+            //     NumeroDocumento = "0009",
+            //     DocumentoFacturacaoTotal = 200.00m,
+            //     Categoria = CategoriaDocumento.FacturaSimplificada,
+            //     HashDocumentoAnterior = "mYJEv4iGwLcnQbRD7dPs2uD1mX08XjXIKcGg3GEHmwMhmmGYusffIJjTdSITLX+uujTwzqmL/U5nvt6S9s8ijN3LwkJXsiEpt099e1MET/8y3+Y1bN+K+YPJQiVmlQS0fXETsOPo8SwUZdBALt0vTo1VhUZKejACcjEYJ9G6nI="
+            // };
+
+            Console.WriteLine($"Dados compostos para hash 1: {documento1.DadosCompostosParaHash}");
+            Console.WriteLine($"Dados compostos para hash 2: {documento2.DadosCompostosParaHash}");
+            Console.WriteLine(string.Empty);
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("==== Hashes ====");
+            Console.WriteLine($"Hash 1: {hash1}");
+            Console.WriteLine($"Hash 2: {hash2}");
+
+            // Console.WriteLine($"Dados compostos para hash 2: {documento2.DadosCompostosParaHash}");
+
+
+            // if (documento2 != null)
+            // {
+            //     // Gerar o hash do documento
+            //     var hashGerado = documento2.GerarHash();
+            //     Console.WriteLine($"Dados compostos para hash: {documento2.DadosCompostosParaHash}");
+            //     Console.WriteLine($"Hash gerado: {hashGerado}");
+            // }
+            // else
+            // {
+            //     Console.WriteLine("Nenhum documento encontrado. Não foi possível gerar o hash 2.");
+            // }
+            // Console.ReadKey(true);
         }
+
+        // public string GerarHash(DocumentoParaHash documentoParaHash)
+        // {
+        //     // Implementar a lógica para gerar o hash do documento
+        //     // Exemplo: return Convert.ToBase64String(Encoding.UTF8.GetBytes(documentoParaHash.ToString()));
+        //     return string.Empty; // Placeholder, deve ser substituído pela lógica real
+        // }
     }
 }

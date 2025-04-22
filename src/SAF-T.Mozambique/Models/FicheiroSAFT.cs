@@ -328,6 +328,7 @@ namespace Simansoft.SAFT.Mozambique.Models
         NotaCredito = 3,
         NotaDebito = 4,
         Cotacao = 5,
+        FacturaSimplificada = 6
     }
 
     public enum TipoMeioPagamento
