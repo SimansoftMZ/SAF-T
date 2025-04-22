@@ -70,7 +70,6 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
 
             // string publicKey = rsa.ToXmlString(false); // Exporta a chave pública em formato XML
 
-
             string chavePrivadaPEM = rsa.ExportRSAPrivateKeyPem();
             string chavePublicaPEM = rsa.ExportSubjectPublicKeyInfoPem();
 
@@ -141,7 +140,7 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             // {
             //     Console.WriteLine("Nenhum documento encontrado. Não foi possível gerar o hash 2.");
             // }
-            // Console.ReadKey(true);
+            Console.ReadKey(true);
         }
 
         // public string GerarHash(DocumentoParaHash documentoParaHash)
