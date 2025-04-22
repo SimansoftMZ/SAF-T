@@ -1,4 +1,4 @@
-name: Previnir Merges inválidos para o Develop
+name: Prevenir Merges inválidos para o Develop
 
 on:
   pull_request:
