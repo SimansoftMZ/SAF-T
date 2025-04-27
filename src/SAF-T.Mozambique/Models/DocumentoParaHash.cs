@@ -49,13 +49,13 @@ namespace Simansoft.SAFT.Mozambique.Models
         //    return Convert.ToBase64String(Encoding.UTF8.GetBytes(DadosCompostosParaHash));
         //}
         
-        public string Assinar(RSA privateKey)
-        {
-            byte[] dataBytes = Encoding.UTF8.GetBytes(DadosCompostosParaHash);
+        //public string Assinar(RSA privateKey)
+        //{
+        //    byte[] dataBytes = Encoding.UTF8.GetBytes(DadosCompostosParaHash);
 
-            byte[] signedBytes = privateKey.SignData(dataBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+        //    byte[] signedBytes = privateKey.SignData(dataBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
 
-            return Convert.ToBase64String(signedBytes);
-        }
+        //    return Convert.ToBase64String(signedBytes);
+        //}
     }
 }

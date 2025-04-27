@@ -6,6 +6,7 @@ using Simansoft.SAFT.Examples.SampleData.Entities;
 using Simansoft.SAFT.Examples.SampleData.Invoices;
 using Simansoft.SAFT.Mozambique.Generators;
 using Simansoft.SAFT.Mozambique.Models;
+using Simansoft.SAFT.Mozambique.Utils;
 
 namespace Simansoft.SAFT.Examples.MozambiqueDemo
 {
@@ -53,15 +54,15 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             // Console.Clear();
 
 
-            var verificaDocumento1 = VerificarAssinatura(
-                "id composto do documento",
-                "assinatura do documento"
-                , "-----BEGIN PUBLIC KEY----------END PUBLIC KEY-----");
+            //var verificaDocumento1 = VerificarAssinatura(
+            //    "id composto do documento",
+            //    "assinatura do documento"
+            //    , "-----BEGIN PUBLIC KEY----------END PUBLIC KEY-----");
 
-            var verificaDocumento2 = VerificarAssinatura(
-                "id composto do documento",
-                "assinatura do documento"
-                , "-----BEGIN PUBLIC KEY----------END PUBLIC KEY-----");
+            //var verificaDocumento2 = VerificarAssinatura(
+            //    "id composto do documento",
+            //    "assinatura do documento"
+            //    , "-----BEGIN PUBLIC KEY----------END PUBLIC KEY-----");
 
 
 
@@ -82,7 +83,7 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
 
 
 
-            using RSA rsa = RSA.Create(1024); // Gera um novo par de chaves RSA de 1024 bits
+            //using RSA rsa = RSA.Create(1024); // Gera um novo par de chaves RSA de 1024 bits
                                               // string signature = SignData(dataToSign, rsa);
 
             //rsa.ImportFromPem(chavePrivadaPEM.ToCharArray());
@@ -96,6 +97,11 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
 
             // using RSA rsa = RSA.Create();
 
+            var signer = new SaftDocumentSigner();
+
+            string chavePrivada = signer.ExportPrivateKey();
+
+            //signer.LoadPrivateKey("-----BEGIN PRIVATE KEY-----\nMIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAM1QNauvICyrr6Z2afuH6uHmn9j3\r\nYIUVMEMvc9AXrCDlPahi63gA0HxA2LfDJ5zDnCSubvE4QpBTk3HInVepN91gkKK2g+Xc2+PsNrnV\r\nwl1U2MkktWdtoBBo5eGSlFn2oshLriiWBVoJeT7SFWIoHT2/K8a7ENWb672RSCZd39alAgMBAAEC\r\ngYEAvzM7SC9G31LjuTn9aOkirE2B/yQhFs6sq2S9jcT934Sc7vtwHclkXtJlAH0Vnr/r4Z0wZCPo\r\nmU+7t/MD1GcaRbxVTC73/Bjj/O5LgRCRGBP+HhQH+RNh7NhZ3UaWdBGyYSwq8nSz7as6XViNKOOJ\r\nao1noY+qLVfGnUBkS/Zp8uECQQDqLBBKzZUla5yG34O2d0yppR150PYSe1bNPt4B2LKzNgNLdKiH\r\njz+VTAaZbrYUqioUYzpItWA2zBlzFJTrhr07AkEA4HOAlaPQICrCeGYUWQAy11X0z5xo61rzam5Q\r\nX5/swfAp199w9SqxU2z5UyZhguE/7sJPvx47Krgh/ceZhbf9nwJBANKgDYtqvGLrFuANPMgrJ+5S\r\n0F9YP2zCOYHksQUSJzGgPHhrFobPps4fkrQA649MuwqZcbwiP8cp7x4efhAWoi8CQCVK651xV15Q\r\n3Hj2tQDIqKngrUlleoVIWlNfutj4kHT0u28TwAfsLQRogdCP+vmtBVtdS7S8iCYj6/nnlRmDpY8C\r\nQAsC4mkGb0dyUIiQ/CU34+gL9myyRDJUpCT4brstPjan3tPHCc5bq/mwwby/GTD5K0SPY2k6H3Qb\r\nWKE4KMI5+BY=\n-----END PRIVATE KEY-----");
 
             // Documento 1
             var documento1 = new DocumentoParaHash
@@ -109,7 +115,9 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
                 HashDocumentoAnterior = string.Empty
             };
 
-            string hash1 = documento1.Assinar(rsa);
+
+
+            string hash1 = signer.SignSaftDocument(documento1.DadosCompostosParaHash);
 
             // Documento 2
             var documento2 = new DocumentoParaHash
@@ -123,7 +131,9 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
                 HashDocumentoAnterior = hash1
             };
 
-            string hash2 = documento2.Assinar(rsa);
+            string hash2 = signer.SignSaftDocument(documento2.DadosCompostosParaHash);
+
+            //string hash2 = documento2.Assinar(rsa);
             // Cria um documento semelhante ao que está presente no regulamento publicado pelo governo de Moçambique
 
 
@@ -167,16 +177,16 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             Console.ReadKey(true);
         }
 
-        public static bool VerificarAssinatura(string dadosSemAssinatura, string assinaturaDocumento, string chavePublicaPem)
-        {
-            byte[] messageBytes = Encoding.UTF8.GetBytes(dadosSemAssinatura);
-            byte[] signatureBytes = Convert.FromBase64String(assinaturaDocumento);
+        //public static bool VerificarAssinatura(string dadosSemAssinatura, string assinaturaDocumento, string chavePublicaPem)
+        //{
+        //    byte[] messageBytes = Encoding.UTF8.GetBytes(dadosSemAssinatura);
+        //    byte[] signatureBytes = Convert.FromBase64String(assinaturaDocumento);
 
-            using RSA rsa = RSA.Create();
-            rsa.ImportFromPem(chavePublicaPem);
+        //    using RSA rsa = RSA.Create();
+        //    rsa.ImportFromPem(chavePublicaPem);
 
-            return rsa.VerifyData(messageBytes, signatureBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
-        }
+        //    return rsa.VerifyData(messageBytes, signatureBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+        //}
 
         // public string GerarHash(DocumentoParaHash documentoParaHash)
         // {
