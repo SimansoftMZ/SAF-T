@@ -8,10 +8,10 @@ on:
     tags:
       - 'v*'
     branches: [ "main" ]
-    paths: [ "src/SAF-T.Core/**", "src/SAF-T.Mozambique/**"]
+    paths: [ "src/SAF-T.Core/**", "src/SAF-T.Cryptography/**", "src/SAF-T.Mozambique/**"]
   pull_request:
     branches: [ "main" ]
-    paths: [ "src/SAF-T.Core/**", "src/SAF-T.Mozambique/**" ]
+    paths: [ "src/SAF-T.Core/**", "src/SAF-T.Cryptography/**", "src/SAF-T.Mozambique/**" ]
 
 jobs:
   build:
