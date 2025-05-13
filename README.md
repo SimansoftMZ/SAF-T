@@ -4,6 +4,7 @@
 
 ### Builds
 [![SAF-T.Core CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml)
+[![SAF-T.Cryptography CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-cryptography-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-cryptography-ci-cd.yml)
 [![SAF-T.Mozambique CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml)
 
 ## Descrição do Projeto 📄
