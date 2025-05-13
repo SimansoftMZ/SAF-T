@@ -4,8 +4,8 @@ namespace Simansoft.SAFT.Cryptography.KeyManagement
 {
     public class RsaKeyPairService : IKeyPairService
     {
-        private RSA _rsa;
-        private int _keySize;
+        private readonly RSA _rsa;
+        private readonly int _keySize;
 
         public RsaKeyPairService(int keySize = 1024)
         {
