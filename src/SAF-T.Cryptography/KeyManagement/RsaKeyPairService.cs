@@ -2,22 +2,9 @@
 
 namespace Simansoft.SAFT.Cryptography.KeyManagement
 {
-    public class RsaKeyPairService : IKeyPairService
+    public class RsaKeyPairService(int keySize = 1024) : IKeyPairService
     {
-        private readonly RSA _rsa;
-        private readonly int _keySize;
-
-        public RsaKeyPairService(int keySize = 1024)
-        {
-            _keySize = keySize;
-            _rsa = RSA.Create(_keySize);
-        }
-
-        //public void GenerateKeyPair(int keySize = 1024)
-        //{
-        //    _keySize = keySize;
-        //    _rsa = RSA.Create(_keySize);
-        //}
+        private readonly RSA _rsa = RSA.Create(keySize);
 
         public string ExportPublicKeyPem() => PemUtils.ExportPublicKeyToPem(_rsa);
         public string ExportPrivateKeyPem() => PemUtils.ExportPrivateKeyToPem(_rsa);
