@@ -8,7 +8,7 @@ namespace Simansoft.SAFT.Cryptography.KeyManagement
 {
     public interface IKeyPairService
     {
-        void GenerateKeyPair(int keySize = 1024);
+        //void GenerateKeyPair(int keySize = 1024);
         string ExportPublicKeyPem();
         string ExportPrivateKeyPem();
         void LoadPrivateKeyFromPem(string pem);

@@ -79,12 +79,12 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             //     HashDocumentoAnterior = string.Empty
             // }).FirstOrDefault();
 
-            //string chavePrivadaPEM = "-----BEGIN RSA PRIVATE KEY-----";
+            string chavePrivadaPEM = "-----BEGIN RSA PRIVATE KEY-----\n\n-----END RSA PRIVATE KEY-----";
 
 
 
             //using RSA rsa = RSA.Create(1024); // Gera um novo par de chaves RSA de 1024 bits
-                                              // string signature = SignData(dataToSign, rsa);
+            // string signature = SignData(dataToSign, rsa);
 
             //rsa.ImportFromPem(chavePrivadaPEM.ToCharArray());
 
@@ -99,9 +99,12 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
 
             var signer = new SaftDocumentSigner();
 
-            string chavePrivada = signer.ExportPrivateKey();
+            signer.LoadPrivateKey(chavePrivadaPEM);
 
-            //signer.LoadPrivateKey("-----BEGIN PRIVATE KEY-----\nMIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAM1QNauvICyrr6Z2afuH6uHmn9j3\r\nYIUVMEMvc9AXrCDlPahi63gA0HxA2LfDJ5zDnCSubvE4QpBTk3HInVepN91gkKK2g+Xc2+PsNrnV\r\nwl1U2MkktWdtoBBo5eGSlFn2oshLriiWBVoJeT7SFWIoHT2/K8a7ENWb672RSCZd39alAgMBAAEC\r\ngYEAvzM7SC9G31LjuTn9aOkirE2B/yQhFs6sq2S9jcT934Sc7vtwHclkXtJlAH0Vnr/r4Z0wZCPo\r\nmU+7t/MD1GcaRbxVTC73/Bjj/O5LgRCRGBP+HhQH+RNh7NhZ3UaWdBGyYSwq8nSz7as6XViNKOOJ\r\nao1noY+qLVfGnUBkS/Zp8uECQQDqLBBKzZUla5yG34O2d0yppR150PYSe1bNPt4B2LKzNgNLdKiH\r\njz+VTAaZbrYUqioUYzpItWA2zBlzFJTrhr07AkEA4HOAlaPQICrCeGYUWQAy11X0z5xo61rzam5Q\r\nX5/swfAp199w9SqxU2z5UyZhguE/7sJPvx47Krgh/ceZhbf9nwJBANKgDYtqvGLrFuANPMgrJ+5S\r\n0F9YP2zCOYHksQUSJzGgPHhrFobPps4fkrQA649MuwqZcbwiP8cp7x4efhAWoi8CQCVK651xV15Q\r\n3Hj2tQDIqKngrUlleoVIWlNfutj4kHT0u28TwAfsLQRogdCP+vmtBVtdS7S8iCYj6/nnlRmDpY8C\r\nQAsC4mkGb0dyUIiQ/CU34+gL9myyRDJUpCT4brstPjan3tPHCc5bq/mwwby/GTD5K0SPY2k6H3Qb\r\nWKE4KMI5+BY=\n-----END PRIVATE KEY-----");
+
+            //string chavePrivada = signer.ExportPrivateKey();
+
+            //signer.LoadPrivateKey("-----BEGIN PRIVATE KEY-----\n-----END PRIVATE KEY-----");
 
             // Documento 1
             var documento1 = new DocumentoParaHash
