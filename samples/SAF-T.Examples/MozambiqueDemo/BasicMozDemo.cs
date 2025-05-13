@@ -1,7 +1,4 @@
-﻿using System.Data;
-using System.Security.Cryptography;
-using System.Text;
-using Simansoft.SAFT.Core.Models;
+﻿using Simansoft.SAFT.Core.Models;
 using Simansoft.SAFT.Examples.SampleData.Entities;
 using Simansoft.SAFT.Examples.SampleData.Invoices;
 using Simansoft.SAFT.Mozambique.Generators;
@@ -79,32 +76,10 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             //     HashDocumentoAnterior = string.Empty
             // }).FirstOrDefault();
 
-            string chavePrivadaPEM = "-----BEGIN RSA PRIVATE KEY-----\n\n-----END RSA PRIVATE KEY-----";
+            var signerChavePrivada = new SaftDocumentSigner();
 
-
-
-            //using RSA rsa = RSA.Create(1024); // Gera um novo par de chaves RSA de 1024 bits
-            // string signature = SignData(dataToSign, rsa);
-
-            //rsa.ImportFromPem(chavePrivadaPEM.ToCharArray());
-
-            // string publicKey = rsa.ToXmlString(false); // Exporta a chave pública em formato XML
-
-
-
-            //string chavePrivadaPEM = rsa.ExportRSAPrivateKeyPem();
-            //string chavePublicaPEM = rsa.ExportSubjectPublicKeyInfoPem();
-
-            // using RSA rsa = RSA.Create();
-
-            var signer = new SaftDocumentSigner();
-
-            signer.LoadPrivateKey(chavePrivadaPEM);
-
-
-            //string chavePrivada = signer.ExportPrivateKey();
-
-            //signer.LoadPrivateKey("-----BEGIN PRIVATE KEY-----\n-----END PRIVATE KEY-----");
+            //string chavePrivadaPEM = "-----BEGIN RSA PRIVATE KEY----- -----END RSA PRIVATE KEY-----";
+            //signerChavePrivada.LoadPrivateKey(chavePrivadaPEM);
 
             // Documento 1
             var documento1 = new DocumentoParaHash
@@ -118,9 +93,7 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
                 HashDocumentoAnterior = string.Empty
             };
 
-
-
-            string hash1 = signer.SignSaftDocument(documento1.DadosCompostosParaHash);
+            string hash1 = signerChavePrivada.SignSaftDocument(documento1.DadosCompostosParaHash);
 
             // Documento 2
             var documento2 = new DocumentoParaHash
@@ -134,7 +107,7 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
                 HashDocumentoAnterior = hash1
             };
 
-            string hash2 = signer.SignSaftDocument(documento2.DadosCompostosParaHash);
+            string hash2 = signerChavePrivada.SignSaftDocument(documento2.DadosCompostosParaHash);
 
             //string hash2 = documento2.Assinar(rsa);
             // Cria um documento semelhante ao que está presente no regulamento publicado pelo governo de Moçambique
@@ -178,24 +151,22 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             //     Console.WriteLine("Nenhum documento encontrado. Não foi possível gerar o hash 2.");
             // }
             Console.ReadKey(true);
+            Console.Clear();
+            Console.WriteLine("===== Validando as assinaturas =====");
+            string chavePublicaPEM = signerChavePrivada.ExportPublicKey();
+
+            var signerChavePublica = new SaftDocumentSigner();
+
+            signerChavePublica.LoadPublicKey(chavePublicaPEM);
+
+            Console.WriteLine("Verificando assinatura do documento 1...");
+            bool doc1BemAssinado = signerChavePrivada.Verify(documento1.DadosCompostosParaHash, hash1);
+            Console.WriteLine("Assinatura do documento 1: " + (doc1BemAssinado ? "Válida" : "Inválida"));
+            Console.WriteLine(string.Empty);
+            Console.WriteLine("Verificando assinatura do documento 2...");
+            bool doc2BemAssinado = signerChavePrivada.Verify(documento2.DadosCompostosParaHash, hash2);
+            Console.WriteLine("Assinatura do documento 2: " + (doc2BemAssinado ? "Válida" : "Inválida"));
+            Console.ReadKey(true);
         }
-
-        //public static bool VerificarAssinatura(string dadosSemAssinatura, string assinaturaDocumento, string chavePublicaPem)
-        //{
-        //    byte[] messageBytes = Encoding.UTF8.GetBytes(dadosSemAssinatura);
-        //    byte[] signatureBytes = Convert.FromBase64String(assinaturaDocumento);
-
-        //    using RSA rsa = RSA.Create();
-        //    rsa.ImportFromPem(chavePublicaPem);
-
-        //    return rsa.VerifyData(messageBytes, signatureBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
-        //}
-
-        // public string GerarHash(DocumentoParaHash documentoParaHash)
-        // {
-        //     // Implementar a lógica para gerar o hash do documento
-        //     // Exemplo: return Convert.ToBase64String(Encoding.UTF8.GetBytes(documentoParaHash.ToString()));
-        //     return string.Empty; // Placeholder, deve ser substituído pela lógica real
-        // }
     }
 }

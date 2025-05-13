@@ -29,6 +29,16 @@ namespace Simansoft.SAFT.Mozambique.Utils
         public string ExportPrivateKey() => _keyPairService.ExportPrivateKeyPem();
         public void LoadPrivateKey(string privateKeyPem) => _keyPairService.LoadPrivateKeyFromPem(privateKeyPem);
         public void LoadPublicKey(string publicKeyPem) => _keyPairService.LoadPublicKeyFromPem(publicKeyPem);
+
+        public bool Verify(string dadosParaAssinar, string assinaturaBase64)
+        {
+            if (string.IsNullOrEmpty(dadosParaAssinar))
+                throw new ArgumentException("Dados para assinar não podem ser nulos ou vazios", nameof(dadosParaAssinar));
+            if (string.IsNullOrEmpty(assinaturaBase64))
+                throw new ArgumentException("Assinatura não pode ser nula ou vazia", nameof(assinaturaBase64));
+            return _hashSigner.Verify(dadosParaAssinar, assinaturaBase64);
+        }
+
         public RSA GetRsa() => _keyPairService.GetRsa() ?? throw new InvalidOperationException("Chave RSA não inicializada.");
     }
 }
