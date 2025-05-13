@@ -1,0 +1,60 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: SAF-T.Cryptography CI/CD
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches: [ "main" ]
+    paths: [ "src/SAF-T.Cryptography/**" ]
+  pull_request:
+    branches: [ "main" ]
+    paths: [ "src/SAF-T.Cryptography/**" ]
+
+jobs:
+  build:
+    defaults:
+      run:
+        working-directory: "src/SAF-T.Cryptography"
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout do repositório
+      uses: actions/checkout@v4
+      
+    - name: Setup do .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.x.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Copiar README para a pasta do projeto
+      run: cp ../../README.md README.md
+      
+    - name: Compilar o projecto
+      run: dotnet build --configuration Release --no-restore
+      
+    ## - name: Test
+    ##  run: dotnet test --no-build --verbosity normal
+
+    - name: Definir versão
+      run: |
+        if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/v}
+        else
+          VERSION="${{ env.SAFT_CORE_VERSION_PREFIX }}-preview-${GITHUB_RUN_NUMBER}"
+        fi
+        echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Empacotar o projeto
+      run: |
+        dotnet pack --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+      
+    - name: Publicar no NuGet
+      run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
+    
