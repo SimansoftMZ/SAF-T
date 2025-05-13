@@ -31,7 +31,7 @@
 - [X] **Suporte Multi-País**: Implemente SAF-T para Moçambique, Portugal, ou qualquer outro país.
 - [X] **Formatos de Saída**: Gere ficheiros em **XML** e **JSON** conforme as especificações locais.
 - [X] **Extensível**: Adicione novos países com estrutura modular.
-- [ ] **Hash**: Gera hashes seguros para assinar documentos de faturação. 
+- [X] **Hash**: Gera hashes seguros para assinar documentos de faturação. 
 - [ ] **Validação Integrada**: Valide dados contra esquemas XSD/JSON Schema.
 
 ---
@@ -41,6 +41,9 @@
 ```bash
 # Instale o pacote principal
 dotnet add package Simansoft.SAFT.Core
+
+# Instale o pacote de criptografia dos dados
+dotnet add package Simansoft.SAFT.Cryptography
 
 # Instale a implementação para Moçambique
 dotnet add package Simansoft.SAFT.Mozambique
