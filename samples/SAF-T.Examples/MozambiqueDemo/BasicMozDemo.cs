@@ -78,8 +78,8 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
 
             var signerChavePrivada = new SaftDocumentSigner();
 
-            //string chavePrivadaPEM = "-----BEGIN RSA PRIVATE KEY----- -----END RSA PRIVATE KEY-----";
-            //signerChavePrivada.LoadPrivateKey(chavePrivadaPEM);
+            string chavePrivadaPEM = "-----BEGIN RSA PRIVATE KEY-----\nMIICXAIBAAKBgQCdmzwUOh/PU6oth9uWT1hfZ/pY14adzPlUM+t/QZuSJJ6yvEg3\navLhuUUhhJOZdVMKAV1EtuOV5SYUYdd06wa/3hrZSBYnQ7JhswT1wVVZ8ZnFMVpq\nT22dFfjjxMmN3is1p9glR/IVupiRfv9Zedk84WREMrksa+tyzCPNe+HLpQIDAQAB\nAoGAdpZ3fkC97qJlSh0PfOn29NKn7HE/OT0h3dmzOO2EwVIMlzBUpl4youVkvvOi\nm7VL5htgsnNqiz8AiBWWqMKvMED4e+wOYceKSSEX+VnpzAw1o2YioIv7t0V55RFT\nPqonf6R4Te73sKJN1oQE/bfZGz8jR/J6H+OzweMM9U6OL4ECQQDMyxz56wLX0nDG\nzhXkSEwOA9MUGXc4ETiPGdqtc4YfhgvvpyDzKXJf1kcSjhmzdk+Nr1fX/T6MuqYe\nK7mPBZMbAkEAxQOqgZ0y7Tlle+hTZOz2BM1ZzHw4ycytSKaqAkcpe1UKF+v6qHtk\nQgOdj1omCrY5HuLnQfh4RBfaBHGON5lIPwJAI0n4s0QA2GnFzywh75VZrayRCcyd\nk4a8JUSCPxNCEFqL4f79mYkR0VveIV9lJFyFttd5Hpnf1mYvS9GjBvch8wJBALYn\np5Rjddyj/tLLgZ+FAAp8mxRXnmHmnijX/8RPa2kevVBU3NK+E3p9wUXzgczRooqO\nHGeAhiHfM7J8E5QQYx0CQCiJXpUHIH6HMxOWqpkT/VbXjPUzBJPVp04aDr6P9cTl\n6gE4hxHKz0zNPzD9EMzA+urU/wJyolEkqlOG/hRkPAM=\n-----END RSA PRIVATE KEY-----";
+            signerChavePrivada.LoadPrivateKey(chavePrivadaPEM);
 
             // Documento 1
             var documento1 = new DocumentoParaHash
