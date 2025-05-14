@@ -5,11 +5,17 @@ using System.Security.Cryptography;
 
 namespace Simansoft.SAFT.Mozambique.Utils
 {
+    /// <summary>
+    /// Provides functionality for signing and verifying SAF-T documents using RSA cryptography.
+    /// </summary>
     public class SaftDocumentSigner
     {
         private readonly RsaKeyPairService _keyPairService;
         private readonly RsaHashSigner _hashSigner;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SaftDocumentSigner"/> class.
+        /// </summary>
         public SaftDocumentSigner()
         {
             // 1. Instanciar serviço de chaves RSA
