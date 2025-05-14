@@ -8,38 +8,38 @@ Este projeto segue uma estrutura de branches baseada no Git Flow para garantir u
 
 #### `main`
 - **Descrição**: Contém o código de produção. Sempre estável.
-- **Commits Permitidos**: Apenas *merges* vindos de `release/*` ou `hotfix/*`.
+- **Commits Permitidos**: Apenas *merges* vindos de `release-*` ou `hotfix-*`.
 - **Importante**: Cada commit deve representar uma versão estável e publicada.
 
 #### `develop`
 - **Descrição**: Código em desenvolvimento contínuo. Serve como base para novas features.
-- **Commits Permitidos**: Apenas *merges* de `feature/*`, `bugfix/*` ou `release/*`.
+- **Commits Permitidos**: Apenas *merges* de `feature-*`, `bugfix-*` ou `release-*`.
 - **Importante**: Não fazer commits diretos.
 
-#### `feature/*`
+#### `feature-*`
 - **Descrição**: Desenvolvimento de novas funcionalidades.
 - **Base**: `develop`
 - **Destino do Merge**: `develop`
-- **Exemplo de nome**: `feature/login-social`
+- **Exemplo de nome**: `feature-login-social`
 
-#### `bugfix/*`
+#### `bugfix-*`
 - **Descrição**: Correção de bugs identificados durante o desenvolvimento.
 - **Base**: `develop`
 - **Destino do Merge**: `develop`
-- **Exemplo de nome**: `bugfix/erro-login`
+- **Exemplo de nome**: `bugfix-erro-login`
 
-#### `release/*`
+#### `release-*`
 - **Descrição**: Preparação para lançar uma nova versão estável.
 - **Base**: `develop`
 - **Destino do Merge**: `main` e `develop`
-- **Exemplo de nome**: `release/v1.2.0`
+- **Exemplo de nome**: `release-v1.2.0`
 - **Notas**: Usado para ajustes finais antes da publicação.
 
-#### `hotfix/*`
+#### `hotfix-*`
 - **Descrição**: Correções críticas diretamente em produção.
 - **Base**: `main`
 - **Destino do Merge**: `main` e `develop`
-- **Exemplo de nome**: `hotfix/corrige-crash-pagamento`
+- **Exemplo de nome**: `hotfix-corrige-crash-pagamento`
 
 ---
 
@@ -60,12 +60,12 @@ Para garantir **compatibilidade máxima com ferramentas, CI/CD e sistemas operat
 ### 📁 Estrutura de branches
 
 | Tipo de Branch                        | Prefixo      | Exemplo                     | Criado a partir de... |
-|--------------------------------------|--------------|-----------------------------|------------------------|
-| **Desenvolvimento principal**        | `develop`    | `develop`                   | `main`                 |
-| **Funcionalidade nova**              | `feature-`   | `feature-login-page`        | `develop`              |
-| **Correção de bug**                    | `bugfix-`    | `bugfix-session-timeout`    | `develop`              |
-| **Preparação de release**              | `release-`   | `release-v1.2.0`            | `develop`              |
-| **Correção urgente em produção**        | `hotfix-`    | `hotfix-v1.2.1`             | `main`                 |
+|---------------------------------------|--------------|-----------------------------|-----------------------|
+| **Desenvolvimento principal**         | `develop`    | `develop`                   | `main`                |
+| **Funcionalidade nova**               | `feature-`   | `feature-login-page`        | `develop`             |
+| **Correção de bug**                   | `bugfix-`    | `bugfix-session-timeout`    | `develop`             |
+| **Preparação de release**             | `release-`   | `release-v1.2.0`            | `develop`             |
+| **Correção urgente em produção**      | `hotfix-`    | `hotfix-v1.2.1`             | `main`                |
 
 ---
 
@@ -85,8 +85,8 @@ Para garantir **compatibilidade máxima com ferramentas, CI/CD e sistemas operat
 |-----------------------|--------------------------|
 | `feature/LoginPage`   | Contém barra `/`         |
 | `feature login page`  | Contém espaços           |
-| `feature-LoginPage`   | Uso de maiúsculas         |
-| `fix@bug`             | Símbolos não suportados   |
+| `feature-LoginPage`   | Uso de maiúsculas        |
+| `fix@bug`             | Símbolos não suportados  |
 
 ---
 
