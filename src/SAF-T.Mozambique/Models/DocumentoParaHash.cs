@@ -5,6 +5,8 @@ namespace Simansoft.SAFT.Mozambique.Models
 {
     public record class DocumentoParaHash
     {
+        // The following properties are placeholders for future use. They are currently disabled
+        // because the application does not yet require them. Uncomment and implement them when needed.
         // public string NumeroCertificadoAplicacaoEmissora { get; init; } = string.Empty;
         // public string VersaoChave { get; init; } = string.Empty;
 
