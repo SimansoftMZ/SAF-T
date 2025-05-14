@@ -160,11 +160,11 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             signerChavePublica.LoadPublicKey(chavePublicaPEM);
 
             Console.WriteLine("Verificando assinatura do documento 1...");
-            bool doc1BemAssinado = signerChavePrivada.Verify(documento1.DadosCompostosParaHash, hash1);
+            bool doc1BemAssinado = signerChavePublica.Verify(documento1.DadosCompostosParaHash, hash1);
             Console.WriteLine("Assinatura do documento 1: " + (doc1BemAssinado ? "Válida" : "Inválida"));
             Console.WriteLine(string.Empty);
             Console.WriteLine("Verificando assinatura do documento 2...");
-            bool doc2BemAssinado = signerChavePrivada.Verify(documento2.DadosCompostosParaHash, hash2);
+            bool doc2BemAssinado = signerChavePublica.Verify(documento2.DadosCompostosParaHash, hash2);
             Console.WriteLine("Assinatura do documento 2: " + (doc2BemAssinado ? "Válida" : "Inválida"));
             Console.ReadKey(true);
         }
