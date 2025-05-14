@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SAF-T.Core\SAF-T.Core.csproj" />
+    <ProjectReference Include="..\SAF-T.Cryptography\SAF-T.Cryptography.csproj" />
   </ItemGroup>
 
 </Project>

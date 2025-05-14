@@ -138,7 +138,7 @@ namespace Simansoft.SAFT.Mozambique.Models
             };
         }
 
-        public string Id { get => $"{CategoriaId} {string.Concat("000", TipoDocumentoId)[^3..]}/{NumeroDocumento}"; }
+        public string Id { get => $"{CategoriaId} {TipoDocumentoId}/{NumeroDocumento}"; }
 
         public bool? ControlaAssinatura { get; init; }
         public string? Assinatura { get; init; }
@@ -328,6 +328,7 @@ namespace Simansoft.SAFT.Mozambique.Models
         NotaCredito = 3,
         NotaDebito = 4,
         Cotacao = 5,
+        FacturaSimplificada = 6
     }
 
     public enum TipoMeioPagamento

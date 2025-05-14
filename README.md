@@ -4,16 +4,17 @@
 
 ### Builds
 [![SAF-T.Core CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml)
+[![SAF-T.Cryptography CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-cryptography-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-cryptography-ci-cd.yml)
 [![SAF-T.Mozambique CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml)
 
 ## Descrição do Projeto 📄
 
-**SAF-T** é uma biblioteca .NET para geração de ficheiros **SAF-T (Standard Audit File for Tax)**, focada em **extensibilidade multi-país**. Desenvolvida em **C#/.NET 9+**, permite que desenvolvedores e empresas gerem documentos fiscais em conformidade com as regras locais de países como Moçambique, com suporte a **XML**, **JSON** e **hashes SHA-256**. Projeto open-source sob licença MIT.
+**SAF-T** é uma biblioteca .NET para geração de ficheiros **SAF-T (Standard Audit File for Tax)**, focada em **extensibilidade multi-país**. Desenvolvida em **C#/.NET 9+**, permite que desenvolvedores e empresas gerem documentos fiscais em conformidade com as regras locais de países como Moçambique, com suporte a **XML**, **JSON** e **hashes SHA-1**. Projeto open-source sob licença MIT.
 
 ### Tecnologias:
 - **.NET 9**: Performance e modernidade.
 - **XML/JSON**: Suporte aos formatos exigidos por autoridades fiscais.
-- **SHA-?**: Segurança ao gerar de hashes.
+- **SHA-1**: Segurança ao gerar de hashes.
 
 ### Objetivos:
 - Facilitar a adesão às normas fiscais de cada país.
@@ -31,7 +32,7 @@
 - [X] **Suporte Multi-País**: Implemente SAF-T para Moçambique, Portugal, ou qualquer outro país.
 - [X] **Formatos de Saída**: Gere ficheiros em **XML** e **JSON** conforme as especificações locais.
 - [X] **Extensível**: Adicione novos países com estrutura modular.
-- [ ] **Hash**: Gera hashes seguros para assinar documentos de faturação. 
+- [X] **Hash**: Gera hashes seguros para assinar documentos de faturação. 
 - [ ] **Validação Integrada**: Valide dados contra esquemas XSD/JSON Schema.
 
 ---
@@ -41,6 +42,9 @@
 ```bash
 # Instale o pacote principal
 dotnet add package Simansoft.SAFT.Core
+
+# Instale o pacote de criptografia dos dados
+dotnet add package Simansoft.SAFT.Cryptography
 
 # Instale a implementação para Moçambique
 dotnet add package Simansoft.SAFT.Mozambique

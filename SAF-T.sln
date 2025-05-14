@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAF-T.Mozambique", "src\SAF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAF-T.Examples", "samples\SAF-T.Examples\SAF-T.Examples.csproj", "{AF598B0C-2D16-48F7-9E99-0493B8F920F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SAF-T.Cryptography", "src\SAF-T.Cryptography\SAF-T.Cryptography.csproj", "{AE6273D0-A83A-2146-D7AF-EC6EAE433EF9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{AF598B0C-2D16-48F7-9E99-0493B8F920F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF598B0C-2D16-48F7-9E99-0493B8F920F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF598B0C-2D16-48F7-9E99-0493B8F920F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE6273D0-A83A-2146-D7AF-EC6EAE433EF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE6273D0-A83A-2146-D7AF-EC6EAE433EF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE6273D0-A83A-2146-D7AF-EC6EAE433EF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE6273D0-A83A-2146-D7AF-EC6EAE433EF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+	<RootNamespace>Simansoft.SAFT.Cryptography</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<Authors>Simansoft</Authors>
+	<Title>Simansoft.SAFT.Cryptography</Title>
+	<PackageId>Simansoft.SAFT.Cryptography</PackageId>
+	<PackageProjectUrl>https://github.com/SimansoftMZ/SAF-T</PackageProjectUrl>
+	<AssemblyName>Simansoft.SAFT.Cryptography</AssemblyName>
+	<RepositoryUrl>https://github.com/SimansoftMZ/SAF-T</RepositoryUrl>
+	<Version Condition="'$(PackageVersion)' != ''">$(PackageVersion)</Version>
+	<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+
+	<IsPackable>true</IsPackable>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<IsAotCompatible>True</IsAotCompatible>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<IsAotCompatible>True</IsAotCompatible>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\..\README.md">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Utils\" />
+	</ItemGroup>
+
+</Project>
