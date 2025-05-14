@@ -40,7 +40,7 @@ namespace Simansoft.SAFT.Mozambique.Models
         {
             get =>
                 $"{DocumentoFacturacaoData:yyyy-MM-dd};{DocumentoFacturacaoDataRegisto:yyyy-MM-ddTHH:mm:ss};{DocumentoFacturacaoId};" +
-                $"{DocumentoFacturacaoTotal:F2};{((DocumentoFacturacaoId != "1" && !string.IsNullOrWhiteSpace(HashDocumentoAnterior))
+                $"{DocumentoFacturacaoTotal:F2};{((DocumentoFacturacaoId != DefaultDocumentoFacturacaoId && !string.IsNullOrWhiteSpace(HashDocumentoAnterior))
                     ? HashDocumentoAnterior : string.Empty)}";
         }
 
