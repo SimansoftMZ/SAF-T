@@ -32,7 +32,8 @@
 - [X] **Suporte Multi-País**: Implemente SAF-T para Moçambique, Portugal, ou qualquer outro país.
 - [X] **Formatos de Saída**: Gere ficheiros em **XML** e **JSON** conforme as especificações locais.
 - [X] **Extensível**: Adicione novos países com estrutura modular.
-- [X] **Hash**: Gera hashes seguros para assinar documentos de faturação. 
+- [X] **Hash**: Gera hashes seguros para assinar documentos de faturação.
+- [ ] **Testes automatizados**: Implementação de testes automatizados
 - [ ] **Validação Integrada**: Valide dados contra esquemas XSD/JSON Schema.
 
 ---
