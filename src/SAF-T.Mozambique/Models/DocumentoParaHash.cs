@@ -12,7 +12,6 @@ namespace Simansoft.SAFT.Mozambique.Models
 
         const string DOCUMENTO_FACTURACAO_PRIMEIRO_ANO = "1";
 
-
         public DateTime DocumentoFacturacaoData { get; init; }
         public DateTime DocumentoFacturacaoDataRegisto { get; init; }
 
