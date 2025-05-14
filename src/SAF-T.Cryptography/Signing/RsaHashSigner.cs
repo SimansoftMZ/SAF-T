@@ -9,28 +9,28 @@ namespace Simansoft.SAFT.Cryptography.Signing
         private readonly RSA _rsa = rsa ?? throw new ArgumentNullException(nameof(rsa));
         private readonly ICryptoConfig _config = config ?? throw new ArgumentNullException(nameof(config));
 
-        public string Sign(string message)
+        public string Sign(string mensagem)
         {
-            if (string.IsNullOrEmpty(message))
-                throw new ArgumentException("Message não pode ser nula ou vazia", nameof(message));
+            if (string.IsNullOrEmpty(mensagem))
+                throw new ArgumentException("Mensagem não pode ser nula ou vazia", nameof(mensagem));
 
-            byte[] bytes = Encoding.UTF8.GetBytes(message);
+            byte[] bytes = Encoding.UTF8.GetBytes(mensagem);
 
             byte[] bytesAssinados = _rsa.SignData(bytes, _config.HashAlgorithm, _config.Padding);
 
             return Convert.ToBase64String(bytesAssinados);
         }
 
-        public bool Verify(string message, string signatureBase64)
+        public bool Verify(string mensagem, string assinaturaBase64)
         {
-            if (string.IsNullOrEmpty(message))
-                throw new ArgumentException("Message não pode ser nula ou vazia", nameof(message));
+            if (string.IsNullOrEmpty(mensagem))
+                throw new ArgumentException("Mensagem não pode ser nula ou vazia", nameof(mensagem));
 
-            if (string.IsNullOrEmpty(signatureBase64))
-                throw new ArgumentException("Signature não pode ser nula ou vazia", nameof(signatureBase64));
+            if (string.IsNullOrEmpty(assinaturaBase64))
+                throw new ArgumentException("Assinatura não pode ser nula ou vazia", nameof(assinaturaBase64));
 
-            byte[] data = Encoding.UTF8.GetBytes(message);
-            byte[] signature = Convert.FromBase64String(signatureBase64);
+            byte[] data = Encoding.UTF8.GetBytes(mensagem);
+            byte[] signature = Convert.FromBase64String(assinaturaBase64);
 
             return _rsa.VerifyData(data, signature, _config.HashAlgorithm, _config.Padding);
         }
