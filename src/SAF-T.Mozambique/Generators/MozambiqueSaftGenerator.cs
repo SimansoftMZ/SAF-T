@@ -494,5 +494,18 @@ namespace Simansoft.SAFT.Mozambique.Generators
             //return stringWriter.ToString();
             return Encoding.UTF8.GetString(memoryStream.ToArray());
         }
+
+        private string TratamentoStringXML(string conteudo)
+        {
+            StringBuilder sb = new();
+            foreach (char c in conteudo)
+            {
+                if (XmlConvert.IsXmlChar(c))
+                {
+                    sb.Append(c);
+                }
+            }
+            return sb.ToString();
+        }
     }
 }
