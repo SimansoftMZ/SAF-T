@@ -148,8 +148,13 @@ namespace Simansoft.SAFT.Examples.SampleData.Invoices
                             {
                                 Artigo = Artigos.GetArtigo("3")!,
                                 Quantidade = 5.0m,
-                                ValorDesconto = 0.0m,
                                 PrecoTotalComImpostos = 360.0m
+                            },
+                        new DocumentoFacturacaoArtigo
+                            {
+                                Artigo = Artigos.GetArtigo("3")!,
+                                Quantidade = 1.0m,
+                                PrecoTotalComImpostos = 105m,
                             }
                         ],
                     MeiosPagamento =
