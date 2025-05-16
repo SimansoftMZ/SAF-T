@@ -10,6 +10,7 @@ namespace Simansoft.SAFT.Mozambique.Models
         // public string NumeroCertificadoAplicacaoEmissora { get; init; } = string.Empty;
         // public string VersaoChave { get; init; } = string.Empty;
 
+        const string DOCUMENTO_FACTURACAO_PRIMEIRO_ANO = "1";
 
         public DateTime DocumentoFacturacaoData { get; init; }
         public DateTime DocumentoFacturacaoDataRegisto { get; init; }
@@ -42,22 +43,8 @@ namespace Simansoft.SAFT.Mozambique.Models
         {
             get =>
                 $"{DocumentoFacturacaoData:yyyy-MM-dd};{DocumentoFacturacaoDataRegisto:yyyy-MM-ddTHH:mm:ss};{DocumentoFacturacaoId};" +
-                $"{DocumentoFacturacaoTotal:F2};{((DocumentoFacturacaoId != DefaultDocumentoFacturacaoId && !string.IsNullOrWhiteSpace(HashDocumentoAnterior))
+                $"{DocumentoFacturacaoTotal:F2};{((DocumentoFacturacaoId != DOCUMENTO_FACTURACAO_PRIMEIRO_ANO && !string.IsNullOrWhiteSpace(HashDocumentoAnterior))
                     ? HashDocumentoAnterior : string.Empty)}";
         }
-
-        //private string GerarHash()
-        //{
-        //    return Convert.ToBase64String(Encoding.UTF8.GetBytes(DadosCompostosParaHash));
-        //}
-        
-        //public string Assinar(RSA privateKey)
-        //{
-        //    byte[] dataBytes = Encoding.UTF8.GetBytes(DadosCompostosParaHash);
-
-        //    byte[] signedBytes = privateKey.SignData(dataBytes, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
-
-        //    return Convert.ToBase64String(signedBytes);
-        //}
     }
 }

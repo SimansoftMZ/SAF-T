@@ -20,10 +20,7 @@ namespace Simansoft.SAFT.Mozambique.Utils
         {
             // 1. Instanciar serviço de chaves RSA
             _keyPairService = new RsaKeyPairService(keySize: new MozambiqueCryptoConfig().KeySize);
-            if (!_keyPairService.HasKeyPair())
-            {
-                _keyPairService.GenerateKeyPair(keySize: new MozambiqueCryptoConfig().KeySize);
-            }
+// Removed commented-out key generation code to reduce clutter and improve maintainability.
             // 2. Criar signer com a configuração de Moçambique
             _hashSigner = new RsaHashSigner(
                 _keyPairService.GetRsa()!,

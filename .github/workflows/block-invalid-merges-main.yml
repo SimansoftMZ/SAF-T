@@ -1,4 +1,4 @@
-name: Previnir Merges inválidos para o Main
+name: Prevenir Merges inválidos para o Main
 
 on:
   pull_request:
