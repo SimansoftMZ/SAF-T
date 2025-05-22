@@ -275,17 +275,17 @@ namespace Simansoft.SAFT.Mozambique.Generators
                 writer.WriteStartElement(nameof(auditFile.Header)); // Abre o elemento Header
                 writer.WriteElementString(nameof(auditFile.Header.AuditFileVersion), auditFile.Header!.AuditFileVersion);
                 writer.WriteElementString(nameof(auditFile.Header.CompanyID), auditFile.Header.CompanyID);
-                writer.WriteElementString(nameof(auditFile.Header.TaxRegistrationNumber), auditFile.Header.TaxRegistrationNumber);
+                writer.WriteElementString(nameof(auditFile.Header.TaxRegistrationNumber), TratamentoStringXML(auditFile.Header.TaxRegistrationNumber));
                 writer.WriteElementString(nameof(auditFile.Header.FileContentType), auditFile.Header.FileContentType);
-                writer.WriteElementString(nameof(auditFile.Header.CompanyName), auditFile.Header.CompanyName);
-                writer.WriteElementString(nameof(auditFile.Header.BusinessName), auditFile.Header.BusinessName);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyName), TratamentoStringXML(auditFile.Header.CompanyName));
+                writer.WriteElementString(nameof(auditFile.Header.BusinessName), TratamentoStringXML(auditFile.Header.BusinessName));
                 writer.WriteStartElement(nameof(auditFile.Header.CompanyAddress)); // Abre o elemento CompanyAddress
                 //writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.StreetName), auditFile.Header.CompanyAddress!.StreetName);
-                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.AddressDetail), auditFile.Header.CompanyAddress!.AddressDetail);
-                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.City), auditFile.Header.CompanyAddress.City);
-                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.PostalCode), auditFile.Header.CompanyAddress.PostalCode);
-                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Province), auditFile.Header.CompanyAddress.Province);                
-                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Country), auditFile.Header.CompanyAddress.Country);
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.AddressDetail), TratamentoStringXML(auditFile.Header.CompanyAddress!.AddressDetail));
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.City), TratamentoStringXML(auditFile.Header.CompanyAddress.City));
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.PostalCode), TratamentoStringXML(auditFile.Header.CompanyAddress.PostalCode));
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Province), TratamentoStringXML(auditFile.Header.CompanyAddress.Province));                
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Country), TratamentoStringXML(auditFile.Header.CompanyAddress.Country));
                 writer.WriteEndElement(); // Fecha o elemento CompanyAddress
                 writer.WriteElementString(nameof(auditFile.Header.FiscalYear), auditFile.Header.FiscalYear.ToString());
                 writer.WriteElementString(nameof(auditFile.Header.StartDate), auditFile.Header.StartDate?.ToString("yyyy-MM-dd"));
@@ -297,11 +297,27 @@ namespace Simansoft.SAFT.Mozambique.Generators
                 writer.WriteElementString(nameof(auditFile.Header.SoftwareCertificateNumber), auditFile.Header.SoftwareCertificateNumber);
                 writer.WriteElementString(nameof(auditFile.Header.ProductID), auditFile.Header.ProductID);
                 writer.WriteElementString(nameof(auditFile.Header.ProductVersion), auditFile.Header.ProductVersion);
-                writer.WriteElementString(nameof(auditFile.Header.HeaderComment), auditFile.Header.HeaderComment);
-                writer.WriteElementString(nameof(auditFile.Header.Telephone), auditFile.Header.Telephone);
-                writer.WriteElementString(nameof(auditFile.Header.Fax), auditFile.Header.Fax);
-                writer.WriteElementString(nameof(auditFile.Header.Email), auditFile.Header.Email);
-                writer.WriteElementString(nameof(auditFile.Header.Website), auditFile.Header.Website);
+                if (!string.IsNullOrWhiteSpace(auditFile.Header.HeaderComment))
+                {
+                    writer.WriteElementString(nameof(auditFile.Header.HeaderComment), TratamentoStringXML(auditFile.Header.HeaderComment));
+                }
+
+                if (!string.IsNullOrWhiteSpace(auditFile.Header.Telephone))
+                {
+                    writer.WriteElementString(nameof(auditFile.Header.Telephone), TratamentoStringXML(auditFile.Header.Telephone));
+                }
+                if (!string.IsNullOrWhiteSpace(auditFile.Header.Fax))
+                {
+                    writer.WriteElementString(nameof(auditFile.Header.Fax), TratamentoStringXML(auditFile.Header.Fax));
+                }
+                if (!string.IsNullOrWhiteSpace(auditFile.Header.Email))
+                {
+                    writer.WriteElementString(nameof(auditFile.Header.Email), TratamentoStringXML(auditFile.Header.Email));
+                }
+                if (!string.IsNullOrWhiteSpace(auditFile.Header.Website))
+                {
+                    writer.WriteElementString(nameof(auditFile.Header.Website), TratamentoStringXML(auditFile.Header.Website));
+                }
 
                 writer.WriteEndElement(); // Fecha o elemento Header
 
@@ -317,21 +333,54 @@ namespace Simansoft.SAFT.Mozambique.Generators
                     writer.WriteElementString(nameof(customer.CustomerTaxID), customer.CustomerTaxID);                    
                     writer.WriteElementString(nameof(customer.CompanyName), customer.CompanyName);
                     // Faltando Contacto
-                    writer.WriteStartElement(nameof(customer.BillingAddress)); // Abre o elemento BillingAddress
-                    writer.WriteElementString(nameof(customer.BillingAddress.AddressDetail), customer.BillingAddress!.AddressDetail);
-                    writer.WriteElementString(nameof(customer.BillingAddress.City), customer.BillingAddress.City);
-                    writer.WriteElementString(nameof(customer.BillingAddress.PostalCode), customer.BillingAddress.PostalCode);
-                    // Faltando Province
-                    writer.WriteElementString(nameof(customer.BillingAddress.Country), customer.BillingAddress.Country);
-                    writer.WriteEndElement(); // Fecha o elemento BillingAddress
+                    if (customer.BillingAddress is not null)
+                    {
+                        writer.WriteStartElement(nameof(customer.BillingAddress)); // Abre o elemento BillingAddress
+                        if (!string.IsNullOrWhiteSpace(customer.BillingAddress.AddressDetail))
+                        {
+                            writer.WriteElementString(nameof(customer.BillingAddress.AddressDetail), TratamentoStringXML(customer.BillingAddress.AddressDetail));
+                        }
+                        if (!string.IsNullOrWhiteSpace(customer.BillingAddress.City))
+                        {
+                            writer.WriteElementString(nameof(customer.BillingAddress.City), TratamentoStringXML(customer.BillingAddress.City));
+                        }
+                        if (!string.IsNullOrWhiteSpace(customer.BillingAddress.PostalCode))
+                        {
+                            writer.WriteElementString(nameof(customer.BillingAddress.PostalCode), TratamentoStringXML(customer.BillingAddress.PostalCode));
+                        }
 
-                    writer.WriteStartElement(nameof(customer.ShipToAddress)); // Abre o elemento ShipToAddress
-                    writer.WriteElementString(nameof(customer.ShipToAddress.AddressDetail), customer.ShipToAddress?.AddressDetail);
-                    writer.WriteElementString(nameof(customer.ShipToAddress.City), customer.ShipToAddress?.City);
-                    writer.WriteElementString(nameof(customer.ShipToAddress.PostalCode), customer.ShipToAddress?.PostalCode);
-                    // Faltando Province
-                    writer.WriteElementString(nameof(customer.ShipToAddress.Country), customer.ShipToAddress?.Country);
-                    writer.WriteEndElement(); // Fecha o elemento ShipToAddress
+                        // Faltando Province
+                        if (!string.IsNullOrWhiteSpace(customer.BillingAddress.Country))
+                        {
+                            writer.WriteElementString(nameof(customer.BillingAddress.Country), TratamentoStringXML(customer.BillingAddress.Country));
+                        }
+                        writer.WriteEndElement(); // Fecha o elemento BillingAddress
+                    }
+
+                    if (customer.ShipToAddress is not null)
+                    {
+                        writer.WriteStartElement(nameof(customer.ShipToAddress)); // Abre o elemento ShipToAddress
+                        if (!string.IsNullOrWhiteSpace(customer.ShipToAddress.AddressDetail))
+                        {
+                            writer.WriteElementString(nameof(customer.ShipToAddress.AddressDetail), TratamentoStringXML(customer.ShipToAddress.AddressDetail));
+                        }
+                        if (!string.IsNullOrWhiteSpace(customer.ShipToAddress.City))
+                        {
+                            writer.WriteElementString(nameof(customer.ShipToAddress.City), TratamentoStringXML(customer.ShipToAddress.City));
+                        }
+                        if (!string.IsNullOrWhiteSpace(customer.ShipToAddress.PostalCode))
+                        {
+                            writer.WriteElementString(nameof(customer.ShipToAddress.PostalCode), TratamentoStringXML(customer.ShipToAddress.PostalCode));
+                        }
+
+                        // Faltando Province
+                        if (!string.IsNullOrWhiteSpace(customer.ShipToAddress.Country))
+                        {
+                            writer.WriteElementString(nameof(customer.ShipToAddress.Country), TratamentoStringXML(customer.ShipToAddress.Country));
+                        }
+                        writer.WriteEndElement(); // Fecha o elemento ShipToAddress
+                    }
+                    
 
                     // Faltando Telephone
                     // Faltando Fax
@@ -348,10 +397,26 @@ namespace Simansoft.SAFT.Mozambique.Generators
                 {
                     writer.WriteStartElement(nameof(Product)); // Abre o elemento Product
                     writer.WriteElementString(nameof(product.ProductType), product.ProductType);
-                    writer.WriteElementString(nameof(product.ProductCode), product.ProductCode);
-                    writer.WriteElementString(nameof(product.ProductGroup), product.ProductGroup);
-                    writer.WriteElementString(nameof(product.ProductDescription), product.ProductDescription);
-                    writer.WriteElementString(nameof(product.ProductNumberCode), product.ProductNumberCode);                    
+
+                    if (!string.IsNullOrWhiteSpace(product.ProductCode))
+                    {
+                        writer.WriteElementString(nameof(product.ProductCode), TratamentoStringXML(product.ProductCode));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(product.ProductGroup))
+                    {
+                        writer.WriteElementString(nameof(product.ProductGroup), TratamentoStringXML(product.ProductGroup));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(product.ProductDescription))
+                    {
+                        writer.WriteElementString(nameof(product.ProductDescription), TratamentoStringXML(product.ProductDescription));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(product.ProductNumberCode))
+                    {
+                        writer.WriteElementString(nameof(product.ProductNumberCode), TratamentoStringXML(product.ProductNumberCode));
+                    }
                     writer.WriteEndElement(); // Fecha o elemento Product
                 });
                 //writer.WriteEndElement(); // Fecha o elemento Products
@@ -371,7 +436,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
 
                 writer.WriteEndElement(); // Fecha o elemento MasterFiles
 
-                //ESTÃO EM FALTA OS MATER FILES
+                //ESTÃO EM FALTA OS MASTER FILES
 
                 writer.WriteStartElement(nameof(auditFile.SourceDocuments)); // Abre o elemento SourceDocuments
                 writer.WriteStartElement(nameof(auditFile.SourceDocuments.SalesInvoices)); // Abre o elemento SalesInvoices
@@ -413,33 +478,73 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         if (invoice.ShipTo.Address is not null)
                         {
                             writer.WriteStartElement(nameof(invoice.ShipTo.Address)); // Abre o elemento Address
-                            writer.WriteElementString(nameof(invoice.ShipTo.Address.AddressDetail), TratamentoStringXML(invoice.ShipTo?.Address?.AddressDetail));
-                            writer.WriteElementString(nameof(invoice.ShipTo.Address.City), TratamentoStringXML(invoice.ShipTo?.Address?.City));
-                            writer.WriteElementString(nameof(invoice.ShipTo.Address.PostalCode), TratamentoStringXML(invoice.ShipTo?.Address?.PostalCode));
-                            writer.WriteElementString(nameof(invoice.ShipTo.Address.Country), TratamentoStringXML(invoice.ShipTo?.Address?.Country));
+
+                            if (!string.IsNullOrWhiteSpace(invoice.ShipTo?.Address?.AddressDetail))
+                            {
+                                writer.WriteElementString(nameof(invoice.ShipTo.Address.AddressDetail), TratamentoStringXML(invoice.ShipTo?.Address?.AddressDetail));
+                            }
+                            if (!string.IsNullOrWhiteSpace(invoice.ShipTo?.Address?.City))
+                            {
+                                writer.WriteElementString(nameof(invoice.ShipTo.Address.City), TratamentoStringXML(invoice.ShipTo?.Address?.City));
+                            }
+                            if (!string.IsNullOrWhiteSpace(invoice.ShipTo?.Address?.PostalCode))
+                            {
+                                writer.WriteElementString(nameof(invoice.ShipTo.Address.PostalCode), TratamentoStringXML(invoice.ShipTo?.Address?.PostalCode));
+                            }
+                            if (!string.IsNullOrWhiteSpace(invoice.ShipTo?.Address?.Country))
+                            {
+                                writer.WriteElementString(nameof(invoice.ShipTo.Address.Country), TratamentoStringXML(invoice.ShipTo?.Address?.Country));
+                            }
                             writer.WriteEndElement(); // Fecha o elemento Address
-                        }
-                        
+                        }                        
                         writer.WriteEndElement(); // Fecha o elemento ShipTo
                     }
 
-                    writer.WriteStartElement(nameof(invoice.ShipTo)); // Abre o elemento ShipTo
-                    writer.WriteStartElement(nameof(invoice.ShipTo.Address)); // Abre o elemento Address
-                    writer.WriteElementString(nameof(invoice.ShipTo.Address.AddressDetail), TratamentoStringXML(invoice.ShipTo?.Address?.AddressDetail));
-                    writer.WriteElementString(nameof(invoice.ShipTo.Address.City), TratamentoStringXML(invoice.ShipTo?.Address?.City));
-                    writer.WriteElementString(nameof(invoice.ShipTo.Address.PostalCode), TratamentoStringXML(invoice.ShipTo?.Address?.PostalCode));
-                    writer.WriteElementString(nameof(invoice.ShipTo.Address.Country), TratamentoStringXML(invoice.ShipTo?.Address?.Country));
-                    writer.WriteEndElement(); // Fecha o elemento Address
-                    writer.WriteEndElement(); // Fecha o elemento ShipTo
+                    if (invoice.ShipTo is not null)
+                    {
+                        writer.WriteStartElement(nameof(invoice.ShipTo)); // Abre o elemento ShipTo
+                        if (invoice.ShipTo.Address is not null)
+                        {
+                            writer.WriteStartElement(nameof(invoice.ShipTo.Address)); // Abre o elemento Address
 
-                    writer.WriteStartElement(nameof(invoice.ShipFrom)); // Abre o elemento ShipFrom
-                    writer.WriteStartElement(nameof(invoice.ShipFrom.Address)); // Abre o elemento Address
-                    writer.WriteElementString(nameof(invoice.ShipFrom.Address.AddressDetail), TratamentoStringXML(invoice.ShipFrom!.Address!.AddressDetail));
-                    writer.WriteElementString(nameof(invoice.ShipFrom.Address.City), TratamentoStringXML(invoice.ShipFrom.Address.City));
-                    writer.WriteElementString(nameof(invoice.ShipFrom.Address.PostalCode), TratamentoStringXML(invoice.ShipFrom.Address.PostalCode));
-                    writer.WriteElementString(nameof(invoice.ShipFrom.Address.Country), TratamentoStringXML(invoice.ShipFrom.Address.Country));
-                    writer.WriteEndElement(); // Fecha o elemento Address
-                    writer.WriteEndElement(); // Fecha o elemento ShipFrom
+                            if (!string.IsNullOrWhiteSpace(invoice.ShipTo?.Address?.AddressDetail))
+                            {
+                                writer.WriteElementString(nameof(invoice.ShipTo.Address.AddressDetail), TratamentoStringXML(invoice.ShipTo?.Address?.AddressDetail));
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(invoice.ShipTo?.Address?.City))
+                            {
+                                writer.WriteElementString(nameof(invoice.ShipTo.Address.City), TratamentoStringXML(invoice.ShipTo?.Address?.City));
+                            }
+                            
+                            if (!string.IsNullOrWhiteSpace(invoice.ShipTo?.Address?.PostalCode))
+                            {
+                                writer.WriteElementString(nameof(invoice.ShipTo.Address.PostalCode), TratamentoStringXML(invoice.ShipTo?.Address?.PostalCode));
+                            }
+                            
+                            if (!string.IsNullOrWhiteSpace(invoice.ShipTo?.Address?.Country))
+                            {
+                                writer.WriteElementString(nameof(invoice.ShipTo.Address.Country), TratamentoStringXML(invoice.ShipTo?.Address?.Country));
+                            }
+                            writer.WriteEndElement(); // Fecha o elemento Address
+                        }                        
+                        writer.WriteEndElement(); // Fecha o elemento ShipTo
+                    }
+                    
+                    if (invoice.ShipFrom is not null)
+                    {
+                        writer.WriteStartElement(nameof(invoice.ShipFrom)); // Abre o elemento ShipFrom
+                        if (invoice.ShipFrom.Address is not null)
+                        {
+                            writer.WriteStartElement(nameof(invoice.ShipFrom.Address)); // Abre o elemento Address
+                            writer.WriteElementString(nameof(invoice.ShipFrom.Address.AddressDetail), TratamentoStringXML(invoice.ShipFrom?.Address?.AddressDetail));
+                            writer.WriteElementString(nameof(invoice.ShipFrom.Address.City), TratamentoStringXML(invoice.ShipFrom?.Address?.City));
+                            writer.WriteElementString(nameof(invoice.ShipFrom.Address.PostalCode), TratamentoStringXML(invoice.ShipFrom?.Address?.PostalCode));
+                            writer.WriteElementString(nameof(invoice.ShipFrom.Address.Country), TratamentoStringXML(invoice.ShipFrom?.Address?.Country));
+                            writer.WriteEndElement(); // Fecha o elemento Address
+                        }
+                        writer.WriteEndElement(); // Fecha o elemento ShipFrom
+                    }
 
                     invoice.Lines!.ForEach(artigo =>
                     {
