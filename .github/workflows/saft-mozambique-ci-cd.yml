@@ -2,6 +2,8 @@
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
 name: SAF-T.Mozambique CI/CD
+permissions:
+  contents: read
 
 on:
   push:
@@ -56,5 +58,7 @@ jobs:
         dotnet pack --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
       
     - name: Publicar no NuGet
+      permissions:
+        packages: write
       run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
     
