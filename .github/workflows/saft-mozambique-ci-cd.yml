@@ -49,9 +49,6 @@ jobs:
     ## - name: Test
     ##   run: dotnet test --no-build --verbosity normal
 
-    - name: Verificar valor da variável
-      run: echo "Variável SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX = $SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX"
-
     - name: Definir versão
       run: |
         if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
