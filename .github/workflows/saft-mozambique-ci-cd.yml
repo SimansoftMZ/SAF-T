@@ -18,11 +18,15 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+
+    # Variáveis de ambiente aplicadas ao job inteiro
+    env:
+      SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX: ${{ vars.SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX }}
+
     defaults:
       run:
         working-directory: "src/SAF-T.Mozambique"
-    
-    runs-on: ubuntu-latest
     
     steps:
     - name: Checkout do repositório
@@ -45,9 +49,10 @@ jobs:
     ## - name: Test
     ##   run: dotnet test --no-build --verbosity normal
 
+    - name: Verificar valor da variável
+      run: echo "Variável SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX = $SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX"
+
     - name: Definir versão
-      env:
-        SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX: ${{ env.SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX }}
       run: |
         if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
           VERSION=${GITHUB_REF#refs/tags/v}
