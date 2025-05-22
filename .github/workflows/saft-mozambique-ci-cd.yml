@@ -48,7 +48,7 @@ jobs:
     - name: Definir versão
       run: |
         if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
-          VERSION=${GITHUB_REF#refs/tags/v}
+          VERSION="${GITHUB_REF#refs/tags/v}"
         else
           VERSION="${{ env.SAFT_COUNTRY_MOZAMBIQUE_VERSION_PREFIX }}-preview-${GITHUB_RUN_NUMBER}"
         fi
