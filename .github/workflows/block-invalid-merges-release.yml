@@ -7,12 +7,15 @@ on:
 
 jobs:
   check_source_branch:
+    name: Prevenir Merges inválidos para o Release
     runs-on: ubuntu-latest
     steps:
-      - name: Verificar branch de origem
+      - name: Validar branch de origem
         run: |
-          echo "Branch de origem: ${{ github.head_ref }}"
-          if [[ "${{ github.head_ref }}" != "develop" ]]; then
-            echo "❌ Só são permitidos merges de 'develop' para 'release'."
+          echo "Branch de origem: $GITHUB_HEAD_REF"
+          if [[ "$GITHUB_HEAD_REF" != "develop" ]]; then
+            echo "❌ Só são permitidos merges de 'develop' para 'release-*'."
             exit 1
           fi
+        env:
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
