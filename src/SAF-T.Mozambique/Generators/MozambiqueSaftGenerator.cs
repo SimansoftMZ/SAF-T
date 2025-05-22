@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
 using System.Xml;
-using System.Reflection.Metadata.Ecma335;
+// Line removed as it is unused.
 
 namespace Simansoft.SAFT.Mozambique.Generators
 {
