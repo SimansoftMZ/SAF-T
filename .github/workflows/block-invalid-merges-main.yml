@@ -7,12 +7,15 @@ on:
 
 jobs:
   check_source_branch:
+    name: Prevenir Merges inválidos para o Main
     runs-on: ubuntu-latest
     steps:
-      - name: Validate source branch
+      - name: Validar branch de origem
         run: |
-          echo "Branch origem: ${{ github.head_ref }}"
-          if [[ ! "$BRANCH_NAME" =~ ^release- ]] && [[ ! "$BRANCH_NAME" =~ ^hotfix- ]]; then
+          echo "Branch origem: $GITHUB_HEAD_REF"
+          if [[ ! "$GITHUB_HEAD_REF" =~ ^release- ]] && [[ ! "$GITHUB_HEAD_REF" =~ ^hotfix- ]]; then
             echo "❌ Só são permitidos merges de 'release-*' ou 'hotfix-*' para 'main'."
             exit 1
           fi
+        env:
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
