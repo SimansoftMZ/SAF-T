@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
 using System.Xml;
-using System.Reflection.Metadata.Ecma335;
+// Line removed as it is unused.
 
 namespace Simansoft.SAFT.Mozambique.Generators
 {
@@ -229,7 +229,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                                     TaxCountryRegion = imp.Pais,
                                     TaxCode = imp.Codigo,
                                     TaxPercentage = imp.Percentagem,
-                                    TaxAmount = imp.Valor + (artigo.PrecoTotalComImpostos / (1m + (imp.Percentagem * 0.01m)) * imp.Percentagem * 0.01m)                                    
+                                    TaxAmount = imp.Valor + artigo.PrecoTotalComImpostos / (1m + imp.Percentagem * 0.01m) * imp.Percentagem * 0.01m                                    
                                 })],
 
                                 TaxExemptionReason = artigo.Artigo.Motivo,
