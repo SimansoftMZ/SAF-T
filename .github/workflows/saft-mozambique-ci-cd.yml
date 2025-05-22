@@ -4,6 +4,7 @@
 name: SAF-T.Mozambique CI/CD
 permissions:
   contents: read
+  packages: write
 
 on:
   push:
