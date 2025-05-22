@@ -1,4 +1,6 @@
 name: Prevenir Merges inválidos para o Develop
+permissions:
+  contents: read
 
 on:
   pull_request:
