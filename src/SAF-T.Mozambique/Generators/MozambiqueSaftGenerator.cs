@@ -20,7 +20,6 @@ namespace Simansoft.SAFT.Mozambique.Generators
             try
             {
                 string xml = RetornaXml(auditFile);
-
                 return xml;
             }
             catch (InvalidOperationException ex)
