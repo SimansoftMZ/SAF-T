@@ -46,9 +46,9 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             //Console.ReadKey(false);
             Console.WriteLine("=== XML ===");
 
-            // Console.WriteLine(xml);
-            // Console.ReadKey(true);
-            // Console.Clear();
+            Console.WriteLine(xml);
+            Console.ReadKey(true);
+            Console.Clear();
 
 
             //var verificaDocumento1 = VerificarAssinatura(
