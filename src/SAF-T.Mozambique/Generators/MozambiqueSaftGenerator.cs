@@ -258,7 +258,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
         {
             XmlWriterSettings settings = new()
             {
-                Indent = true,
+                Indent = false,
                 Encoding = Encoding.UTF8
             };
             //using StringWriter stringWriter = new();
