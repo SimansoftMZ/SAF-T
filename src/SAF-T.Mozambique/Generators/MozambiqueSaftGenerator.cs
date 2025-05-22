@@ -598,7 +598,6 @@ namespace Simansoft.SAFT.Mozambique.Generators
 
             //return stringWriter.ToString();
             return Encoding.GetEncoding("windows-1252").GetString(memoryStream.ToArray());
-
             //return Encoding.UTF8.GetString(memoryStream.ToArray());
         }
 
