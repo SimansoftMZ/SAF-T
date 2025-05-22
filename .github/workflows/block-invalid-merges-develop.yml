@@ -7,9 +7,10 @@ on:
 
 jobs:
   check_source_branch:
+    name: Prevenir Merges inválidos para o Develop
     runs-on: ubuntu-latest
     steps:
-      - name: Validate source branch
+      - name: Validar branch de origem
         run: |
           echo "Branch origem: $GITHUB_HEAD_REF"
           if [[ ! "$GITHUB_HEAD_REF" =~ ^feature- ]] && [[ ! "$GITHUB_HEAD_REF" =~ ^bugfix- ]] && [[ ! "$GITHUB_HEAD_REF" =~ ^release- ]]; then
@@ -18,3 +19,4 @@ jobs:
           fi
         env:
           GITHUB_HEAD_REF: ${{ github.head_ref }}
+
