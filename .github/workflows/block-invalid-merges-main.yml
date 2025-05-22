@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   check_source_branch:
     name: Prevenir Merges inválidos para o Main
