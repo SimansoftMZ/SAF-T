@@ -1,5 +1,8 @@
 name: Prevenir Merges inválidos para o Release
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     branches:
