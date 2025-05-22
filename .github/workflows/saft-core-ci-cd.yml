@@ -18,12 +18,16 @@ on:
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+
+    # Variáveis de ambiente aplicadas ao job inteiro
+    env:
+      SAFT_CORE_VERSION_PREFIX: ${{ vars.SAFT_CORE_VERSION_PREFIX }}
+    
     defaults:
       run:
         working-directory: "src/SAF-T.Core"
-    
-    runs-on: ubuntu-latest
-    
+        
     steps:
     - name: Checkout do repositório
       uses: actions/checkout@v4
@@ -46,8 +50,6 @@ jobs:
     ##  run: dotnet test --no-build --verbosity normal
 
     - name: Definir versão
-      env:
-        SAFT_CORE_VERSION_PREFIX: ${{ env.SAFT_CORE_VERSION_PREFIX }}
       run: |
         if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
           VERSION=${GITHUB_REF#refs/tags/v}
