@@ -35,13 +35,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                                 PostalCode = s.Cliente.CodigoPostal,
                                 Country = s.Cliente.Pais
                             },
-                            //ShipToAddress = s.Cliente.EConsumidorFinal ? null : new CustomerAddress
-                            //{
-                            //    AddressDetail = s.Cliente.Endereco,
-                            //    City = s.Cliente.Cidade,
-                            //    PostalCode = s.Cliente.CodigoPostal,
-                            //    Country = s.Cliente.Pais
-                            //},
+// Removed commented-out ShipToAddress block to clean up the code.
                             SelfBillingIndicator = "0"
                         }).FirstOrDefault()!);
 
