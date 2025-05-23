@@ -435,31 +435,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         writer.WriteEndElement(); // Fecha o elemento BillingAddress
                     }
 
-                    //if (customer.ShipToAddress is not null)
-                    //{
-                    //    writer.WriteStartElement(nameof(customer.ShipToAddress)); // Abre o elemento ShipToAddress
-                    //    if (!string.IsNullOrWhiteSpace(customer.ShipToAddress.AddressDetail))
-                    //    {
-                    //        writer.WriteElementString(nameof(customer.ShipToAddress.AddressDetail), TratamentoStringXML(customer.ShipToAddress.AddressDetail));
-                    //    }
-                    //    if (!string.IsNullOrWhiteSpace(customer.ShipToAddress.City))
-                    //    {
-                    //        writer.WriteElementString(nameof(customer.ShipToAddress.City), TratamentoStringXML(customer.ShipToAddress.City));
-                    //    }
-                    //    if (!string.IsNullOrWhiteSpace(customer.ShipToAddress.PostalCode))
-                    //    {
-                    //        writer.WriteElementString(nameof(customer.ShipToAddress.PostalCode), TratamentoStringXML(customer.ShipToAddress.PostalCode));
-                    //    }
-
-                    //    // Faltando Province
-                    //    if (!string.IsNullOrWhiteSpace(customer.ShipToAddress.Country))
-                    //    {
-                    //        writer.WriteElementString(nameof(customer.ShipToAddress.Country), TratamentoStringXML(customer.ShipToAddress.Country));
-                    //    }
-                    //    writer.WriteEndElement(); // Fecha o elemento ShipToAddress
-                    //}
-
-
+// Removed commented-out block for ShipToAddress to improve code readability and maintainability.
                     // Faltando Telephone
                     // Faltando Fax
                     // Faltando Email
