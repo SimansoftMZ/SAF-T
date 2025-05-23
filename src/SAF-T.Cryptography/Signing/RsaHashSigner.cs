@@ -15,7 +15,6 @@ namespace Simansoft.SAFT.Cryptography.Signing
                 throw new ArgumentException("Mensagem não pode ser nula ou vazia", nameof(mensagem));
 
             byte[] bytes = Encoding.UTF8.GetBytes(mensagem);
-
             byte[] bytesAssinados = _rsa.SignData(bytes, _config.HashAlgorithm, _config.Padding);
 
             return Convert.ToBase64String(bytesAssinados);
