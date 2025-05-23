@@ -158,7 +158,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                             EACCode = doc.CodigoEAC,
                             SystemEntryDate = doc.DataEmissao,
                             TransactionID = doc.DocumentoContabilisticoId,
-                            CustomerID =  doc.Cliente.EConsumidorFinal ? "Consumidor Final" : doc.Cliente.Id,
+                            CustomerID = doc.Cliente.Id,
                             InvoiceType = doc.CategoriaId,
 
                             
