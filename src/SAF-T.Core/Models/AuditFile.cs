@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace Simansoft.SAFT.Core.Models
 {
@@ -140,6 +141,10 @@ namespace Simansoft.SAFT.Core.Models
     // Representa um documento de venda (fatura)
     public record Invoice
     {
+        [JsonIgnore]
+        [XmlIgnore]
+        public string? Serie { get; init; }
+
         public string? InvoiceNo { get; init; }  // Ex.: "FT 001/0001"
         public string? InvoiceType { get; init; }
         public DocumentStatus? DocumentStatus { get; init; } // Estado e detalhes da fatura
@@ -157,12 +162,69 @@ namespace Simansoft.SAFT.Core.Models
         public ShipFromTo? ShipFrom { get; init; } = new();
         public List<InvoiceLine>? Lines { get; init; } = [];
         public DocumentTotals? DocumentTotals { get; init; }
+
+        [JsonIgnore]
+        [XmlIgnore]
+        public string TipoDocumento => InvoiceType switch
+        {
+            "FT" => "Factura",
+            "FR" => "VD",
+            "ND" => "Nota de débito",
+            "NC" => "Nota de crédito",
+            "FS" => "Factura Simplificada",
+            "AC" => "Aviso de cobrança",
+            "AR" => "Aviso de cobrança/recibo",
+            
+            "RP" => "Prémio ou recibo de prémio",
+            "RE" => "Estorno ou recibo de estorno",
+            "CS" => "Imputação a co-seguradoras",
+            "LD" => "Imputação a co-seguradora líder",
+            "RA" => "Resseguro aceite",
+
+            _ => "Outro"
+        };
+
+        [JsonIgnore]
+        [XmlIgnore]
+        public string TipoDocumentoAbreviado => InvoiceType switch
+        {
+            "FT" => "FAT",
+            "FR" => "VD",
+            "ND" => "ND",
+            "NC" => "NC",
+            "FS" => "FS",
+            "AC" => "AC",
+            "AR" => "AR",
+
+            "RP" => "RP",
+            "RE" => "RE",
+            "CS" => "CS",
+            "LD" => "LD",
+            "RA" => "RA",
+
+            _ => "Outro"
+        };
+
+
     }
 
     // Estado do documento de venda
     public record DocumentStatus
     {
         public string? InvoiceStatus { get; init; }  // Ex.: "N" = Normal, "A" = Anulado
+
+        [JsonIgnore]
+        [XmlIgnore]
+        public string? EstadoDescricao => InvoiceStatus switch
+        {
+            "N" => "Normal",
+            "S" => "Autofacturação",
+            "A" => "Anulado",
+            "R" => "Resumo",
+            "F" => "Facturado",
+            _ => string.Empty
+        };
+
         public DateTime? InvoiceStatusDate { get; init; }
         public string? SourceID { get; init; }
         public string? SourceBilling { get; init; }  // Ex.: "P" para documentos produzidos pelo software

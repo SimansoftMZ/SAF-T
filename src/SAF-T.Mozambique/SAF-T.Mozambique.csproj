@@ -38,6 +38,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.105.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SAF-T.Core\SAF-T.Core.csproj" />
     <ProjectReference Include="..\SAF-T.Cryptography\SAF-T.Cryptography.csproj" />
   </ItemGroup>

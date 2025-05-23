@@ -34,7 +34,7 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
 
             // Serialize para JSON (mas com estrutura XML)
             //var json = gerador.GenerateJson(auditFile);
-            string xml = gerador.GenerateXml(auditFile);
+            //string xml = gerador.GenerateXml(auditFile);
 
             // Gravar o XML num ficheiro
             //File.WriteAllText("saft_mozambique.xml", xml);
@@ -44,9 +44,21 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             //Console.WriteLine("=== JSON ===");
             //Console.WriteLine(json);
             //Console.ReadKey(false);
-            Console.WriteLine("=== XML ===");
+            //Console.WriteLine("=== XML ===");
 
-            Console.WriteLine(xml);
+            //Console.WriteLine(xml);
+            Console.WriteLine("Vou criar o ficheiro Excel...");
+            Console.ReadKey(true);
+
+            byte[] excel = MozambiqueSaftGenerator.GenerateBytesExcel(auditFile);
+            File.WriteAllBytes("saft_mozambique.xlsx", excel);
+
+            byte[] xml = gerador.GenerateBytesXml(auditFile);            
+            File.WriteAllBytes("saft_mozambique.xml", xml);
+
+            //File.WriteAllText("saft_mozambique.xml", xml);
+
+            Console.WriteLine("Ficheiro criado com sucesso!");
             Console.ReadKey(true);
             Console.Clear();
 

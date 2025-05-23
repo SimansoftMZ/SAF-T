@@ -5,34 +5,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
 using System.Xml;
+using ClosedXML.Excel;
 
 namespace Simansoft.SAFT.Mozambique.Generators
 {
     public class MozambiqueSaftGenerator : ISaftGenerator<FicheiroSAFT>
     {
-        public string GenerateJson(AuditFile auditFile)
-        {
-            return JsonSerializer.Serialize(auditFile, AuditFileContext.Custom.AuditFile);
-        }
-
-        public string GenerateXml(AuditFile auditFile)
-        {
-            try
-            {
-                string xml = RetornaXml(auditFile);
-                return xml;
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new InvalidOperationException("Falha na serialização SAF-T", ex);
-            }
-        }
-
-        public ValidationResult Validate(FicheiroSAFT saftData)
-        {
-            throw new NotImplementedException();
-        }
-
         public AuditFile ConverterParaSaft(FicheiroSAFT ficheiroSAFT)
         {
             // Preenchimento distinto dos clientes
@@ -47,9 +25,9 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         {
                             CustomerID = s.Cliente.Id,
                             AccountID = string.IsNullOrWhiteSpace(s.Cliente.PlanoContaCorrente) ? "Desconhecido" : s.Cliente.PlanoContaCorrente,
-                            CustomerTaxID = s.Cliente.EConsumidorFinal ? "000000000" : s.Cliente.NUIT,                            
+                            CustomerTaxID = s.Cliente.EConsumidorFinal ? "000000000" : s.Cliente.NUIT,
                             CompanyName = s.Cliente.EConsumidorFinal ? "Consumidor Final" : s.Cliente.Nome,
-                            
+
                             BillingAddress = s.Cliente.EConsumidorFinal ? null : new CustomerAddress
                             {
                                 AddressDetail = s.Cliente.Endereco,
@@ -76,8 +54,8 @@ namespace Simansoft.SAFT.Mozambique.Generators
                 produtosDistintos.Add(
                     ficheiroSAFT.DocumentosFacturacao
                         .OrderByDescending(o => o.DataHora)
-                        .SelectMany(s => s.Artigos)                        
-                        .Where(w => w.Artigo.ArtigoId == produtoId)                        
+                        .SelectMany(s => s.Artigos)
+                        .Where(w => w.Artigo.ArtigoId == produtoId)
                         .Select((s) => new Product
                         {
                             ProductType = s.Artigo.ServicoId,
@@ -125,7 +103,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         AddressDetail = ficheiroSAFT.Empresa.Endereco2,
                         City = ficheiroSAFT.Empresa.Cidade,
                         PostalCode = ficheiroSAFT.Empresa.CodigoPostal,
-                        Province = ficheiroSAFT.Empresa.Provincia,                        
+                        Province = ficheiroSAFT.Empresa.Provincia,
                         Country = ficheiroSAFT.Empresa.Pais
                     },
                     FiscalYear = ficheiroSAFT.AnoFiscal,
@@ -161,6 +139,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         Invoices = [.. ficheiroSAFT.DocumentosFacturacao.Select(doc => new Invoice
                         {
                             InvoiceNo = doc.Id,
+                            Serie = doc.TipoDocumentoId,
                             DocumentStatus = new DocumentStatus
                             {
                                 InvoiceStatus = doc.EstadoId,
@@ -221,13 +200,16 @@ namespace Simansoft.SAFT.Mozambique.Generators
                                 Description = artigo.ArtigoDescricao,
                                 DebitAmount = artigo.PrecoTotalComImpostos < 0 ? -artigo.PrecoTotalComImpostos : 0m,
                                 CreditAmount = artigo.PrecoTotalComImpostos > 0 ? artigo.PrecoTotalComImpostos : 0m,
+
+                                SettlementAmount = artigo.ValorDesconto,
+
                                 Tax = [.. artigo.Artigo.Impostos.Select(imp => new TaxTableEntry
                                 {
                                     TaxType = imp.Tipo,
                                     TaxCountryRegion = imp.Pais,
                                     TaxCode = imp.Codigo,
                                     TaxPercentage = imp.Percentagem,
-                                    TaxAmount = imp.Valor + (artigo.PrecoTotalComImpostos / (1m + (imp.Percentagem * 0.01m))) * (imp.Percentagem * 0.01m)                                    
+                                    TaxAmount = imp.Valor + (artigo.PrecoTotalComImpostos / (1m + (imp.Percentagem * 0.01m))) * (imp.Percentagem * 0.01m)
                                 })],
 
                                 TaxExemptionReason = artigo.Artigo.Motivo,
@@ -253,7 +235,124 @@ namespace Simansoft.SAFT.Mozambique.Generators
             return auditFile;
         }
 
-        private string RetornaXml(AuditFile auditFile)
+        public string GenerateJson(AuditFile auditFile)
+        {
+            return JsonSerializer.Serialize(auditFile, AuditFileContext.Custom.AuditFile);
+        }
+
+        public string GenerateXml(AuditFile auditFile)
+        {
+            try
+            {
+                return Encoding.UTF8.GetString(GenerateBytesXml(auditFile));
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException("Falha na serialização SAF-T", ex);
+            }
+        }
+
+        public static byte[] GenerateBytesExcel(AuditFile auditFile)
+        {
+            try
+            {
+                using var workbook = new XLWorkbook();
+                var worksheet = workbook.Worksheets.Add("Faturas");
+
+                // Cabeçalho
+                worksheet.Cell(1, 1).Value = "Linha";
+                worksheet.Cell(1, 2).Value = "NUIT";
+                worksheet.Cell(1, 3).Value = "MÊS";
+                worksheet.Cell(1, 4).Value = "ID Documento";
+                worksheet.Cell(1, 5).Value = "Tipo";
+                worksheet.Cell(1, 6).Value = "Série";
+                worksheet.Cell(1, 7).Value = "Número";
+                worksheet.Cell(1, 8).Value = "Série/Número";
+                worksheet.Cell(1, 9).Value = "Estado";
+                worksheet.Cell(1, 10).Value = "Referência a Documento de Origem";
+                worksheet.Cell(1, 11).Value = "Referência a Factura";
+                worksheet.Cell(1, 12).Value = "Data Emissão";
+                worksheet.Cell(1, 13).Value = "Data Vencimento";
+                worksheet.Cell(1, 14).Value = "NUIT Cliente";
+                worksheet.Cell(1, 15).Value = "Nome do Cliente";
+                worksheet.Cell(1, 16).Value = "Subtotal S/IVA";
+                worksheet.Cell(1, 17).Value = "Outro S/IVA";
+                worksheet.Cell(1, 18).Value = "IVA";
+                worksheet.Cell(1, 19).Value = "Razão de Isenção de IVA";
+                worksheet.Cell(1, 20).Value = "Total Retenção";
+                worksheet.Cell(1, 21).Value = "Total Desconto";
+                worksheet.Cell(1, 22).Value = "Total";
+                worksheet.Cell(1, 23).Value = "Valor Recebido";
+                worksheet.Cell(1, 24).Value = "IVA (%)";
+                worksheet.Cell(1, 25).Value = "Valor do Imposto";
+                worksheet.Cell(1, 26).Value = "Desconto";
+                worksheet.Cell(1, 27).Value = "Valor Total sem Imposto";
+                worksheet.Cell(1, 28).Value = "Total Incluindo Imposto";
+                worksheet.Cell(1, 29).Value = "Moeda";
+                worksheet.Cell(1, 30).Value = "Taxa Câmbio";
+                worksheet.Range(1, 1, 1, 30).Style.Font.SetBold();
+
+                int numeroLinha = 2;
+                auditFile.SourceDocuments?.SalesInvoices?.Invoices?.ForEach(factura =>
+                {
+                    worksheet.Cell(numeroLinha, 1).Value = numeroLinha - 1;
+                    worksheet.Cell(numeroLinha, 2).Value = auditFile.Header!.TaxRegistrationNumber;
+                    worksheet.Cell(numeroLinha, 3).Value = factura.InvoiceDate!.Value.ToDateTime(new TimeOnly()).ToString("yyyy-MM");
+                    worksheet.Cell(numeroLinha, 4).Value = string.Concat(factura.TipoDocumentoAbreviado, factura.InvoiceNo!.Split('/')[1]);
+                    worksheet.Cell(numeroLinha, 5).Value = factura.TipoDocumento;
+                    worksheet.Cell(numeroLinha, 6).Value = factura.Serie;
+                    worksheet.Cell(numeroLinha, 7).Value = factura.InvoiceNo!.Split('/')[1];
+                    worksheet.Cell(numeroLinha, 8).Value = string.Concat(factura.Serie, "/", factura.InvoiceNo!.Split('/')[1]);
+                    worksheet.Cell(numeroLinha, 9).Value = factura.DocumentStatus!.EstadoDescricao;
+                    //worksheet.Cell(numeroLinha, 10).Value = //factura.DocumentStatus!.ReferenciaDocumentoOrigem;
+                    //worksheet.Cell(numeroLinha, 11).Value = //factura.DocumentStatus!.ReferenciaFactura;
+                    worksheet.Cell(numeroLinha, 12).Value = factura.InvoiceDate!.Value.ToString("yyyy-MM-dd");
+                    //worksheet.Cell(numeroLinha, 13).Value = factura.DataVencimento?.ToString("yyyy-MM-dd");
+                    worksheet.Cell(numeroLinha, 14).Value = auditFile.MasterFiles?
+                        .Customers.SingleOrDefault(w => w.CustomerID == factura.CustomerID)?
+                        .CustomerTaxID ?? string.Empty;
+
+                    worksheet.Cell(numeroLinha, 15).Value = auditFile.MasterFiles?
+                        .Customers.SingleOrDefault(w => w.CustomerID == factura.CustomerID)?
+                        .CompanyName ?? string.Empty;
+                    worksheet.Cell(numeroLinha, 16).Value = factura.DocumentTotals?.TaxPayable;
+                    worksheet.Cell(numeroLinha, 18).Value = factura.DocumentTotals?.NetTotal;
+                    worksheet.Cell(numeroLinha, 21).Value = factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m;
+                    worksheet.Cell(numeroLinha, 22).Value = factura.DocumentTotals?.GrossTotal;
+                    worksheet.Cell(numeroLinha, 23).Value = factura.DocumentTotals?.Payments.Sum(s => s.PaymentAmount);
+
+                    decimal impostos = factura.Lines?
+                        .FirstOrDefault(w =>
+                            w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
+                            .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m;
+
+                    worksheet.Cell(numeroLinha, 24).Value = factura.Lines?
+                        .FirstOrDefault(w =>
+                            w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
+                            .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m;
+
+                    worksheet.Cell(numeroLinha, 25).Value = factura.DocumentTotals?.NetTotal;
+                    worksheet.Cell(numeroLinha, 26).Value = factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m;
+                    worksheet.Cell(numeroLinha, 27).Value = factura.DocumentTotals?.TaxPayable;
+                    worksheet.Cell(numeroLinha, 28).Value = factura.DocumentTotals?.GrossTotal;
+                    worksheet.Cell(numeroLinha, 29).Value = auditFile.Header?.CurrencyCode;
+                    worksheet.Cell(numeroLinha, 30).Value = 1;
+
+                    numeroLinha++;
+                });
+
+                using var stream = new MemoryStream();
+                workbook.SaveAs(stream);
+
+                return stream.ToArray();
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InvalidOperationException("Falha ao gerar o SAF-T em formato Excel", ex);
+            }
+        }
+
+        public byte[] GenerateBytesXml(AuditFile auditFile)
         {
             XmlWriterSettings settings = new()
             {
@@ -282,7 +381,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                 writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.AddressDetail), TratamentoStringXML(auditFile.Header.CompanyAddress!.AddressDetail));
                 writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.City), TratamentoStringXML(auditFile.Header.CompanyAddress.City));
                 writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.PostalCode), TratamentoStringXML(auditFile.Header.CompanyAddress.PostalCode));
-                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Province), TratamentoStringXML(auditFile.Header.CompanyAddress.Province));                
+                writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Province), TratamentoStringXML(auditFile.Header.CompanyAddress.Province));
                 writer.WriteElementString(nameof(auditFile.Header.CompanyAddress.Country), TratamentoStringXML(auditFile.Header.CompanyAddress.Country));
                 writer.WriteEndElement(); // Fecha o elemento CompanyAddress
                 writer.WriteElementString(nameof(auditFile.Header.FiscalYear), auditFile.Header.FiscalYear.ToString());
@@ -328,7 +427,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                     writer.WriteStartElement(nameof(Customer)); // Abre o elemento Customer
                     writer.WriteElementString(nameof(customer.CustomerID), customer.CustomerID);
                     writer.WriteElementString(nameof(customer.AccountID), customer.AccountID);
-                    writer.WriteElementString(nameof(customer.CustomerTaxID), customer.CustomerTaxID);                    
+                    writer.WriteElementString(nameof(customer.CustomerTaxID), customer.CustomerTaxID);
                     writer.WriteElementString(nameof(customer.CompanyName), customer.CompanyName);
                     // Faltando Contacto
                     if (customer.BillingAddress is not null)
@@ -378,7 +477,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         }
                         writer.WriteEndElement(); // Fecha o elemento ShipToAddress
                     }
-                    
+
 
                     // Faltando Telephone
                     // Faltando Fax
@@ -494,7 +593,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                                 writer.WriteElementString(nameof(invoice.ShipTo.Address.Country), TratamentoStringXML(invoice.ShipTo?.Address?.Country));
                             }
                             writer.WriteEndElement(); // Fecha o elemento Address
-                        }                        
+                        }
                         writer.WriteEndElement(); // Fecha o elemento ShipTo
                     }
 
@@ -514,18 +613,18 @@ namespace Simansoft.SAFT.Mozambique.Generators
                             {
                                 writer.WriteElementString(nameof(invoice.ShipFrom.Address.City), TratamentoStringXML(invoice.ShipFrom?.Address?.City));
                             }
-                            
+
                             if (!string.IsNullOrWhiteSpace(invoice.ShipFrom?.Address?.PostalCode))
                             {
                                 writer.WriteElementString(nameof(invoice.ShipFrom.Address.PostalCode), TratamentoStringXML(invoice.ShipFrom?.Address?.PostalCode));
                             }
-                            
+
                             if (!string.IsNullOrWhiteSpace(invoice.ShipFrom?.Address?.Country))
                             {
                                 writer.WriteElementString(nameof(invoice.ShipFrom.Address.Country), TratamentoStringXML(invoice.ShipFrom?.Address?.Country));
                             }
                             writer.WriteEndElement(); // Fecha o elemento Address
-                        }                        
+                        }
                         writer.WriteEndElement(); // Fecha o elemento ShipFrom
                     }
 
@@ -553,14 +652,14 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         writer.WriteElementString(nameof(artigo.TaxExemptionReason), TratamentoStringXML(artigo.TaxExemptionReason));
                         writer.WriteElementString(nameof(artigo.TaxExemptionCode), TratamentoStringXML(artigo.TaxExemptionCode));
                         writer.WriteElementString(nameof(artigo.SettlementAmount), artigo.SettlementAmount.ToString());
-                                                
+
                         writer.WriteEndElement(); // Fecha o elemento artigo
                     });
 
                     writer.WriteStartElement(nameof(invoice.DocumentTotals)); // Abre o elemento DocumentTotals
                     writer.WriteElementString(nameof(invoice.DocumentTotals.TaxPayable), invoice.DocumentTotals?.TaxPayable.ToString());
                     writer.WriteElementString(nameof(invoice.DocumentTotals.NetTotal), invoice.DocumentTotals?.NetTotal.ToString());
-                    writer.WriteElementString(nameof(invoice.DocumentTotals.GrossTotal), invoice.DocumentTotals?.GrossTotal.ToString());                    
+                    writer.WriteElementString(nameof(invoice.DocumentTotals.GrossTotal), invoice.DocumentTotals?.GrossTotal.ToString());
                     if (invoice.DocumentTotals?.Payments != null)
                     {
                         invoice.DocumentTotals.Payments.ForEach(p =>
@@ -570,7 +669,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                             writer.WriteElementString(nameof(p.PaymentAmount), p.PaymentAmount.ToString());
                             writer.WriteElementString(nameof(p.PaymentDate), p.PaymentDate?.ToString("yyyy-MM-dd"));
                             writer.WriteEndElement(); // Fecha o elemento Payment
-                            
+
                         });
                     }
 
@@ -598,7 +697,12 @@ namespace Simansoft.SAFT.Mozambique.Generators
 
             //return stringWriter.ToString();
             //return Encoding.GetEncoding(1252).GetString(memoryStream.ToArray());
-            return Encoding.UTF8.GetString(memoryStream.ToArray());
+            return memoryStream.ToArray();
+        }
+
+        public ValidationResult Validate(FicheiroSAFT saftData)
+        {
+            throw new NotImplementedException();
         }
 
         private static string? TratamentoStringXML(string? conteudo)
