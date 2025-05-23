@@ -255,12 +255,10 @@ namespace Simansoft.SAFT.Mozambique.Generators
 
         private string RetornaXml(AuditFile auditFile)
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
             XmlWriterSettings settings = new()
             {
                 Indent = false,
-                Encoding = Encoding.GetEncoding(1252) // Encoding.UTF8
+                Encoding = Encoding.UTF8 //Encoding.GetEncoding(1252)
             };
             //using StringWriter stringWriter = new();
             //using XmlWriter writer = XmlWriter.Create(stringWriter, settings);
@@ -599,8 +597,8 @@ namespace Simansoft.SAFT.Mozambique.Generators
             }
 
             //return stringWriter.ToString();
-            return Encoding.GetEncoding(1252).GetString(memoryStream.ToArray());
-            //return Encoding.UTF8.GetString(memoryStream.ToArray());
+            //return Encoding.GetEncoding(1252).GetString(memoryStream.ToArray());
+            return Encoding.UTF8.GetString(memoryStream.ToArray());
         }
 
         private static string? TratamentoStringXML(string? conteudo)
