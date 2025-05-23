@@ -5,9 +5,11 @@ namespace Simansoft.SAFT.Core.Interfaces
 {
     public interface ISaftGenerator<T>
     {
-        string GenerateXml(AuditFile auditFile);
-        string GenerateJson(AuditFile auditFile);
         AuditFile ConverterParaSaft(T ficheiroNaOrigem);
+        string GenerateJson(AuditFile auditFile);
+        string GenerateXml(AuditFile auditFile);
+        byte[] GenerateBytesExcel(AuditFile auditFile);
+        byte[] GenerateBytesXml(AuditFile auditFile);
         ValidationResult Validate(T saftData); // Validação integrada
     }
 }

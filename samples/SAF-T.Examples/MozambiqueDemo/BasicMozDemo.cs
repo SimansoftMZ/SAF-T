@@ -50,7 +50,7 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             Console.WriteLine("Vou criar o ficheiro Excel...");
             Console.ReadKey(true);
 
-            byte[] excel = MozambiqueSaftGenerator.GenerateBytesExcel(auditFile);
+            byte[] excel = gerador.GenerateBytesExcel(auditFile);
             File.WriteAllBytes("saft_mozambique.xlsx", excel);
 
             byte[] xml = gerador.GenerateBytesXml(auditFile);            

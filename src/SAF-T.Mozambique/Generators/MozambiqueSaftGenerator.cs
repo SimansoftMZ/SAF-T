@@ -252,7 +252,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
             }
         }
 
-        public static byte[] GenerateBytesExcel(AuditFile auditFile)
+        public byte[] GenerateBytesExcel(AuditFile auditFile)
         {
             try
             {
