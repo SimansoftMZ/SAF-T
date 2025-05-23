@@ -25,8 +25,8 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         {
                             CustomerID = s.Cliente.Id,
                             AccountID = string.IsNullOrWhiteSpace(s.Cliente.PlanoContaCorrente) ? "Desconhecido" : s.Cliente.PlanoContaCorrente,
-                            CustomerTaxID = s.Cliente.EConsumidorFinal ? "000000000" : s.Cliente.NUIT,
-                            CompanyName = s.Cliente.EConsumidorFinal ? "Consumidor Final" : s.Cliente.Nome,
+                            CustomerTaxID = s.Cliente.EConsumidorFinal || string.IsNullOrWhiteSpace(s.Cliente.NUIT) ? "000000000" : s.Cliente.NUIT,
+                            CompanyName = s.Cliente.EConsumidorFinal || string.IsNullOrWhiteSpace(s.Cliente.Nome) ? "Consumidor Final" : s.Cliente.Nome,
 
                             BillingAddress = s.Cliente.EConsumidorFinal ? null : new CustomerAddress
                             {
@@ -290,11 +290,11 @@ namespace Simansoft.SAFT.Mozambique.Generators
                     worksheet.Cell(numeroLinha, 12).Value = factura.InvoiceDate!.Value.ToString("yyyy-MM-dd");
                     //worksheet.Cell(numeroLinha, 13).Value = factura.DataVencimento?.ToString("yyyy-MM-dd");
                     worksheet.Cell(numeroLinha, 14).Value = auditFile.MasterFiles?
-                        .Customers.SingleOrDefault(w => w.CustomerID == factura.CustomerID)?
+                        .Customers.SingleOrDefault(w => (w.CustomerID ?? string.Empty).Equals(factura.CustomerID, StringComparison.OrdinalIgnoreCase))?
                         .CustomerTaxID ?? string.Empty;
 
                     worksheet.Cell(numeroLinha, 15).Value = auditFile.MasterFiles?
-                        .Customers.SingleOrDefault(w => w.CustomerID == factura.CustomerID)?
+                        .Customers.SingleOrDefault(w => (w.CustomerID ?? string.Empty).Equals(factura.CustomerID, StringComparison.OrdinalIgnoreCase))?
                         .CompanyName ?? string.Empty;
                     worksheet.Cell(numeroLinha, 16).Value = factura.DocumentTotals?.TaxPayable;
                     worksheet.Cell(numeroLinha, 18).Value = factura.DocumentTotals?.NetTotal;
