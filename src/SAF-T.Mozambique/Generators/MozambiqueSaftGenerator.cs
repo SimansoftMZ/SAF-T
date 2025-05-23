@@ -161,20 +161,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                             CustomerID =  doc.Cliente.EConsumidorFinal ? "Consumidor Final" : doc.Cliente.Id,
                             InvoiceType = doc.CategoriaId,
 
-                            //ShipTo = new ShipFromTo{
-                            //    Address = new CustomerAddress
-                            //    {
-                            //        AddressDetail = doc.Cliente.Endereco,
-                            //        City = doc.Cliente.Cidade,
-                            //        PostalCode = doc.Cliente.CodigoPostal,
-                            //        Country = doc.Cliente.Pais
-                            //    }
-                            //},
-                            //ShipFrom = new ShipFromTo
-                            //{
-                            //    Address = new CustomerAddress
-                            //    {
-                            //        AddressDetail = ficheiroSAFT.Empresa.Endereco1,
+                            
                             //        City = ficheiroSAFT.Empresa.Cidade,
                             //        PostalCode = ficheiroSAFT.Empresa.CodigoPostal,
                             //        Country = ficheiroSAFT.Empresa.Pais
