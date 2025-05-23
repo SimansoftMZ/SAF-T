@@ -12,7 +12,7 @@ namespace Simansoft.SAFT.Cryptography.Signing
         public string Sign(string mensagem)
         {
             if (string.IsNullOrEmpty(mensagem))
-                throw new ArgumentException("Mensagem não pode ser nula ou vazia", nameof(mensagem));
+                throw new ArgumentException("Mensagem não pode ser nula ou vazia.", nameof(mensagem));
 
             byte[] bytes = Encoding.UTF8.GetBytes(mensagem);
             byte[] bytesAssinados = _rsa.SignData(bytes, _config.HashAlgorithm, _config.Padding);
