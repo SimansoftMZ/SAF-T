@@ -4,6 +4,13 @@ using System.Xml.Serialization;
 
 namespace Simansoft.SAFT.Core.Models
 {
+    public enum FormatoOutput
+    {
+        Xml,
+        Json,
+        Excel
+    }
+
     [JsonSerializable(typeof(AuditFile))]
     [JsonSerializable(typeof(List<AuditFile>))]
     public partial class AuditFileContext : JsonSerializerContext
