@@ -162,6 +162,7 @@ namespace Simansoft.SAFT.Mozambique.Models
         public Cliente Cliente { get; init; } = new()
         {
             Nome = "Consumidor Final",
+            NUIT = "000000000",
             EConsumidorFinal = true
         };
         public List<DocumentoFacturacaoArtigo> Artigos { get; init; } = [];
