@@ -237,7 +237,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
         {
             try
             {
-                using var workbook = new XLWorkbook();
+                using XLWorkbook workbook = new();
                 var worksheet = workbook.Worksheets.Add("Faturas");
 
                 // Cabeçalho
