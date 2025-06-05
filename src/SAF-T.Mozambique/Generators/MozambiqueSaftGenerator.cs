@@ -233,7 +233,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
             }
         }
 
-        public byte[] GenerateBytesExcel(AuditFile auditFile)
+        public byte[] GenerateBytesExcel(AuditFile auditFile, FormatoOutput formatoOutput = FormatoOutput.Excel)
         {
             try
             {
