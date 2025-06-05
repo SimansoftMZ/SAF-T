@@ -292,10 +292,11 @@ namespace Simansoft.SAFT.Mozambique.Generators
 
                 IFont font = workbook.CreateFont();
                 font.IsBold = true;
+                ICellStyle headerStyle = workbook.CreateCellStyle();
+                headerStyle.SetFont(font);
                 for (int i = 0; i < 30; i++)
                 {
-                    headerRow.GetCell(i).CellStyle = workbook.CreateCellStyle();
-                    headerRow.GetCell(i).CellStyle.SetFont(font);
+                    headerRow.GetCell(i).CellStyle = headerStyle;
                 }
 
                 int numeroLinha = 1;
