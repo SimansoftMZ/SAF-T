@@ -253,7 +253,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                 {
                     FormatoOutput.Excel => new XSSFWorkbook(),// XLSX
                     FormatoOutput.ExcelOld => new HSSFWorkbook(),// XLS
-                    _ => throw new ArgumentException("Formato de saída não suportado.", nameof(formatoOutput)),
+                    _ => throw new ArgumentException($"Formato de saída '{formatoOutput}' não suportado.", nameof(formatoOutput)),
                 };
                 ISheet sheet = workbook.CreateSheet("Faturas");
 
