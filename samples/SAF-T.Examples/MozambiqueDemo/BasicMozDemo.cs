@@ -47,18 +47,26 @@ namespace Simansoft.SAFT.Examples.MozambiqueDemo
             //Console.WriteLine("=== XML ===");
 
             Console.WriteLine(xml);
-            Console.WriteLine("Vou criar o ficheiro Excel...");
+            Console.WriteLine("Vou criar os ficheiros...");
             Console.ReadKey(true);
 
-            byte[] excel = gerador.GenerateBytesExcel(auditFile);
-            File.WriteAllBytes("saft_mozambique.xlsx", excel);
+            Console.WriteLine("");
 
+            Console.WriteLine("A gerar o XLSX...");
+            byte[] excelByte = gerador.GenerateBytesExcel(auditFile);
+            File.WriteAllBytes("saft_mozambique.xlsx", excelByte);
+
+            Console.WriteLine("A gerar o XLS...");
+            byte[] excelXLSByte = gerador.GenerateBytesExcel(auditFile, FormatoOutput.ExcelOld);
+            File.WriteAllBytes("saft_mozambique.xls", excelXLSByte);
+
+            Console.WriteLine("A gerar o XML...");
             byte[] xmlByte = gerador.GenerateBytesXml(auditFile);            
             File.WriteAllBytes("saft_mozambique.xml", xmlByte);
 
             //File.WriteAllText("saft_mozambique.xml", xml);
 
-            Console.WriteLine("Ficheiro criado com sucesso!");
+            Console.WriteLine("Ficheiros criados com sucesso!");
             Console.ReadKey(true);
             Console.Clear();
 

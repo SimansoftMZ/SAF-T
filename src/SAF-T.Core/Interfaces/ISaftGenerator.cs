@@ -9,6 +9,7 @@ namespace Simansoft.SAFT.Core.Interfaces
         string GenerateJson(AuditFile auditFile);
         string GenerateXml(AuditFile auditFile);
         byte[] GenerateBytesExcel(AuditFile auditFile);
+        byte[] GenerateBytesExcel(AuditFile auditFile, FormatoOutput formatoOutput = FormatoOutput.Excel);
         byte[] GenerateBytesXml(AuditFile auditFile);
         ValidationResult Validate(T saftData); // Validação integrada
     }

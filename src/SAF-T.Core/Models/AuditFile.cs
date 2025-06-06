@@ -8,7 +8,8 @@ namespace Simansoft.SAFT.Core.Models
     {
         Xml,
         Json,
-        Excel
+        Excel,
+        ExcelOld
     }
 
     [JsonSerializable(typeof(AuditFile))]
