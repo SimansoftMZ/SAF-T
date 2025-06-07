@@ -1,0 +1,86 @@
+name: SAF-T Base CI/CD
+permissions:
+  contents: read
+  packages: write
+
+on:
+  push:
+    tags:
+      - 'v*'
+    branches: [ "main" ]
+    paths: [ "src/SAF-T.Core/**", "src/SAF-T.Cryptography/**", "src/SAF-T.Mozambique/**" ]
+  pull_request:
+    branches: [ "main" ]
+    paths: [ "src/SAF-T.Core/**", "src/SAF-T.Cryptography/**", "src/SAF-T.Mozambique/**" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      SAFT_COMMON_VERSION_PREFIX: ${{ vars.SAFT_COMMON_VERSION_PREFIX }}
+        
+    steps:
+    - name: Definir versão
+      run: |
+        if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/v}
+        else
+          VERSION="${SAFT_COMMON_VERSION_PREFIX}-preview-${GITHUB_RUN_NUMBER}"
+        fi
+        echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Checkout do repositório
+      uses: actions/checkout@v4
+      
+    - name: Setup do .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.x.x
+    
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Copiar README para a pasta do SAF-T.Core
+      run: cp README.md src/SAF-T.Core/README.md
+
+    - name: Copiar README para a pasta do SAF-T.Cryptography
+      run: cp README.md src/SAF-T.Cryptography/README.md
+
+    - name: Copiar README para a pasta do SAF-T.Mozambique
+      run: cp README.md src/SAF-T.Mozambique/README.md
+
+      
+    - name: Compilar o projecto SAF-T.Core
+      run: dotnet build "src/SAF-T.Core/" --configuration Release --no-restore
+    
+    - name: Compilar o projecto SAF-T.Cryptography
+      run: dotnet build "src/SAF-T.Cryptography/" --configuration Release --no-restore
+
+    - name: Compilar o projecto SAF-T.Mozambique
+      run: dotnet build "src/SAF-T.Mozambique/" --configuration Release --no-restore
+    
+    ## - name: Test
+    ##  run: dotnet test --no-build --verbosity normal
+
+    - name: Empacotar o projeto SAF-T.Core
+      run: |
+        dotnet pack "src/SAF-T.Core/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+    
+    - name: Empacotar o projeto SAF-T.Cryptography
+      run: |
+        dotnet pack "src/SAF-T.Cryptography/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+    
+    - name: Empacotar o projeto SAF-T.Mozambique
+      run: |
+        dotnet pack "src/SAF-T.Mozambique/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+        
+      
+    - name: Publicar no NuGet o SAF-T.Core
+      run: dotnet nuget "src/SAF-T.Core/" push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
+    
+    - name: Publicar no NuGet o SAF-T.Cryptography
+      run: dotnet nuget "src/SAF-T.Cryptography/" push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
+    
+    - name: Publicar no NuGet o SAF-T.Mozambique
+      run: dotnet nuget "src/SAF-T.Mozambique/" push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}

@@ -3,9 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 ### Builds
-[![SAF-T.Core CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-core-ci-cd.yml)
-[![SAF-T.Cryptography CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-cryptography-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-cryptography-ci-cd.yml)
-[![SAF-T.Mozambique CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-mozambique-ci-cd.yml)
+[![SAF-T Base CI/CD](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-base-ci-cd.yml/badge.svg)](https://github.com/SimansoftMZ/SAF-T/actions/workflows/saft-base-ci-cd.yml)
 
 ## Descrição do Projeto 📄
 
@@ -29,8 +27,8 @@
 ---
 
 ## Funcionalidades Principais ✨
-- [X] **Suporte Multi-País**: Implemente SAF-T para Moçambique, Portugal, ou qualquer outro país.
-- [X] **Formatos de Saída**: Gere ficheiros em **XML** e **JSON** conforme as especificações locais.
+- [X] **Suporte Multi-País**: Implemente SAF-T para Moçambique, Angola, Portugal, ou qualquer outro país.
+- [X] **Formatos de Saída**: Gere ficheiros em **XML**, **JSON**, **XLSX** e **XLS** conforme as especificações locais.
 - [X] **Extensível**: Adicione novos países com estrutura modular.
 - [X] **Hash**: Gera hashes seguros para assinar documentos de faturação.
 - [ ] **Testes automatizados**: Implementação de testes automatizados
