@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "main", "develop", "release-**" ]
   schedule:
-    - cron: '* * * * 2'
+    - cron: '0 * * * 2'
 
 # Permissões globais para todo o workflow
 permissions:
