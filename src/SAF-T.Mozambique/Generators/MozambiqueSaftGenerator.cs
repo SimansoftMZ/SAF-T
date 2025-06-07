@@ -5,7 +5,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Json;
 using System.Xml;
-using ClosedXML.Excel;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace Simansoft.SAFT.Mozambique.Generators
 {
@@ -235,99 +237,122 @@ namespace Simansoft.SAFT.Mozambique.Generators
 
         public byte[] GenerateBytesExcel(AuditFile auditFile)
         {
+            return GenerateBytesExcel(auditFile, FormatoOutput.Excel);
+        }
+
+        public byte[] GenerateBytesExcel(AuditFile auditFile, FormatoOutput formatoOutput = FormatoOutput.Excel)
+        {
             try
             {
-                using var workbook = new XLWorkbook();
-                var worksheet = workbook.Worksheets.Add("Faturas");
+                if (auditFile == null)
+                {
+                    throw new ArgumentNullException(nameof(auditFile), "O objeto AuditFile não pode ser nulo.");
+                }
+
+                IWorkbook workbook = formatoOutput switch
+                {
+                    FormatoOutput.Excel => new XSSFWorkbook(),// XLSX
+                    FormatoOutput.ExcelOld => new HSSFWorkbook(),// XLS
+                    _ => throw new ArgumentException($"Formato de saída '{formatoOutput}' não suportado.", nameof(formatoOutput)),
+                };
+                ISheet sheet = workbook.CreateSheet("Faturas");
 
                 // Cabeçalho
-                worksheet.Cell(1, 1).Value = "Linha";
-                worksheet.Cell(1, 2).Value = "NUIT";
-                worksheet.Cell(1, 3).Value = "MÊS";
-                worksheet.Cell(1, 4).Value = "ID Documento";
-                worksheet.Cell(1, 5).Value = "Tipo";
-                worksheet.Cell(1, 6).Value = "Série";
-                worksheet.Cell(1, 7).Value = "Número";
-                worksheet.Cell(1, 8).Value = "Série/Número";
-                worksheet.Cell(1, 9).Value = "Estado";
-                worksheet.Cell(1, 10).Value = "Referência a Documento de Origem";
-                worksheet.Cell(1, 11).Value = "Referência a Factura";
-                worksheet.Cell(1, 12).Value = "Data Emissão";
-                worksheet.Cell(1, 13).Value = "Data Vencimento";
-                worksheet.Cell(1, 14).Value = "NUIT Cliente";
-                worksheet.Cell(1, 15).Value = "Nome do Cliente";
-                worksheet.Cell(1, 16).Value = "Subtotal S/IVA";
-                worksheet.Cell(1, 17).Value = "Outro S/IVA";
-                worksheet.Cell(1, 18).Value = "IVA";
-                worksheet.Cell(1, 19).Value = "Razão de Isenção de IVA";
-                worksheet.Cell(1, 20).Value = "Total Retenção";
-                worksheet.Cell(1, 21).Value = "Total Desconto";
-                worksheet.Cell(1, 22).Value = "Total";
-                worksheet.Cell(1, 23).Value = "Valor Recebido";
-                worksheet.Cell(1, 24).Value = "IVA (%)";
-                worksheet.Cell(1, 25).Value = "Valor do Imposto";
-                worksheet.Cell(1, 26).Value = "Desconto";
-                worksheet.Cell(1, 27).Value = "Valor Total sem Imposto";
-                worksheet.Cell(1, 28).Value = "Total Incluindo Imposto";
-                worksheet.Cell(1, 29).Value = "Moeda";
-                worksheet.Cell(1, 30).Value = "Taxa Câmbio";
-                worksheet.Range(1, 1, 1, 30).Style.Font.SetBold();
+                var headerRow = sheet.CreateRow(0);
+                headerRow.CreateCell(0).SetCellValue("Linha");
+                headerRow.CreateCell(1).SetCellValue("NUIT");
+                headerRow.CreateCell(2).SetCellValue("MÊS");
+                headerRow.CreateCell(3).SetCellValue("ID Documento");
+                headerRow.CreateCell(4).SetCellValue("Tipo");
+                headerRow.CreateCell(5).SetCellValue("Série");
+                headerRow.CreateCell(6).SetCellValue("Número");
+                headerRow.CreateCell(7).SetCellValue("Série/Número");
+                headerRow.CreateCell(8).SetCellValue("Estado");
+                headerRow.CreateCell(9).SetCellValue("Referência a Documento de Origem");
+                headerRow.CreateCell(10).SetCellValue("Referência a Factura");
+                headerRow.CreateCell(11).SetCellValue("Data Emissão");
+                headerRow.CreateCell(12).SetCellValue("Data Vencimento");
+                headerRow.CreateCell(13).SetCellValue("NUIT Cliente");
+                headerRow.CreateCell(14).SetCellValue("Nome do Cliente");
+                headerRow.CreateCell(15).SetCellValue("Subtotal S/IVA");
+                headerRow.CreateCell(16).SetCellValue("Outro S/IVA");
+                headerRow.CreateCell(17).SetCellValue("IVA");
+                headerRow.CreateCell(18).SetCellValue("Razão de Isenção de IVA");
+                headerRow.CreateCell(19).SetCellValue("Total Retenção");
+                headerRow.CreateCell(20).SetCellValue("Total Desconto");
+                headerRow.CreateCell(21).SetCellValue("Total");
+                headerRow.CreateCell(22).SetCellValue("Valor Recebido");
+                headerRow.CreateCell(23).SetCellValue("IVA (%)");
+                headerRow.CreateCell(24).SetCellValue("Valor do Imposto");
+                headerRow.CreateCell(25).SetCellValue("Desconto");
+                headerRow.CreateCell(26).SetCellValue("Valor Total sem Imposto");
+                headerRow.CreateCell(27).SetCellValue("Total Incluindo Imposto");
+                headerRow.CreateCell(28).SetCellValue("Moeda");
+                headerRow.CreateCell(29).SetCellValue("Taxa Câmbio");
 
-                int numeroLinha = 2;
+                IFont font = workbook.CreateFont();
+                font.IsBold = true;
+                ICellStyle headerStyle = workbook.CreateCellStyle();
+                headerStyle.SetFont(font);
+                for (int i = 0; i < 30; i++)
+                {
+                    headerRow.GetCell(i).CellStyle = headerStyle;
+                }
+
+                int numeroLinha = 1;
                 auditFile.SourceDocuments?.SalesInvoices?.Invoices?.ForEach(factura =>
                 {
-                    worksheet.Cell(numeroLinha, 1).Value = numeroLinha - 1;
-                    worksheet.Cell(numeroLinha, 2).Value = auditFile.Header!.TaxRegistrationNumber;
-                    worksheet.Cell(numeroLinha, 3).Value = factura.InvoiceDate!.Value.ToDateTime(new TimeOnly()).ToString("yyyy-MM");
-                    worksheet.Cell(numeroLinha, 4).Value = string.Concat(factura.TipoDocumentoAbreviado, factura.InvoiceNo!.Split('/')[1]);
-                    worksheet.Cell(numeroLinha, 5).Value = factura.TipoDocumento;
-                    worksheet.Cell(numeroLinha, 6).Value = factura.Serie;
-                    worksheet.Cell(numeroLinha, 7).Value = factura.InvoiceNo!.Split('/')[1];
-                    worksheet.Cell(numeroLinha, 8).Value = string.Concat(factura.Serie, "/", factura.InvoiceNo!.Split('/')[1]);
-                    worksheet.Cell(numeroLinha, 9).Value = factura.DocumentStatus!.EstadoDescricao;
-                    //worksheet.Cell(numeroLinha, 10).Value = //factura.DocumentStatus!.ReferenciaDocumentoOrigem;
-                    //worksheet.Cell(numeroLinha, 11).Value = //factura.DocumentStatus!.ReferenciaFactura;
-                    worksheet.Cell(numeroLinha, 12).Value = factura.InvoiceDate!.Value.ToString("yyyy-MM-dd");
-                    //worksheet.Cell(numeroLinha, 13).Value = factura.DataVencimento?.ToString("yyyy-MM-dd");
-                    worksheet.Cell(numeroLinha, 14).Value = auditFile.MasterFiles?
+                    var row = sheet.CreateRow(numeroLinha++);
+                    row.CreateCell(0).SetCellValue(numeroLinha - 1);
+                    row.CreateCell(1).SetCellValue(auditFile.Header!.TaxRegistrationNumber);
+                    row.CreateCell(2).SetCellValue(factura.InvoiceDate!.Value.ToDateTime(new TimeOnly()).ToString("yyyy-MM"));
+                    row.CreateCell(3).SetCellValue(string.Concat(factura.TipoDocumentoAbreviado, factura.InvoiceNo!.Split('/')[1]));
+                    row.CreateCell(4).SetCellValue(factura.TipoDocumento);
+                    row.CreateCell(5).SetCellValue(factura.Serie);
+                    row.CreateCell(6).SetCellValue(factura.InvoiceNo!.Split('/')[1]);
+                    row.CreateCell(7).SetCellValue(string.Concat(factura.Serie, "/", factura.InvoiceNo!.Split('/')[1]));
+                    row.CreateCell(8).SetCellValue(factura.DocumentStatus!.EstadoDescricao);
+                    //row.CreateCell(9).SetCellValue(factura.DocumentStatus!.ReferenciaDocumentoOrigem);
+                    //row.CreateCell(10).SetCellValue(factura.DocumentStatus!.ReferenciaFactura);
+                    row.CreateCell(11).SetCellValue(factura.InvoiceDate!.Value.ToString("yyyy-MM-dd"));
+                    //row.CreateCell(12).SetCellValue(factura.DataVencimento?.ToString("yyyy-MM-dd"));
+                    row.CreateCell(13).SetCellValue(auditFile.MasterFiles?
                         .Customers.SingleOrDefault(w => (w.CustomerID ?? string.Empty).Equals(factura.CustomerID, StringComparison.OrdinalIgnoreCase))?
-                        .CustomerTaxID ?? string.Empty;
+                        .CustomerTaxID ?? string.Empty);
 
-                    worksheet.Cell(numeroLinha, 15).Value = auditFile.MasterFiles?
+                    row.CreateCell(14).SetCellValue(auditFile.MasterFiles?
                         .Customers.SingleOrDefault(w => (w.CustomerID ?? string.Empty).Equals(factura.CustomerID, StringComparison.OrdinalIgnoreCase))?
-                        .CompanyName ?? string.Empty;
-                    worksheet.Cell(numeroLinha, 16).Value = factura.DocumentTotals?.TaxPayable;
-                    worksheet.Cell(numeroLinha, 18).Value = factura.DocumentTotals?.NetTotal;
-                    worksheet.Cell(numeroLinha, 21).Value = factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m;
-                    worksheet.Cell(numeroLinha, 22).Value = factura.DocumentTotals?.GrossTotal;
-                    worksheet.Cell(numeroLinha, 23).Value = factura.DocumentTotals?.Payments.Sum(s => s.PaymentAmount);
+                        .CompanyName ?? string.Empty);
 
+                    row.CreateCell(15).SetCellValue(factura.DocumentTotals?.TaxPayable.ToString() ?? "0");
+                    row.CreateCell(17).SetCellValue(factura.DocumentTotals?.NetTotal.ToString() ?? "0");
+                    row.CreateCell(20).SetCellValue((factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m).ToString());
+                    row.CreateCell(21).SetCellValue(factura.DocumentTotals?.GrossTotal.ToString() ?? "0");
+                    row.CreateCell(22).SetCellValue(factura.DocumentTotals?.Payments.Sum(s => s.PaymentAmount).ToString() ?? "0");
+                   
                     decimal impostos = factura.Lines?
                         .FirstOrDefault(w =>
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
                             .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m;
 
-                    worksheet.Cell(numeroLinha, 24).Value = factura.Lines?
+                    row.CreateCell(23).SetCellValue(factura.Lines?
                         .FirstOrDefault(w =>
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
-                            .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m;
+                            .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage.ToString() ?? "0");
 
-                    worksheet.Cell(numeroLinha, 25).Value = factura.DocumentTotals?.NetTotal;
-                    worksheet.Cell(numeroLinha, 26).Value = factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m;
-                    worksheet.Cell(numeroLinha, 27).Value = factura.DocumentTotals?.TaxPayable;
-                    worksheet.Cell(numeroLinha, 28).Value = factura.DocumentTotals?.GrossTotal;
-                    worksheet.Cell(numeroLinha, 29).Value = auditFile.Header?.CurrencyCode;
-                    worksheet.Cell(numeroLinha, 30).Value = 1;
-
-                    numeroLinha++;
+                    row.CreateCell(24).SetCellValue(factura.DocumentTotals?.NetTotal.ToString() ?? "0");
+                    row.CreateCell(25).SetCellValue((factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m).ToString());
+                    row.CreateCell(26).SetCellValue(factura.DocumentTotals?.TaxPayable.ToString() ?? "0");
+                    row.CreateCell(27).SetCellValue(factura.DocumentTotals?.GrossTotal.ToString() ?? "0");
+                    row.CreateCell(28).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
+                    row.CreateCell(29).SetCellValue("1"); // Taxa de Câmbio fixa como 1
                 });
 
                 using var stream = new MemoryStream();
-                workbook.SaveAs(stream);
-
+                workbook.Write(stream);
                 return stream.ToArray();
             }
-            catch (InvalidOperationException ex)
+            catch (ArgumentNullException ex)
             {
                 throw new InvalidOperationException("Falha ao gerar o SAF-T em formato Excel", ex);
             }
