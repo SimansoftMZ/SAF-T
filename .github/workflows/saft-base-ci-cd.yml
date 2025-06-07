@@ -77,10 +77,10 @@ jobs:
         
       
     - name: Publicar no NuGet o SAF-T.Core
-      run: dotnet nuget "src/SAF-T.Core/" push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
+      run: dotnet nuget push "src/SAF-T.Core/" ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
     
     - name: Publicar no NuGet o SAF-T.Cryptography
-      run: dotnet nuget "src/SAF-T.Cryptography/" push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
+      run: dotnet nuget push "src/SAF-T.Cryptography/" ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
     
     - name: Publicar no NuGet o SAF-T.Mozambique
-      run: dotnet nuget "src/SAF-T.Mozambique/" push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
+      run: dotnet nuget push "src/SAF-T.Mozambique/" ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
