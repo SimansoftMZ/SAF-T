@@ -60,16 +60,13 @@ jobs:
     ##  run: dotnet test --no-build --verbosity normal
 
     - name: Empacotar o projeto SAF-T.Core
-      run: |
-        dotnet pack "src/SAF-T.Core/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+      run: dotnet pack "src/SAF-T.Core/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
     
     - name: Empacotar o projeto SAF-T.Cryptography
-      run: |
-        dotnet pack "src/SAF-T.Cryptography/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+      run: dotnet pack "src/SAF-T.Cryptography/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
     
     - name: Empacotar o projeto SAF-T.Mozambique
-      run: |
-        dotnet pack "src/SAF-T.Mozambique/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+      run: dotnet pack "src/SAF-T.Mozambique/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
         
       
     - name: Publicar para o NuGet
