@@ -244,7 +244,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
         {
             try
             {
-                double taxaFixaCambio = 1d;
+                double taxaCambio = 1d;
                 if (auditFile == null)
                 {
                     throw new ArgumentNullException(nameof(auditFile), "O objeto AuditFile não pode ser nulo.");
@@ -346,7 +346,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                     row.CreateCell(26).SetCellValue(factura.DocumentTotals?.TaxPayable.ToString() ?? "0");
                     row.CreateCell(27).SetCellValue(factura.DocumentTotals?.GrossTotal.ToString() ?? "0");
                     row.CreateCell(28).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
-                    row.CreateCell(29).SetCellValue(taxaFixaCambio);
+                    row.CreateCell(29).SetCellValue(taxaCambio);
                 });
 
                 using var stream = new MemoryStream();
