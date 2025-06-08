@@ -41,15 +41,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Copiar README para a pasta do SAF-T.Core
-      run: cp README.md src/SAF-T.Core/README.md
-
-    - name: Copiar README para a pasta do SAF-T.Cryptography
-      run: cp README.md src/SAF-T.Cryptography/README.md
-
-    - name: Copiar README para a pasta do SAF-T.Mozambique
-      run: cp README.md src/SAF-T.Mozambique/README.md
-
+    - name: Copiar README para os projectos
+      run: |
+        cp README.md src/SAF-T.Core/README.md
+        cp README.md src/SAF-T.Cryptography/README.md
+        cp README.md src/SAF-T.Mozambique/README.md
       
     - name: Compilar o projecto SAF-T.Core
       run: dotnet build "src/SAF-T.Core/" --configuration Release --no-restore
@@ -64,23 +60,14 @@ jobs:
     ##  run: dotnet test --no-build --verbosity normal
 
     - name: Empacotar o projeto SAF-T.Core
-      run: |
-        dotnet pack "src/SAF-T.Core/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+      run: dotnet pack "src/SAF-T.Core/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
     
     - name: Empacotar o projeto SAF-T.Cryptography
-      run: |
-        dotnet pack "src/SAF-T.Cryptography/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+      run: dotnet pack "src/SAF-T.Cryptography/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
     
     - name: Empacotar o projeto SAF-T.Mozambique
-      run: |
-        dotnet pack "src/SAF-T.Mozambique/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
+      run: dotnet pack "src/SAF-T.Mozambique/" --configuration Release -p:PackageVersion=${PACKAGE_VERSION} --no-build -o ./nupkg
         
       
-    - name: Publicar no NuGet o SAF-T.Core
-      run: dotnet nuget push "src/SAF-T.Core/nupkg/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
-    
-    - name: Publicar no NuGet o SAF-T.Cryptography
-      run: dotnet nuget push "src/SAF-T.Cryptography/nupkg/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
-    
-    - name: Publicar no NuGet o SAF-T.Mozambique
-      run: dotnet nuget push "src/SAF-T.Mozambique/nupkg/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
+    - name: Publicar para o NuGet
+      run: dotnet nuget push "./nupkg/*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_PUBLISH_KEY }}
