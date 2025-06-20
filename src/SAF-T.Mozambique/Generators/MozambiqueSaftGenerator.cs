@@ -304,8 +304,8 @@ namespace Simansoft.SAFT.Mozambique.Generators
                 auditFile.SourceDocuments?.SalesInvoices?.Invoices?.ForEach(factura =>
                 {
                     var row = sheet.CreateRow(numeroLinha++);
-                    row.CreateCell(0).SetCellValue(numeroLinha - 1);
-                    row.CreateCell(1).SetCellValue(auditFile.Header!.TaxRegistrationNumber);
+                    row.CreateCell(0).SetCellType(CellType.Numeric).SetCellValue(numeroLinha - 1);
+                    row.CreateCell(1).SetCellType(CellType.String).SetCellValue(auditFile.Header!.TaxRegistrationNumber);
                     row.CreateCell(2).SetCellValue(factura.InvoiceDate!.Value.ToDateTime(new TimeOnly()).ToString("yyyy-MM"));
                     row.CreateCell(3).SetCellValue(string.Concat(factura.TipoDocumentoAbreviado, factura.InvoiceNo!.Split('/')[1]));
                     row.CreateCell(4).SetCellValue(factura.TipoDocumento);
@@ -325,12 +325,13 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         .Customers.SingleOrDefault(w => (w.CustomerID ?? string.Empty).Equals(factura.CustomerID, StringComparison.OrdinalIgnoreCase))?
                         .CompanyName ?? string.Empty);
 
-                    row.CreateCell(15).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
-                    row.CreateCell(17).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.NetTotal ?? 0m));
-                    row.CreateCell(20).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
-                    row.CreateCell(21).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
-                    row.CreateCell(22).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.Payments.Sum(s => s.PaymentAmount) ?? 0m));
-                   
+
+                    row.CreateCell(15).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
+                    row.CreateCell(17).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.NetTotal ?? 0m));
+                    row.CreateCell(20).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
+                    row.CreateCell(21).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
+                    row.CreateCell(22).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.Payments.Sum(s => s.PaymentAmount) ?? 0m));
+
                     decimal impostos = factura.Lines?
                         .FirstOrDefault(w =>
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
@@ -340,13 +341,14 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         .FirstOrDefault(w =>
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
                             .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m));
+                    row.CreateCell(23).SetCellType(CellType.Numeric);
 
-                    row.CreateCell(24).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.NetTotal ?? 0m));
-                    row.CreateCell(25).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
-                    row.CreateCell(26).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
-                    row.CreateCell(27).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
-                    row.CreateCell(28).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
-                    row.CreateCell(29).SetCellValue(taxaCambio);
+                    row.CreateCell(24).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.NetTotal ?? 0m));
+                    row.CreateCell(25).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
+                    row.CreateCell(26).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
+                    row.CreateCell(27).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
+                    row.CreateCell(28).SetCellType(CellType.Numeric).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
+                    row.CreateCell(29).SetCellType(CellType.Numeric).SetCellValue(taxaCambio);
                 });
 
                 using var stream = new MemoryStream();
