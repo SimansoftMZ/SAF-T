@@ -325,26 +325,26 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         .Customers.SingleOrDefault(w => (w.CustomerID ?? string.Empty).Equals(factura.CustomerID, StringComparison.OrdinalIgnoreCase))?
                         .CompanyName ?? string.Empty);
 
-                    row.CreateCell(15).SetCellValue(factura.DocumentTotals?.TaxPayable.ToString() ?? "0");
-                    row.CreateCell(17).SetCellValue(factura.DocumentTotals?.NetTotal.ToString() ?? "0");
-                    row.CreateCell(20).SetCellValue((factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m).ToString());
-                    row.CreateCell(21).SetCellValue(factura.DocumentTotals?.GrossTotal.ToString() ?? "0");
-                    row.CreateCell(22).SetCellValue(factura.DocumentTotals?.Payments.Sum(s => s.PaymentAmount).ToString() ?? "0");
+                    row.CreateCell(15).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
+                    row.CreateCell(17).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.NetTotal ?? 0m));
+                    row.CreateCell(20).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
+                    row.CreateCell(21).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
+                    row.CreateCell(22).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.Payments.Sum(s => s.PaymentAmount) ?? 0m));
                    
                     decimal impostos = factura.Lines?
                         .FirstOrDefault(w =>
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
                             .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m;
 
-                    row.CreateCell(23).SetCellValue(factura.Lines?
+                    row.CreateCell(23).SetCellValue(Convert.ToDouble(factura.Lines?
                         .FirstOrDefault(w =>
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
-                            .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage.ToString() ?? "0");
+                            .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m));
 
-                    row.CreateCell(24).SetCellValue(factura.DocumentTotals?.NetTotal.ToString() ?? "0");
-                    row.CreateCell(25).SetCellValue((factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m).ToString());
-                    row.CreateCell(26).SetCellValue(factura.DocumentTotals?.TaxPayable.ToString() ?? "0");
-                    row.CreateCell(27).SetCellValue(factura.DocumentTotals?.GrossTotal.ToString() ?? "0");
+                    row.CreateCell(24).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.NetTotal ?? 0m));
+                    row.CreateCell(25).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
+                    row.CreateCell(26).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
+                    row.CreateCell(27).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
                     row.CreateCell(28).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
                     row.CreateCell(29).SetCellValue(taxaCambio);
                 });
