@@ -337,17 +337,16 @@ namespace Simansoft.SAFT.Mozambique.Generators
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
                             .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m;
 
-                    row.CreateCell(23).SetCellValue(Convert.ToDouble(factura.Lines?
+                    row.CreateCell(23).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.Lines?
                         .FirstOrDefault(w =>
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
                             .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m));
-                    row.CreateCell(23).SetCellType(CellType.Numeric);
 
                     row.CreateCell(24).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.NetTotal ?? 0m));
                     row.CreateCell(25).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
                     row.CreateCell(26).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
                     row.CreateCell(27).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
-                    row.CreateCell(28).SetCellType(CellType.Numeric).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
+                    row.CreateCell(28).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
                     row.CreateCell(29).SetCellType(CellType.Numeric).SetCellValue(taxaCambio);
                 });
 
