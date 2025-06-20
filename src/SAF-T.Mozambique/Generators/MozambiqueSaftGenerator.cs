@@ -347,7 +347,7 @@ namespace Simansoft.SAFT.Mozambique.Generators
                     row.CreateCell(25).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
                     row.CreateCell(26).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
                     row.CreateCell(27).SetCellType(CellType.Numeric).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
-                    row.CreateCell(28).SetCellType(CellType.Numeric).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
+                    row.CreateCell(28).SetCellType(CellType.String).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
                     row.CreateCell(29).SetCellType(CellType.Numeric).SetCellValue(taxaCambio);
                 });
 
