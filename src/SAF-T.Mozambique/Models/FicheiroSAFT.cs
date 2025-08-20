@@ -191,11 +191,11 @@ namespace Simansoft.SAFT.Mozambique.Models
         public decimal Quantidade { get; init; }
         public decimal PrecoTotalComImpostos { get; init; }
         public decimal ValorDesconto { get; init; }
-        public decimal PercentagemDesconto { get => ValorDesconto / PrecoTotalComImpostos * 100; }
+        public decimal PercentagemDesconto { get => PrecoTotalComImpostos == 0m ? 0m : ValorDesconto / PrecoTotalComImpostos * 100; }
         public decimal ValorImpostos { get => Artigo.Impostos.Sum(i => i.Valor + (PrecoTotalComImpostos / (1m + i.Percentagem * 0.01m) * i.Percentagem * 0.01m)); }
         public decimal PrecoTotalSemImpostos { get => PrecoTotalComImpostos - ValorImpostos; }
-        public decimal PrecoUnitarioComImpostos { get => (PrecoTotalComImpostos + ValorDesconto) / Quantidade; }
-        public decimal PrecoUnitarioSemImpostos { get => PrecoUnitarioComImpostos - (ValorImpostos / Quantidade); }
+        public decimal PrecoUnitarioComImpostos { get => Quantidade == 0m ? 0m : (PrecoTotalComImpostos + ValorDesconto) / Quantidade; }
+        public decimal PrecoUnitarioSemImpostos { get => Quantidade == 0m ? 0m : PrecoUnitarioComImpostos - (ValorImpostos / Quantidade); }
 
     }
 
