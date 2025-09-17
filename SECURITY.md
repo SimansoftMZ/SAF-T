@@ -12,7 +12,7 @@ Obrigado por ajudar a manter o ecossistema **SimansoftMZ/SAF-T** seguro. Esta po
 - Se não conseguir usar o PVR, contacte por e-mail:
   - **assunto**: `Vulnerability Report – SAF-T`
   - **conteúdo**: descrição, impacto, versões afetadas, logs/anexos, PoC (se existir)
-  - **endereço**: *(adicione aqui o e-mail oficial do projecto, por ex.:)* `security@simansoftmz.com`
+  - **endereço**: `devsecurity@simansoft.co.mz`
 
 > **Não** abra *issues* públicas nem *pull requests* com detalhes sensíveis. Evite enviar dados pessoais ou credenciais.
 
