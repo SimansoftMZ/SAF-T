@@ -142,6 +142,7 @@ namespace Simansoft.SAFT.Mozambique.Models
 
         public bool? ControlaAssinatura { get; init; }
         public string? Assinatura { get; init; }
+        public string? Moeda { get; init; } = "MZN";
 
         public DateTime DataHora { get; init; }
         public int PeriodoMes { get => DataEmissao.Month; }
