@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="NPOI" Version="2.7.3" />
+    <PackageReference Include="NPOI" Version="2.8.0" />
   </ItemGroup>
 
   <ItemGroup>
