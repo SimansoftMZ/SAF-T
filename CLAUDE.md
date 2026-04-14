@@ -33,13 +33,5 @@ samples/
 
 ## Estratégia de Branches
 
-Git Flow — usa hífens em vez de barras nos nomes de branches (compatibilidade com CI/CD):
-
-```
-main       ← produção estável; merge apenas de release-* ou hotfix-*
-develop    ← integração contínua; merge apenas de feature-*, bugfix-* ou release-*
-feature-*  ← novas funcionalidades (base: develop, destino: develop)
-bugfix-*   ← correcções em desenvolvimento (base: develop, destino: develop)
-release-*  ← preparação de versão (base: develop, destino: main + develop)
-hotfix-*   ← correcções críticas em produção (base: main, destino: main + develop)
-```
+A estratégia de branches deste repositório está documentada em `CONTRIBUTING.md`.
+Consulta esse ficheiro para as regras de Git Flow, convenções de nomenclatura e destinos de merge.
