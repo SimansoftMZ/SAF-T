@@ -78,8 +78,8 @@ namespace Simansoft.SAFT.Mozambique.Generators
                             TaxCountryRegion = s.Pais,
                             TaxCode = s.Codigo,
                             Description = s.Descricao,
-                            TaxPercentage = s.Percentagem,
-                            TaxAmount = s.Valor
+                            TaxPercentage = Math.Round(s.Percentagem, 2),
+                            TaxAmount = Math.Round(s.Valor, 2)
                         }).FirstOrDefault()!);
             });
 
@@ -130,8 +130,8 @@ namespace Simansoft.SAFT.Mozambique.Generators
                     SalesInvoices = new SalesInvoices()
                     {
                         NumberOfEntries = ficheiroSAFT.DocumentosFacturacao.Count,
-                        TotalDebit = ficheiroSAFT.TotalDebito,
-                        TotalCredit = ficheiroSAFT.TotalCredito,
+                        TotalDebit = Math.Round(ficheiroSAFT.TotalDebito, 2),
+                        TotalCredit = Math.Round(ficheiroSAFT.TotalCredito, 2),
                         Invoices = [.. ficheiroSAFT.DocumentosFacturacao.Select(doc => new Invoice
                         {
                             InvoiceNo = doc.Id,
@@ -177,12 +177,12 @@ namespace Simansoft.SAFT.Mozambique.Generators
                                 ProductDescription = artigo.Artigo.Descricao,
                                 Quantity = artigo.Quantidade,
                                 UnitOfMeasure = artigo.Artigo.UnidadeContagem,
-                                UnitPrice = artigo.PrecoUnitarioSemImpostos,
-                                TaxBase = artigo.PrecoTotalSemImpostos,
+                                UnitPrice = Math.Round(artigo.PrecoUnitarioSemImpostos, 2),
+                                TaxBase = Math.Round(artigo.PrecoTotalSemImpostos, 2),
                                 TaxPointDate = doc.DataHora,
                                 Description = artigo.ArtigoDescricao,
-                                DebitAmount = artigo.PrecoTotalComImpostos < 0 ? -artigo.PrecoTotalComImpostos : 0m,
-                                CreditAmount = artigo.PrecoTotalComImpostos > 0 ? artigo.PrecoTotalComImpostos : 0m,
+                                DebitAmount = Math.Round(artigo.PrecoTotalComImpostos < 0 ? -artigo.PrecoTotalComImpostos : 0m, 2),
+                                CreditAmount = Math.Round(artigo.PrecoTotalComImpostos > 0 ? artigo.PrecoTotalComImpostos : 0m, 2),
 
                                 SettlementAmount = artigo.ValorDesconto,
 
@@ -191,8 +191,8 @@ namespace Simansoft.SAFT.Mozambique.Generators
                                     TaxType = imp.Tipo,
                                     TaxCountryRegion = imp.Pais,
                                     TaxCode = imp.Codigo,
-                                    TaxPercentage = imp.Percentagem,
-                                    TaxAmount = imp.Valor + (artigo.PrecoTotalComImpostos / (1m + (imp.Percentagem * 0.01m))) * (imp.Percentagem * 0.01m)
+                                    TaxPercentage = Math.Round(imp.Percentagem, 2),
+                                    TaxAmount = Math.Round(imp.Valor + (artigo.PrecoTotalComImpostos / (1m + (imp.Percentagem * 0.01m))) * (imp.Percentagem * 0.01m), 2)
                                 })],
 
                                 TaxExemptionReason = artigo.Artigo.Motivo,
@@ -200,13 +200,13 @@ namespace Simansoft.SAFT.Mozambique.Generators
                             })],
                             DocumentTotals = new DocumentTotals
                             {
-                                TaxPayable = doc.Artigos.Sum(s => s.PrecoTotalSemImpostos),
-                                NetTotal = doc.Artigos.Sum(s => s.ValorImpostos),
-                                GrossTotal = doc.Artigos.Sum(s => s.PrecoTotalComImpostos),
+                                TaxPayable = Math.Round(doc.Artigos.Sum(s => s.ValorImpostos), 2),
+                                NetTotal = Math.Round(doc.Artigos.Sum(s => s.PrecoTotalSemImpostos), 2),
+                                GrossTotal = Math.Round(doc.Artigos.Sum(s => s.PrecoTotalComImpostos), 2),
                                 Payments = [.. doc.MeiosPagamento.Select(p => new Payment
                                 {
                                     PaymentMechanism = p.TipoId,
-                                    PaymentAmount = p.Valor,
+                                    PaymentAmount = Math.Round(p.Valor, 2),
                                     PaymentDate = p.Data
                                 })]
                             }
@@ -325,26 +325,27 @@ namespace Simansoft.SAFT.Mozambique.Generators
                         .Customers.SingleOrDefault(w => (w.CustomerID ?? string.Empty).Equals(factura.CustomerID, StringComparison.OrdinalIgnoreCase))?
                         .CompanyName ?? string.Empty);
 
-                    row.CreateCell(15).SetCellValue(factura.DocumentTotals?.TaxPayable.ToString() ?? "0");
-                    row.CreateCell(17).SetCellValue(factura.DocumentTotals?.NetTotal.ToString() ?? "0");
-                    row.CreateCell(20).SetCellValue((factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m).ToString());
-                    row.CreateCell(21).SetCellValue(factura.DocumentTotals?.GrossTotal.ToString() ?? "0");
-                    row.CreateCell(22).SetCellValue(factura.DocumentTotals?.Payments.Sum(s => s.PaymentAmount).ToString() ?? "0");
-                   
+
+                    row.CreateCell(15).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.NetTotal ?? 0m));
+                    row.CreateCell(17).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
+                    row.CreateCell(20).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
+                    row.CreateCell(21).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
+                    row.CreateCell(22).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.Payments.Sum(s => s.PaymentAmount) ?? 0m));
+
                     decimal impostos = factura.Lines?
                         .FirstOrDefault(w =>
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
                             .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m;
 
-                    row.CreateCell(23).SetCellValue(factura.Lines?
+                    row.CreateCell(23).SetCellValue(Convert.ToDouble(factura.Lines?
                         .FirstOrDefault(w =>
                             w.Tax.Where(wh => wh.TaxPercentage != 0m).FirstOrDefault()?.TaxPercentage != 0m)?
-                            .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage.ToString() ?? "0");
+                            .Tax.FirstOrDefault(w => w.TaxPercentage != 0m)?.TaxPercentage ?? 0m));
 
-                    row.CreateCell(24).SetCellValue(factura.DocumentTotals?.NetTotal.ToString() ?? "0");
-                    row.CreateCell(25).SetCellValue((factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m).ToString());
-                    row.CreateCell(26).SetCellValue(factura.DocumentTotals?.TaxPayable.ToString() ?? "0");
-                    row.CreateCell(27).SetCellValue(factura.DocumentTotals?.GrossTotal.ToString() ?? "0");
+                    row.CreateCell(24).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.TaxPayable ?? 0m));
+                    row.CreateCell(25).SetCellValue(Convert.ToDouble(factura.Lines?.Sum(s => s.SettlementAmount) ?? 0m));
+                    row.CreateCell(26).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.NetTotal ?? 0m));
+                    row.CreateCell(27).SetCellValue(Convert.ToDouble(factura.DocumentTotals?.GrossTotal ?? 0m));
                     row.CreateCell(28).SetCellValue(auditFile.Header?.CurrencyCode ?? string.Empty);
                     row.CreateCell(29).SetCellValue(taxaCambio);
                 });
