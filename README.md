@@ -7,10 +7,10 @@
 
 ## Descrição do Projeto 📄
 
-**SAF-T** é uma biblioteca .NET para geração de ficheiros **SAF-T (Standard Audit File for Tax)**, focada em **extensibilidade multi-país**. Desenvolvida em **C#/.NET 9+**, permite que desenvolvedores e empresas gerem documentos fiscais em conformidade com as regras locais de países como Moçambique, com suporte a **XML**, **JSON** e **hashes SHA-1**. Projeto open-source sob licença MIT.
+**SAF-T** é uma biblioteca .NET para geração de ficheiros **SAF-T (Standard Audit File for Tax)**, focada em **extensibilidade multi-país**. Desenvolvida em **C#/.NET 10+**, permite que desenvolvedores e empresas gerem documentos fiscais em conformidade com as regras locais de países como Moçambique, com suporte a **XML**, **JSON** e **hashes SHA-1**. Projeto open-source sob licença MIT.
 
 ### Tecnologias:
-- **.NET 9**: Performance e modernidade.
+- **.NET 10**: Performance e modernidade.
 - **XML/JSON**: Suporte aos formatos exigidos por autoridades fiscais.
 - **SHA-1**: Segurança ao gerar de hashes.
 
