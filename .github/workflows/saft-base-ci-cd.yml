@@ -9,9 +9,9 @@ on:
       - 'v*'
     branches: [ "main" ]
     paths: [ "src/SAF-T.Core/**", "src/SAF-T.Cryptography/**", "src/SAF-T.Mozambique/**" ]
-  ##pull_request:
-  ##  branches: [ "main" ]
-  ##  paths: [ "src/SAF-T.Core/**", "src/SAF-T.Cryptography/**", "src/SAF-T.Mozambique/**" ]
+  pull_request:
+    branches: [ "main" ]
+    paths: [ "src/SAF-T.Core/**", "src/SAF-T.Cryptography/**", "src/SAF-T.Mozambique/**" ]
 
 jobs:
   build:
@@ -36,7 +36,7 @@ jobs:
     - name: Setup do .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 9.x.x
+        dotnet-version: 10.0.x
     
     - name: Restore dependencies
       run: dotnet restore
